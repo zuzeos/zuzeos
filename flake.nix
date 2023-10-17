@@ -26,7 +26,7 @@
         system = "${system}";
         modules = systemBase.modules ++ [
           #"${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical-calamares.nix"
-          "./zuze-gnome.nix"
+          ./zuze-gnome.nix
         ];
       };
     });
