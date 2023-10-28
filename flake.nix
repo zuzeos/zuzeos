@@ -20,6 +20,7 @@
     packages = eachSystem (system: {
       hello = nixpkgs.legacyPackages.${system}.hello;
       default = self.nixosConfigurations.${system}.gnomeIso.config.system.build.isoImage;
+      vm = self.nixosConfigurations.${system}.gnomeIso.config.system.build.vm;
     });
     nixosConfigurations = eachSystem (system: {
       gnomeIso = nixpkgs.lib.nixosSystem {
@@ -28,6 +29,7 @@
           #"${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical-calamares.nix"
           ./zuze-gnome.nix
         ];
+        specialArgs = { inputs = self.inputs; };
       };
     });
   };

@@ -16,12 +16,10 @@ with lib;
   virtualisation.hypervGuest.enable = true;
   services.xe-guest-utilities.enable = pkgs.stdenv.hostPlatform.isx86;
 
-  virtualisation.virtualbox.guest.enable = false;
-
   # Enable plymouth
   boot.plymouth.enable = true;
 
-  enviroment.defaultPackages = with pkgs; [
+  environment.defaultPackages = with pkgs; [
     gparted
     vim nano
     git rsync

@@ -8,7 +8,7 @@ let
 in
 {
   imports = [ ./installer-graphical.nix ];
-  enviroment.systemPackages = with pkgs; [
+  environment.systemPackages = with pkgs; [
     libsForQt5.kpmcore
     calamares-nixos
     calamares-nixos-autostart

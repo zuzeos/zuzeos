@@ -7,7 +7,7 @@
   isoImage.edition = "gnome";
 
   # wayland scaling fixes for calamares
-  enviroment.variables = {
+  environment.variables = {
     QT_QPA_PLATFORM = "$([[ $XDG_SESSION_TYPE = \"wayland\" ]] && echo \"wayland\")";
   };
 

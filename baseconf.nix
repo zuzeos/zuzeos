@@ -1,7 +1,7 @@
  {pkgs, lib, ...}: {
 
   nix = {
-    package = pkgs.nixFlake;
+    package = pkgs.nixFlakes;
     settings = {
       auto-optimise-store = true;
       max-jobs = "auto";
@@ -52,7 +52,7 @@
     libertinus andika
     helvetica-neue-lt-std
     liberation-sans-narrow
-    andika joypixels
+    andika
     sarabun-font oxygenfonts
     open-sans work-sans
     fira fira-mono fira-code
@@ -69,11 +69,11 @@
     };
   };
 
-  enviroment.sessionVariables = {
+  environment.sessionVariables = {
     EDITOR = "${pkgs.nano}/bin/nano";
   };
 
-  enviroment.systemPackages = with pkgs;
+  environment.systemPackages = with pkgs;
   let
     # of utmost necessity for me to function
     basePkgs = [
@@ -107,7 +107,7 @@
       nil               # Nix language server
       rust-analyzer     # Rust language server
       gh                # github cli
-      pci-utils         # various utils for pci stuff; common for distros
+      #pci-utils         # various utils for pci stuff; common for distros
     ];
     # Distro specific rice
     zuzeRicePkgs = [
@@ -155,7 +155,6 @@
     # Chat apps with proprietary components
     unfreeChatPkgs = [
       telegram-desktop # most popular instant-messenger in the IT world
-      telegram-cli     # cli-interface for telegram
       discord          # IRC-like proprietary chat service
     ];
     in basePkgs ++ guiPkgs ++ mediaPkgs ++ libreChatPkgs ++ unfreeChatPkgs
@@ -188,7 +187,7 @@
       nssmdns = true;
       openFirewall = true;
     };
-    cups = {
+    printing = {
       enable = true;
       drivers = with pkgs; [
         gutenprint
@@ -205,7 +204,7 @@
     # default touchpad support
     xserver = {
       libinput.enable = true;
-      synaptics.enable = true;
+      #synaptics.enable = true;
     };
     openssh.enable = true;
   };
