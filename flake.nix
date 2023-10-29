@@ -23,10 +23,10 @@
       vm = self.nixosConfigurations.${system}.gnomeIso.config.system.build.vm;
     });
 
-    hydraJobs = {
-      inherit (self)
-        packages;
-    };
+    #hydraJobs = {
+    #  inherit (self)
+    #    packages;
+    #};
     
     nixosConfigurations = eachSystem (system: {
       gnomeIso = nixpkgs.lib.nixosSystem {

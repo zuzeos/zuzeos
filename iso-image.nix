@@ -478,8 +478,6 @@ let
 in
 
 {
-
-  imports = lib.mkIf pkgs.stdenv.platform.isx86 [ "${inputs.nixpkgs}/nixos/modules/virtualisation/virtualbox-image.nix" ];
   options = {
 
     isoImage.isoName = mkOption {
