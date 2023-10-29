@@ -3,7 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/master";
-    systems.url = "github:nix-systems/default";
+    systems.url = "github:nix-systems/default-linux";
   };
   
   outputs = { self, nixpkgs, systems }: 
