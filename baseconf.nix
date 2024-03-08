@@ -45,7 +45,7 @@
     '';
   };
 
-  fonts.fonts = with pkgs; [
+  fonts.packages = with pkgs; [
     dejavu_fonts open-sans
     roboto-serif roboto-mono
     nerdfonts ipafont
@@ -91,7 +91,7 @@
       ncdu              # disk size checker
       nmap              # stats about clients in the network
       netcat-openbsd    # swiss army knife of networking
-      man-pages          # system manpages (not included by default)
+      #man-pages          # system manpages (not included by default)
       mkpasswd          # UNIX password creator
       lr                # list recursively, ls & find replacement
       ripgrep           # file content searcher, > ag > ack > grep
@@ -180,11 +180,13 @@
     firewall.enable = false;
   };
 
+  documentation.man.enable = false;
+
   services = {
     # printing setup
     avahi = {
       enable = true;
-      nssmdns = true;
+      nssmdns4 = true;
       openFirewall = true;
     };
     printing = {

@@ -2,11 +2,13 @@
   description = "Zuze OS";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/master";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     systems.url = "github:nix-systems/default-linux";
+
+    nix-gaming.url = "github:fufexan/nix-gaming";
   };
   
-  outputs = { self, nixpkgs, systems }: 
+  outputs = { self, nixpkgs, systems, ... }: 
     let
       eachSystem = nixpkgs.lib.genAttrs (import systems);
       systemBase = {
@@ -17,26 +19,29 @@
       };
     in
   {
-    packages = eachSystem (system: {
-      hello = nixpkgs.legacyPackages.${system}.hello;
-      default = self.nixosConfigurations.${system}.gnomeIso.config.system.build.isoImage;
-      vm = self.nixosConfigurations.${system}.gnomeIso.config.system.build.vm;
-    });
+    packages = {
+      default = self.nixosConfigurations.gnomeIso.config.system.build.isoImage;
+      vm = self.nixosConfigurations.gnomeIso.config.system.build.vm;
+    };
 
     hydraJobs = {
       inherit (self)
         packages;
     };
     
-    nixosConfigurations = eachSystem (system: {
+    nixosConfigurations = {
       gnomeIso = nixpkgs.lib.nixosSystem {
-        system = "${system}";
+        system = "x86_64-linux";
         modules = systemBase.modules ++ [
           #"${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical-calamares.nix"
           ./zuze-gnome.nix
         ];
         specialArgs = { inputs = self.inputs; };
       };
-    });
+      tower = nixpkgs.lib.nixosSystem {
+        specialArgs = { inputs = self.inputs; };
+        modules = [ ./system/tower/configuration.nix ];
+      };
+    };
   };
 }
