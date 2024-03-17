@@ -3,12 +3,14 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-test.url = "github:CutestNekoAqua/nixpkgs/sharkey";
     systems.url = "github:nix-systems/default-linux";
 
     nix-gaming.url = "github:fufexan/nix-gaming";
+    nur.url = "github:nix-community/NUR";
   };
   
-  outputs = { self, nixpkgs, systems, ... }: 
+  outputs = { self, nixpkgs, nixpkgs-test, systems, nur, ... }: 
     let
       eachSystem = nixpkgs.lib.genAttrs (import systems);
       systemBase = {
@@ -16,6 +18,9 @@
           # our base nix configs
           ./baseconf.nix
         ];
+      };
+      overlay-test = final: prev: {
+        test = nixpkgs-test.legacyPackages.${prev.system};
       };
     in
   {
@@ -40,7 +45,11 @@
       };
       tower = nixpkgs.lib.nixosSystem {
         specialArgs = { inputs = self.inputs; };
-        modules = [ ./system/tower/configuration.nix ];
+        modules = [
+          ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-test ]; })
+          nur.nixosModules.nur
+          ./system/tower/configuration.nix 
+        ];
       };
     };
   };
