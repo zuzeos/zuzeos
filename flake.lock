@@ -73,11 +73,11 @@
     },
     "nixpkgs-test": {
       "locked": {
-        "lastModified": 1710715725,
-        "narHash": "sha256-Wc10WrQC9CDhcJ3Kj2RUukFPLIx8q8Zbpi84xongnF8=",
+        "lastModified": 1710718796,
+        "narHash": "sha256-FOifEH3ADrwNvhLAeWptxhcbjsm0ZKKMDEdjB3i9vIA=",
         "owner": "CutestNekoAqua",
         "repo": "nixpkgs",
-        "rev": "5359d24a20d1d7c211cf2fb624f8f857f071fabe",
+        "rev": "b6b14541c0abd9d772d9e7bfd008bd9773e10a27",
         "type": "github"
       },
       "original": {

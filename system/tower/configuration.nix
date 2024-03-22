@@ -119,12 +119,15 @@
     inputs.nix-gaming.packages.${pkgs.system}.proton-ge
     inputs.nix-gaming.packages.${pkgs.system}.wine-discord-ipc-bridge
 
-    test.sharkey
+    #test.sharkey
 
     lutris
     bottles
 
     prismlauncher
+
+    nheko
+    rustup
 
     inkscape
 
