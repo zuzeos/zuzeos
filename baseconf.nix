@@ -8,10 +8,6 @@
       sandbox = true;
       experimental-features = [ "nix-command" "flakes" ];
     };
-    extraOptions = ''
-      min-free = ${toString (100 * 1024 * 1024)}
-      max-free = ${toString (1024 * 1024 * 1024)}
-    '';
   };
 
   # allow non FOSS pkgs
@@ -111,14 +107,7 @@
       nil               # Nix language server
       rust-analyzer     # Rust language server
       gh                # github cli
-      pciutils         # various utils for pci stuff; common for distros
-      smartmontools
-      nvme-cli
-      screen
-      tcpdump
-      usbutils
-      zip
-      unzip
+      #pci-utils         # various utils for pci stuff; common for distros
     ];
     # Distro specific rice
     zuzeRicePkgs = [
@@ -239,25 +228,5 @@
     systemWide = true;
   };
   hardware.pulseaudio.enable = false;
-
-  system.autoupgrade = {
-    flake = "github:zuseos/zuseos";
-    enable = true;
-
-    # allowReboot = lib.mkDefault false;
-    randomizedDelaySec = "15min";
-    rebootWindow = { 
-      # more sensible gamerTM default values
-      # even tho its not enabled
-      lower = "03:00";
-      upper = "05:50";
-    };
-  };
-
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 14d";
-  };
   
 }
