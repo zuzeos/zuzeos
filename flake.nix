@@ -8,9 +8,10 @@
 
     nix-gaming.url = "github:fufexan/nix-gaming";
     nur.url = "github:nix-community/NUR";
+    attic.url = "github:zhaofengli/attic";
   };
   
-  outputs = { self, nixpkgs, nixpkgs-test, systems, nur, ... }: 
+  outputs = { self, nixpkgs, nixpkgs-test, systems, attic, nur, ... }: 
     let
       eachSystem = nixpkgs.lib.genAttrs (import systems);
       systemBase = {
@@ -49,6 +50,35 @@
           ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-test ]; })
           nur.nixosModules.nur
           ./system/tower/configuration.nix 
+        ];
+      };
+      nonix = nixpkgs.lib.nixosSystem {
+        specialArgs = { inputs = self.inputs; };
+        modules = [
+          nur.nixosModules.nur
+          ./system/nonix/configuration.nix
+        ];
+      };
+    };
+
+    colmena = {
+      meta = {
+        nixpkgs = import nixpkgs {
+          system = "x86_64-linux";
+          overlays = [];
+        };
+      };
+
+      nonix = { name, nodes, pkgs, ... }: {
+        time.timeZone = "Europe/Berlin";
+        deployment = {
+          buildOnTarget = true;
+          targetHost = "nonix.sakamoto.pl";
+        };
+        imports = [
+          nur.nixosModules.nur
+          attic.nixosModules.atticd
+          ./system/nonix/configuration.nix
         ];
       };
     };
