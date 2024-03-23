@@ -13,6 +13,7 @@
   
   outputs = { self, nixpkgs, nixpkgs-test, systems, attic, nur, ... }: 
     let
+      inherit (nixpkgs) lib;
       eachSystem = nixpkgs.lib.genAttrs (import systems);
       systemBase = {
         modules = [
@@ -30,10 +31,34 @@
       vm = self.nixosConfigurations.gnomeIso.config.system.build.vm;
     };
 
-    hydraJobs = {
-      inherit (self)
-        packages;
-    };
+          hydraJobs =
+        lib.mapAttrs (_: nixpkgs.lib.hydraJob) (
+          let
+            getBuildEntryPoint = name: nixosSystem:
+              let
+                cfg = if (lib.hasPrefix "iso" name) then
+                  nixosSystem.config.system.build.isoImage
+                else
+                  nixosSystem.config.system.build.toplevel;
+              in
+              cfg;
+          in
+          lib.mapAttrs getBuildEntryPoint self.nixosConfigurations
+          # NOTE: left here to have the code as reference if we need something like in the future, eg. on a stable update
+          # // lib.mapAttrs' (hostname: nixosSystem: let
+          #   hostname' = hostname + "-23-05";
+          # in lib.nameValuePair
+          #   hostname' # job display name
+          #   (getBuildEntryPoint hostname' (nixosSystem' (nixosSystem.args // (with nixosSystem.args; {
+          #     modules = modules ++ [
+          #     #   {
+          #     #     simd.enable = lib.mkForce true;
+          #     #   }
+          #     ];
+          #     nixos = inputs.nixos-23-05;
+          #   }))))
+          # ) self.nixosConfigurations
+        );
     
     nixosConfigurations = {
       gnomeIso = nixpkgs.lib.nixosSystem {
@@ -47,7 +72,7 @@
       tower = nixpkgs.lib.nixosSystem {
         specialArgs = { inputs = self.inputs; };
         modules = [
-          ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-test ]; })
+          #({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-test ]; })
           nur.nixosModules.nur
           ./system/tower/configuration.nix 
         ];
@@ -56,6 +81,7 @@
         specialArgs = { inputs = self.inputs; };
         modules = [
           nur.nixosModules.nur
+          attic.nixosModules.atticd
           ./system/nonix/configuration.nix
         ];
       };
