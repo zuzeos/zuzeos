@@ -7,7 +7,24 @@
       max-jobs = "auto";
       sandbox = true;
       experimental-features = [ "nix-command" "flakes" ];
+      builders-use-substitutes = true;
+      allowed-uris = [
+        "github:"
+        "git+https://github.com/"
+        "git+ssh://github.com/"
+        "https://github.com/"
+        "https://user-images.githubusercontent.com/"
+        "https://api.github.com/"
+      ];
+      substituters = [
+        "https://attic.fediverse.gay/prod"
+        "https://cache.nixos.org"
+      ];
+      trusted-public-keys = [
+        "prod:UfOz2hPzocabclOzD2QWzsagOkX3pHSBZw8/tUEO9/g="
+      ];
     };
+    distributedBuilds = true;
   };
 
   # allow non FOSS pkgs

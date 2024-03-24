@@ -10,6 +10,15 @@
     nur.url = "github:nix-community/NUR";
     attic.url = "github:zhaofengli/attic";
   };
+
+  nixConfig = {
+    extra-substituters = [
+      "https://attic.fediverse.gay/prod"
+    ];
+    extra-trusted-public-keys = [
+      "prod:UfOz2hPzocabclOzD2QWzsagOkX3pHSBZw8/tUEO9/g="
+    ];
+  };
   
   outputs = { self, nixpkgs, nixpkgs-test, systems, attic, nur, ... }: 
     let
@@ -93,13 +102,17 @@
           system = "x86_64-linux";
           overlays = [];
         };
+        specialArgs = {
+          inputs = self.inputs;
+        };
       };
 
       nonix = { name, nodes, pkgs, ... }: {
         time.timeZone = "Europe/Berlin";
         deployment = {
           buildOnTarget = true;
-          targetHost = "nonix.sakamoto.pl";
+          targetHost = "sakamoto.pl";
+          targetPort = 13370;
         };
         imports = [
           nur.nixosModules.nur

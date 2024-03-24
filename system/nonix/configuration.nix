@@ -2,7 +2,7 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 {
   imports =
@@ -42,8 +42,13 @@
   # Enable the X11 windowing system.
   # services.xserver.enable = true;
 
-
-  
+  nix.buildMachines = [
+    { hostName = "localhost";
+      system = "x86_64-linux";
+      supportedFeatures = ["kvm" "nixos-test" "big-parallel" "benchmark"];
+      maxJobs = 8;
+    }
+  ];
 
   # Configure keymap in X11
   # services.xserver.xkb.layout = "us";
@@ -96,6 +101,7 @@
   environment.systemPackages = with pkgs; [
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
+    inputs.attic.packages.${pkgs.system}.attic-nixpkgs
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -137,7 +143,6 @@
     minimumDiskFreeEvaluator = 5;
     minimumDiskFree = 5;
     listenHost = "*";
-    buildMachinesFiles = [];
     hydraURL = "https://hydra.nonix.sakamoto.pl";
   };
 
