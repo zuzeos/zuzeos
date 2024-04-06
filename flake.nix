@@ -107,6 +107,20 @@
         };
       };
 
+      tower = { name, nodes, pkgs, ... }: {
+        time.timeZone = "Europe/Berlin";
+        deployment = {
+          buildOnTarget = true;
+          targetHost = null;
+          allowLocalDeployment = true;
+        };
+        imports = [
+          nur.nixosModules.nur
+          attic.nixosModules.atticd
+          ./system/tower/configuration.nix
+        ];
+      };
+
       nonix = { name, nodes, pkgs, ... }: {
         time.timeZone = "Europe/Berlin";
         deployment = {

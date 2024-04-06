@@ -103,6 +103,7 @@
       librewolf
       ungoogled-chromium
       webcord
+      signal-desktop
       tree
     ];
     shell = pkgs.zsh;
@@ -116,8 +117,6 @@
 
     inputs.nix-gaming.packages.${pkgs.system}.osu-lazer-bin
     inputs.nix-gaming.packages.${pkgs.system}.rocket-league
-    inputs.nix-gaming.packages.${pkgs.system}.proton-ge
-    inputs.nix-gaming.packages.${pkgs.system}.wine-discord-ipc-bridge
 
     #test.sharkey
 
@@ -128,6 +127,8 @@
 
     nheko
     rustup
+
+    colmena
 
     inkscape
 
@@ -142,6 +143,9 @@
     enable = true;
     remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
     dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+    extraCompatPackages = with pkgs; [
+      proton-ge-bin
+    ];
   };
 
   hardware.steam-hardware.enable = true;
