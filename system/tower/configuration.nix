@@ -133,6 +133,8 @@
 
     mesa-demos
 
+    skypeforlinux
+
     config.nur.repos.aprilthepink.stellwerksim-launcher
   ];
 
