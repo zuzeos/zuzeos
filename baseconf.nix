@@ -1,5 +1,9 @@
  {pkgs, lib, ...}: {
 
+  imports = [
+    ./codename.nix
+  ];
+
   nix = {
     package = pkgs.nixFlakes;
     settings = {
@@ -250,5 +254,4 @@
     "ZuzeOS-alpha"
   ];
   system.nixos.distroName = "ZuzeOS";
-  system.nixos.codeName = "Neverland";
 }
