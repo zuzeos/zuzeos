@@ -246,5 +246,7 @@
     systemWide = true;
   };
   hardware.pulseaudio.enable = false;
-  
+  system.nixos.tags = [
+    "ZuzeOS-alpha"
+  ];
 }
