@@ -250,4 +250,5 @@
     "ZuzeOS-alpha"
   ];
   system.nixos.distroName = "ZuzeOS";
+  system.nixos.codeName = "Neverland";
 }
