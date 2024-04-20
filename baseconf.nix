@@ -138,7 +138,8 @@
     ];
     # Programming languages
     progPkgs = [
-      pypy3 python3              # Python 3
+      #pypy3
+      python3              # Python 3
       lua5_4_compat              # Lua 5.4
       lua54Packages.luarocks-nix # Lua package manager
       kotlin                     # Kotlin dev env

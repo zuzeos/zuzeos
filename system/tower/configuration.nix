@@ -10,7 +10,9 @@
       ./hardware-configuration.nix
       ../../baseconf.nix
       ../../gnome.nix
-      ../../modules/home-assistant.nix
+      #../../modules/home-assistant.nix
+      ../../modules/distributed.nix
+      ../../modules/spotify.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -115,8 +117,8 @@
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
 
-    inputs.nix-gaming.packages.${pkgs.system}.osu-lazer-bin
-    inputs.nix-gaming.packages.${pkgs.system}.rocket-league
+    #iinputs.nix-gaming.packages.${pkgs.system}.osu-lazer-bin
+    #inputs.nix-gaming.packages.${pkgs.system}.rocket-league
 
     #test.sharkey
 
