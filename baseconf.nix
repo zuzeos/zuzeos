@@ -249,4 +249,5 @@
   system.nixos.tags = [
     "ZuzeOS-alpha"
   ];
+  system.nixos.distroName = "ZuzeOS";
 }
