@@ -12,6 +12,8 @@
       ../../gnome.nix
       #../../modules/home-assistant.nix
       ../../modules/distributed.nix
+      ../../modules/garlic.nix
+      ../../modules/onion.nix
       ../../modules/spotify.nix
     ];
 

@@ -9,6 +9,11 @@
     nix-gaming.url = "github:fufexan/nix-gaming";
     nur.url = "github:nix-community/NUR";
     attic.url = "github:zhaofengli/attic";
+
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   nixConfig = {
@@ -20,7 +25,7 @@
     ];
   };
   
-  outputs = { self, nixpkgs, nixpkgs-test, systems, attic, nur, ... }: 
+  outputs = { self, nixpkgs, nixpkgs-test, home-manager, systems, attic, nur, ... }: 
     let
       inherit (nixpkgs) lib;
       eachSystem = nixpkgs.lib.genAttrs (import systems);
@@ -83,6 +88,14 @@
         modules = [
           #({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-test ]; })
           nur.nixosModules.nur
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.aprl = import ./system/users/aprl.nix;
+
+            # Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
+          }
           ./system/tower/configuration.nix 
         ];
       };
@@ -118,6 +131,14 @@
           nur.nixosModules.nur
           attic.nixosModules.atticd
           ./system/tower/configuration.nix
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.aprl = import ./system/users/aprl.nix;
+
+            # Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
+          }
         ];
       };
 
