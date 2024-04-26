@@ -15,6 +15,7 @@
       ../../modules/garlic.nix
       ../../modules/onion.nix
       ../../modules/spotify.nix
+      ../../modules/gaming.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
