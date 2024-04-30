@@ -25,7 +25,7 @@
     ];
   };
   
-  outputs = { self, nixpkgs, nixpkgs-test, home-manager, systems, attic, nur, ... }: 
+  outputs = { self, nixpkgs, nixpkgs-test, home-manager, systems, attic, nur, nixos-hardware, ... }: 
     let
       inherit (nixpkgs) lib;
       eachSystem = nixpkgs.lib.genAttrs (import systems);
@@ -99,6 +99,24 @@
           ./system/tower/configuration.nix 
         ];
       };
+      cave = nixpkgs.lib.nixosSystem {
+        specialArgs = { inputs = self.inputs; };
+        modules = [
+          #({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-test ]; })
+          nur.nixosModules.nur
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.aprl = import ./system/users/aprl.nix;
+
+            # Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
+          }
+          ./system/cave_johnson/configuration.nix 
+          attic.nixosModules.atticd
+          nixos-hardware.nixosModules.lenovo-thinkpad-t470s
+        ];
+      };
       nonix = nixpkgs.lib.nixosSystem {
         specialArgs = { inputs = self.inputs; };
         modules = [
@@ -131,6 +149,30 @@
           nur.nixosModules.nur
           attic.nixosModules.atticd
           ./system/tower/configuration.nix
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.aprl = import ./system/users/aprl.nix;
+
+            # Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
+          }
+        ];
+      };
+
+
+      cave = { name, nodes, pkgs, ... }: {
+        time.timeZone = "Europe/Berlin";
+        deployment = {
+          buildOnTarget = true;
+          targetHost = null;
+          allowLocalDeployment = true;
+        };
+        imports = [
+          nur.nixosModules.nur
+          attic.nixosModules.atticd
+          nixos-hardware.nixosModules.lenovo-thinkpad-t470s
+          ./system/cave_johnson/configuration.nix
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
