@@ -28,11 +28,6 @@
 
   services.pcscd.enable = true;
 
-  environment.systemPackages = with pkgs; [
-    gnupg
-    yubikey-personalization
-  ];
-
   environment.shellInit = ''
     gpg-connect-agent /bye
     export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
@@ -156,6 +151,8 @@
     mesa-demos
 
     skypeforlinux
+
+    yubikey-personalization
 
     config.nur.repos.aprilthepink.stellwerksim-launcher
   ];
