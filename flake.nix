@@ -197,6 +197,23 @@
           ./system/nonix/configuration.nix
         ];
       };
+
+      moralitycore = { name, nodes, pkgs, ... }: {
+        time.timeZone = "Europe/Berlin";
+        deployment = {
+          targetHost = "morality.fediverse.gay";
+          tags = [
+            "web"
+            "infra-ap"
+            "infra-ls"
+          ];
+        };
+        imports = [
+          nur.nixosModules.nur
+          attic.nixosModules.atticd
+          ./system/moralitycore/configuration.nix
+        ];
+      };
     };
   };
 }
