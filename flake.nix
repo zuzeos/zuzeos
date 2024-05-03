@@ -36,8 +36,7 @@
       "prod:UfOz2hPzocabclOzD2QWzsagOkX3pHSBZw8/tUEO9/g="
     ];
   };
-  
-  outputs = { self, nixpkgs, nixpkgs-test, home-manager, systems, attic, lix-module, nur, lysand-ap-layer, nixos-hardware, ... }: 
+  outputs = { self, nixpkgs, nixpkgs-test, home-manager, systems, attic, lix-module, nur, lysand-ap-layer, nixos-hardware, ... }:
     let
       inherit (nixpkgs) lib;
       eachSystem = nixpkgs.lib.genAttrs (import systems);
