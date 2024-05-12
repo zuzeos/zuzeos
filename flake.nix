@@ -2,30 +2,42 @@
   description = "Zuze OS";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:auxolotl/nixpkgs/nixpkgs-unstable";
     nixpkgs-test.url = "github:CutestNekoAqua/nixpkgs/sharkey";
+    
     systems.url = "github:nix-systems/default-linux";
 
     nix-gaming.url = "github:fufexan/nix-gaming";
     nur.url = "github:nix-community/NUR";
     attic.url = "github:zhaofengli/attic";
+    lysand-ap-layer.url = "github:lysand-org/lysand-ap-layer";
 
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    lix = {
+      url = "git+https://git@git.lix.systems/lix-project/lix?ref=refs/tags/2.90-beta.1";
+      flake = false;
+    };
+    lix-module = {
+      url = "git+https://git.lix.systems/lix-project/nixos-module";
+      inputs.lix.follows = "lix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   nixConfig = {
-    extra-substituters = [
-      "https://attic.fediverse.gay/prod"
-    ];
+    #extra-substituters = [
+    #  "https://attic.fediverse.gay/prod"
+    #];
     extra-trusted-public-keys = [
       "prod:UfOz2hPzocabclOzD2QWzsagOkX3pHSBZw8/tUEO9/g="
     ];
   };
   
-  outputs = { self, nixpkgs, nixpkgs-test, home-manager, systems, attic, nur, nixos-hardware, ... }: 
+  outputs = { self, nixpkgs, nixpkgs-test, home-manager, systems, attic, lix-module, nur, lysand-ap-layer, nixos-hardware, ... }: 
     let
       inherit (nixpkgs) lib;
       eachSystem = nixpkgs.lib.genAttrs (import systems);
@@ -33,6 +45,7 @@
         modules = [
           # our base nix configs
           ./baseconf.nix
+          lix-module.nixosModules.default
         ];
       };
       overlay-test = final: prev: {
@@ -85,7 +98,7 @@
       };
       tower = nixpkgs.lib.nixosSystem {
         specialArgs = { inputs = self.inputs; };
-        modules = [
+        modules = systemBase.modules ++ [
           #({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-test ]; })
           nur.nixosModules.nur
           home-manager.nixosModules.home-manager
@@ -101,7 +114,7 @@
       };
       cave = nixpkgs.lib.nixosSystem {
         specialArgs = { inputs = self.inputs; };
-        modules = [
+        modules = systemBase.modules ++ [
           #({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-test ]; })
           nur.nixosModules.nur
           home-manager.nixosModules.home-manager
@@ -119,7 +132,7 @@
       };
       nonix = nixpkgs.lib.nixosSystem {
         specialArgs = { inputs = self.inputs; };
-        modules = [
+        modules = systemBase.modules ++ [
           nur.nixosModules.nur
           attic.nixosModules.atticd
           ./system/nonix/configuration.nix
@@ -145,7 +158,7 @@
           targetHost = null;
           allowLocalDeployment = true;
         };
-        imports = [
+        imports = systemBase.modules ++ [
           nur.nixosModules.nur
           attic.nixosModules.atticd
           ./system/tower/configuration.nix
@@ -168,7 +181,7 @@
           targetHost = null;
           allowLocalDeployment = true;
         };
-        imports = [
+        imports = systemBase.modules ++ [
           nur.nixosModules.nur
           attic.nixosModules.atticd
           nixos-hardware.nixosModules.lenovo-thinkpad-t470s
@@ -191,7 +204,10 @@
           targetHost = "sakamoto.pl";
           targetPort = 13370;
         };
-        imports = [
+        deployment.tags = [
+          "infra-attic"
+        ];
+        imports = systemBase.modules ++ [
           nur.nixosModules.nur
           attic.nixosModules.atticd
           ./system/nonix/configuration.nix
@@ -211,6 +227,7 @@
         imports = [
           nur.nixosModules.nur
           attic.nixosModules.atticd
+          lysand-ap-layer.nixosModules.default
           ./system/moralitycore/configuration.nix
         ];
       };

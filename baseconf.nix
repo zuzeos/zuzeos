@@ -21,7 +21,7 @@
         "https://api.github.com/"
       ];
       substituters = [
-        "https://attic.fediverse.gay/prod"
+        /*"https://attic.fediverse.gay/prod"*/
         "https://cache.nixos.org"
       ];
       trusted-public-keys = [
@@ -226,10 +226,8 @@
       ];
     };
     # default touchpad support
-    xserver = {
-      libinput.enable = true;
-      #synaptics.enable = true;
-    };
+    libinput.enable = true;
+    
     openssh.enable = true;
   };
 
