@@ -48,7 +48,36 @@
   # Enable the X11 windowing system.
   # services.xserver.enable = true;
 
-
+  security.pki.certificates = [ 
+    ''
+      -----BEGIN CERTIFICATE-----
+MIIEcTCCAtmgAwIBAgIQK7Qt0M9V1XKTXYVznYpq7TANBgkqhkiG9w0BAQsFADBR
+MR4wHAYDVQQKExVta2NlcnQgZGV2ZWxvcG1lbnQgQ0ExEzARBgNVBAsMCmFwcmxA
+dG93ZXIxGjAYBgNVBAMMEW1rY2VydCBhcHJsQHRvd2VyMB4XDTI0MDUxNDAwMTYx
+MVoXDTM0MDUxNDAwMTYxMVowUTEeMBwGA1UEChMVbWtjZXJ0IGRldmVsb3BtZW50
+IENBMRMwEQYDVQQLDAphcHJsQHRvd2VyMRowGAYDVQQDDBFta2NlcnQgYXBybEB0
+b3dlcjCCAaIwDQYJKoZIhvcNAQEBBQADggGPADCCAYoCggGBAMDRZqIZZU/jBkWK
+OYE7tlaXrGte0eWzKaD25/MKHfRCApCQyBd2QLltijDhMejAQNFZwj21K0f9t4/X
+RxTz4MM0x4B18pJHfNJx6A2iC4Z30KbeiLmI8PuX7TReYiO53LvNhemL3wx/FlMi
+YtCYuGrBMsn0rWqrVkJujqBo6ZKeThRB2gZLiG/DzlW1HiY2lQjvRTbe9niHH8bS
+5z6VetWJvJ0Us9iwhC5C/crkSu/13LgI61YVn9dp8IhMaz190BiTBktjp+ez5xjc
+TAEQYxL2g4kV34RvzCDAiK5MUFR0y9tMtIiTsSLUuwCJYl4GbZx2qHAH0n1mXZ4p
+jDNARG4aJZID9kyqZuIoin2RgfhoFadHShxnA1+O/DE9B4aOAfXPilxEoZtdBm73
+aey4PUSE2NXmm9GnyqLv12QwKPH189ePBvjqioLYvioq8mvmc72N6CHv+g29Nfa2
+wIiEtmtFvI5S0KNVxpF30ZGIBAYuJj+QmN7sn0H+HDqnO2R63wIDAQABo0UwQzAO
+BgNVHQ8BAf8EBAMCAgQwEgYDVR0TAQH/BAgwBgEB/wIBADAdBgNVHQ4EFgQUX8ch
+wHDVB55IFaks/k6e4Jm9y0YwDQYJKoZIhvcNAQELBQADggGBAB1HkCLyXLgG4M9Y
+Udtu4dYbtrOvGYHzIBkVcGOd+9HNbD9f0ElopKEveZLYlZDio3M9ostKctE70INS
+sJcRrrNE8F/L8NF4bW9F7cBHveUvfzM/zp9iAty8iZjAhUZXSg9Lenjg55RQvjuR
+bKfy64+uVCv/aCK3Znz0OAH33bHlvjdRiMbojDsEvVBtrnZCUSUKgBZxlM2D7axM
+ysdWiPxGprh8sAZzddak0fp+O8Nuw6BgtFd9AaMEt/g2TwSYPGJesvr5Ie54/rh7
+fiiFdu2Puf2nA+1fIf1SHZOSDmGFTUo6s0s3VyjErJee225bT6S2xzMVr5OXtcpd
+IHYu66SqoZfFOLpgRphjxeq/V4At4uR3wdbJq0fVECiDICLa93xaeDGnEPKl2cmj
+znWwMFa05ADrPRH/ABnb7fwnVoKkR16KQQoMTfOcnuv7l6ouKy9/ydaMo1TGyS0i
+den0I53pA1L5bIb//uZ1LmACeiM+d/k4kJIvWJusONprzGWAPA==
+-----END CERTIFICATE-----
+    '' 
+  ];
   networking.wireguard.interfaces = {
     # "wg0" is the network interface name. You can name the interface arbitrarily.
     wg0 = {
@@ -84,6 +113,7 @@
       ];
     };
   };
+  virtualisation.waydroid.enable = true;
 
   # Configure keymap in X11
   #services.xserver.xkb.layout = "de";
@@ -142,6 +172,7 @@
     skypeforlinux
 
     config.nur.repos.aprilthepink.stellwerksim-launcher
+    config.nur.repos.aprilthepink.suyu-mainline
   ];
 
   programs.steam = {

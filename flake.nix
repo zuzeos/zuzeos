@@ -2,7 +2,7 @@
   description = "Zuze OS";
 
   inputs = {
-    nixpkgs.url = "github:auxolotl/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixpkgs-test.url = "github:CutestNekoAqua/nixpkgs/sharkey";
     
     systems.url = "github:nix-systems/default-linux";
