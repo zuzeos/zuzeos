@@ -15,6 +15,7 @@
       ../../modules/garlic.nix
       ../../modules/onion.nix
       ../../modules/spotify.nix
+      ../../modules/yacy.nix
       ../../modules/gaming.nix
     ];
 
