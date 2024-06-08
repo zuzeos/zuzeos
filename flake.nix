@@ -44,7 +44,7 @@
         modules = [
           # our base nix configs
           ./baseconf.nix
-          lix-module.nixosModules.default
+          #lix-module.nixosModules.default
         ];
       };
       overlay-test = final: prev: {
@@ -160,6 +160,16 @@
         imports = systemBase.modules ++ [
           nur.nixosModules.nur
           attic.nixosModules.atticd
+          { nixpkgs.overlays = [ nur.overlay ]; }
+          ({ pkgs, ... }:
+            let
+              nur-no-pkgs = import nur {
+                nurpkgs = import nixpkgs { system = "x86_64-linux"; };
+              };
+            in {
+              imports = [ nur-no-pkgs.repos.spitzeqc.modules.yacy ];
+              services.yacy.enable = true;
+            })
           ./system/tower/configuration.nix
           home-manager.nixosModules.home-manager
           {

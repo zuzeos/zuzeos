@@ -1,11 +1,10 @@
- {pkgs, lib, ...}: {
+ {pkgs, lib, imports, ...}: {
 
   imports = [
     ./codename.nix
   ];
 
   nix = {
-    package = pkgs.nixFlakes;
     settings = {
       auto-optimise-store = true;
       max-jobs = "auto";
@@ -183,7 +182,6 @@
                 ++ progPkgs ++ zuzeRicePkgs;
 
   programs = {
-    fish.enable = true;
     zsh.enable = true;
     direnv.enable = true;
     mtr.enable = true;

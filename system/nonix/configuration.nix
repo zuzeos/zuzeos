@@ -57,6 +57,14 @@
   # Enable CUPS to print documents.
   # services.printing.enable = true;
 
+  services.minecraft-server = {
+    dataDir = "/var/lib/minecraft";
+    enable = true;
+    eula = true;
+    jvmOpts = "-Xms4092M -Xmx4092M -XX:+UseG1GC -XX:+CMSIncrementalPacing -XX:+CMSClassUnloadingEnabled -XX:ParallelGCThreads=2 -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10";
+    package = pkgs.papermcServers.papermc-1_20_2;
+  };
+
   # Enable sound.
   # sound.enable = true;
   # hardware.pulseaudio.enable = true;
@@ -104,7 +112,6 @@
     inputs.attic.packages.${pkgs.system}.attic-nixpkgs
     signal-cli
     screen
-    nodejs_21
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

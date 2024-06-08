@@ -15,7 +15,6 @@
       ../../modules/garlic.nix
       ../../modules/onion.nix
       ../../modules/spotify.nix
-      ../../modules/yacy.nix
       ../../modules/gaming.nix
     ];
 
@@ -48,6 +47,14 @@
 
   # Enable the X11 windowing system.
   # services.xserver.enable = true;
+
+
+  networking.nat.enable = true;
+  networking.nat.externalInterface = "enp34s0";
+  networking.nat.internalInterfaces = [ "wg0" "wg1" ];
+  networking.firewall = {
+    allowedUDPPorts = [ 51820 51821 ];
+  };
 
   security.pki.certificates = [ 
     ''
@@ -109,6 +116,28 @@ den0I53pA1L5bIb//uZ1LmACeiM+d/k4kJIvWJusONprzGWAPA==
           endpoint = "162.55.242.111:51820"; # ToDo: route to endpoint not automatically configured https://wiki.archlinux.org/index.php/WireGuard#Loop_routing https://discourse.nixos.org/t/solved-minimal-firewall-setup-for-wireguard-client/7577
 
           # Send keepalives every 25 seconds. Important to keep NAT tables alive.
+          persistentKeepalive = 25;
+        }
+      ];
+    };
+    wg1 = {
+      ips = [
+        "192.168.251.251"
+        "2a0d:eb00:8006:2137::acab"
+      ];
+      privateKeyFile = "/home/aprl/wireguard-keys/domi-wg-priv";
+      listenPort = 51821;
+      peers = [
+        {
+          publicKey = "skmt/OMUt5JYt0OPQgLo1bgOltffUGEZf1SdM5/50hk=";
+          allowedIPs = [
+            "192.168.250.0/23"
+            "192.168.254.0/24"
+            "192.168.248.0/24"
+            "172.16.0.0/16"
+            "2a0d:eb00:8006::/48"
+          ];
+          endpoint = "4.sakamoto.pl:44444";
           persistentKeepalive = 25;
         }
       ];
