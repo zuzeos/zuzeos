@@ -62,7 +62,7 @@
     enable = true;
     eula = true;
     jvmOpts = "-Xms4092M -Xmx4092M -XX:+UseG1GC -XX:+CMSIncrementalPacing -XX:+CMSClassUnloadingEnabled -XX:ParallelGCThreads=2 -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10";
-    package = pkgs.papermcServers.papermc-1_20_2;
+    package = pkgs.papermcServers.papermc-1_20_1;
   };
 
   # Enable sound.
