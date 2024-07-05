@@ -28,6 +28,8 @@
 
   services.pcscd.enable = true;
 
+  virtualisation.waydroid.enable = true;
+
   environment.shellInit = ''
     gpg-connect-agent /bye
     export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
@@ -37,6 +39,20 @@
     enable = true;
     enableSSHSupport = true;
   };
+
+  virtualisation.oci-containers = {
+    backend = "podman";
+    containers.homeassistant = {
+      volumes = [ "home-assistant:/config" ];
+      environment.TZ = "Europe/Berlin";
+      image = "ghcr.io/home-assistant/home-assistant:stable"; # Warning: if the tag does not change, the image will not be updated
+      extraOptions = [ 
+        "--network=host" 
+        "--device=/dev/ttyACM0:/dev/ttyACM0"  # Example, change this to match your own hardware
+      ];
+    };
+  };
+
 
   networking.hostName = "cave"; # Define your hostname.
   boot.kernelPackages = pkgs.linuxKernel.packages.linux_xanmod_stable;
@@ -77,7 +93,7 @@
   # Configure keymap in X11
   services.xserver.xkb = {
     layout = "gb";
-    variant = "";
+    variant = "intl-altgr";
   };
 
   # Configure console keymap
@@ -131,6 +147,9 @@
   environment.systemPackages = with pkgs; [
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
+
+    waydroid
+    qemu
 
     #iinputs.nix-gaming.packages.${pkgs.system}.osu-lazer-bin
     #inputs.nix-gaming.packages.${pkgs.system}.rocket-league

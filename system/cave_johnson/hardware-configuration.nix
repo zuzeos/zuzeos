@@ -13,6 +13,8 @@
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
+  hardware.cpu.x86.msr.enable = true;
+
   fileSystems."/" =
     { device = "/dev/disk/by-uuid/062106b2-40c7-451c-a9e5-277b31d275b3";
       fsType = "btrfs";
