@@ -37,6 +37,8 @@
     # clean tmp directory on boot
     tmp.cleanOnBoot = true;
   };
+
+  services.power-profiles-daemon.enable = false;
   
   # the kernel OOM is not good enough without swap,
   # and we dont recommend swap. This kills the most hoggy

@@ -61,7 +61,7 @@
     dataDir = "/var/lib/minecraft";
     enable = true;
     eula = true;
-    jvmOpts = "-Xms4092M -Xmx4092M -XX:+UseG1GC -XX:+CMSIncrementalPacing -XX:+CMSClassUnloadingEnabled -XX:ParallelGCThreads=2 -XX:MinHeapFreeRatio=5 -XX:MaxHeapFreeRatio=10";
+    jvmOpts = "-Xms4092M -Xmx4092M";
     package = pkgs.papermcServers.papermc-1_20_1;
   };
 

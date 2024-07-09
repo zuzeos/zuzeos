@@ -56,6 +56,10 @@
     allowedUDPPorts = [ 51820 51821 ];
   };
 
+  nixpkgs.config.permittedInsecurePackages = [
+    "electron"
+  ];
+
   security.pki.certificates = [ 
     ''
       -----BEGIN CERTIFICATE-----
@@ -120,13 +124,21 @@ den0I53pA1L5bIb//uZ1LmACeiM+d/k4kJIvWJusONprzGWAPA==
         }
       ];
     };
-    wg1 = {
+    wg1_fwd = {
       ips = [
         "192.168.251.251"
         "2a0d:eb00:8006:2137::acab"
       ];
       privateKeyFile = "/home/aprl/wireguard-keys/domi-wg-priv";
       listenPort = 51821;
+      allowedIPsAsRoutes = false;
+      postSetup = ''
+        echo 2 > /proc/sys/net/ipv4/conf/wg1_fwd/rp_filter
+        ip r a 192.168.250.0/23 dev wg1_fwd
+        ip r a 192.168.254.0/24 dev wg1_fwd
+        ip r a 172.16.0.0/16 dev wg1_fwd
+        ip r a 192.168.248.0/24 dev wg1_fwd
+      '';
       peers = [
         {
           publicKey = "skmt/OMUt5JYt0OPQgLo1bgOltffUGEZf1SdM5/50hk=";
@@ -134,8 +146,9 @@ den0I53pA1L5bIb//uZ1LmACeiM+d/k4kJIvWJusONprzGWAPA==
             "192.168.250.0/23"
             "192.168.254.0/24"
             "192.168.248.0/24"
-            "172.16.0.0/16"
+            "172.16.0.0/23"
             "2a0d:eb00:8006::/48"
+            "0.0.0.0/0"
           ];
           endpoint = "4.sakamoto.pl:44444";
           persistentKeepalive = 25;
@@ -170,6 +183,7 @@ den0I53pA1L5bIb//uZ1LmACeiM+d/k4kJIvWJusONprzGWAPA==
       webcord
       signal-desktop
       tree
+      ladybird
     ];
     shell = pkgs.zsh;
   };
@@ -215,7 +229,6 @@ den0I53pA1L5bIb//uZ1LmACeiM+d/k4kJIvWJusONprzGWAPA==
   };
 
   hardware.steam-hardware.enable = true;
-
   services.flatpak.enable = true;
 
   hardware.nvidia.modesetting.enable = true;
