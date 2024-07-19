@@ -232,10 +232,17 @@ den0I53pA1L5bIb//uZ1LmACeiM+d/k4kJIvWJusONprzGWAPA==
   services.flatpak.enable = true;
 
   hardware.nvidia.modesetting.enable = true;
-  services.xserver.videoDrivers = ["nvidia"];
-  hardware.opengl.enable = true;
-  hardware.opengl.extraPackages = [ pkgs.mesa.drivers ];
-  hardware.opengl.driSupport32Bit = true;
+  services.xserver.videoDrivers = [
+    "amdgpu-pro"
+    "modesetting"
+    "fbdev"
+    "nvidia" 
+  ];
+  hardware.graphics = {
+    enable = true;
+    extraPackages = [ pkgs.mesa.drivers ];
+    enable32Bit = true;
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
