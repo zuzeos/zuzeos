@@ -234,7 +234,6 @@
   virtualisation.docker.enable = true;
 
   # use pipewire instead of pulse
-  sound.enable = true;
   security = {
     rtkit.enable = true;
   };

@@ -183,7 +183,7 @@ den0I53pA1L5bIb//uZ1LmACeiM+d/k4kJIvWJusONprzGWAPA==
       webcord
       signal-desktop
       tree
-      ladybird
+      #ladybird
     ];
     shell = pkgs.zsh;
   };
@@ -216,7 +216,7 @@ den0I53pA1L5bIb//uZ1LmACeiM+d/k4kJIvWJusONprzGWAPA==
     skypeforlinux
 
     config.nur.repos.aprilthepink.stellwerksim-launcher
-    config.nur.repos.aprilthepink.suyu-mainline
+    #config.nur.repos.aprilthepink.suyu-mainline
   ];
 
   programs.steam = {
