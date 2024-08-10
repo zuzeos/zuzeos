@@ -42,6 +42,13 @@
   # Enable the X11 windowing system.
   # services.xserver.enable = true;
 
+  services.pgadmin = {
+    enable = true;
+    initialPasswordFile = "/var/leckesiemi";
+    initialEmail = "aprl@acab.dev";
+    openFirewall = true;
+  };
+
   nix.buildMachines = [
     { hostName = "localhost";
       system = "x86_64-linux";
