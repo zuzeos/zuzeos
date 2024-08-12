@@ -9,7 +9,6 @@
 
     nix-gaming.url = "github:fufexan/nix-gaming";
     nur.url = "github:nix-community/NUR";
-    attic.url = "github:zhaofengli/attic";
     lysand-ap-layer.url = "github:lysand-org/lysand-ap-layer";
 
     home-manager = {
@@ -31,7 +30,7 @@
       "prod:UfOz2hPzocabclOzD2QWzsagOkX3pHSBZw8/tUEO9/g="
     ];
   };
-  outputs = { self, nixpkgs, nixpkgs-test, home-manager, systems, attic, lix-module, nur, lysand-ap-layer, nixos-hardware, ... }:
+  outputs = { self, nixpkgs, nixpkgs-test, home-manager, systems, lix-module, nur, lysand-ap-layer, nixos-hardware, ... }:
     let
       inherit (nixpkgs) lib;
       eachSystem = nixpkgs.lib.genAttrs (import systems);
@@ -120,7 +119,6 @@
             # Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
           }
           ./system/cave_johnson/configuration.nix 
-          attic.nixosModules.atticd
           nixos-hardware.nixosModules.lenovo-thinkpad-t470s
         ];
       };
@@ -138,7 +136,6 @@
             # Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
           }
           ./system/p_body/configuration.nix 
-          attic.nixosModules.atticd
           #nixos-hardware.nixosModules.lenovo-thinkpad-t470s
         ];
       };
@@ -147,7 +144,6 @@
         specialArgs = { inputs = self.inputs; };
         modules = systemBase.modules ++ [
           nur.nixosModules.nur
-          attic.nixosModules.atticd
           ./system/nonix/configuration.nix
         ];
       };
@@ -173,7 +169,6 @@
         };
         imports = systemBase.modules ++ [
           nur.nixosModules.nur
-          attic.nixosModules.atticd
           { nixpkgs.overlays = [ nur.overlay ]; }
           ({ pkgs, ... }:
             let
@@ -206,7 +201,6 @@
         };
         imports = systemBase.modules ++ [
           nur.nixosModules.nur
-          attic.nixosModules.atticd
           nixos-hardware.nixosModules.lenovo-thinkpad-t470s
           ./system/cave_johnson/configuration.nix
           home-manager.nixosModules.home-manager
@@ -229,7 +223,6 @@
         };
         imports = systemBase.modules ++ [
           nur.nixosModules.nur
-          attic.nixosModules.atticd
           #nixos-hardware.nixosModules.lenovo-thinkpad-t470s
           ./system/p_body/configuration.nix
           home-manager.nixosModules.home-manager
@@ -255,7 +248,6 @@
         ];
         imports = systemBase.modules ++ [
           nur.nixosModules.nur
-          attic.nixosModules.atticd
           ./system/nonix/configuration.nix
         ];
       };
@@ -272,7 +264,6 @@
         };
         imports = [
           nur.nixosModules.nur
-          attic.nixosModules.atticd
           lysand-ap-layer.nixosModules.default
           ./system/moralitycore/configuration.nix
         ];
