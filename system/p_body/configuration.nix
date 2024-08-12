@@ -40,7 +40,24 @@
     enableSSHSupport = true;
   };
 
-  networking.hostName = "p_body"; # Define your hostname.
+  systemd.services.nessus = {
+    enable = true;
+    path = [ config.nur.repos.aprilthepink.tennable-client-own pkgs.coreutils ];
+    wantedBy = [ "multi-user.target" ];
+    after = [ "network.target" ];
+    serviceConfig = {
+      ExecStart = ''${pkgs.bash}/bin/bash -c '${pkgs.coreutils}/bin/echo "/opt/nessus_agent/sbin/nessus-service -q" | ${config.nur.repos.aprilthepink.tennable-client-own}/bin/nessus-agent-shell' '';
+      #Type = "notify";
+      Type = "simple";
+      #User = "root";
+    };
+  };
+
+  zramSwap = {
+    enable = true;
+  };
+
+  networking.hostName = "ajx2407"; # Define your hostname.
   boot.kernelPackages = pkgs.linuxKernel.packages.linux_xanmod_stable;
 
   # Enable networking
@@ -130,6 +147,8 @@
     waydroid
     qemu
 
+    config.nur.repos.aprilthepink.tennable-client-own
+
     lutris
     bottles
 
@@ -143,12 +162,14 @@
     mesa-demos
 
     skypeforlinux
+    zoom-us
 
     yubikey-personalization
 
     #denic
     clamav
     clamtk
+    steam-run
   ];
   services.flatpak.enable = true;
   hardware.opengl.enable = true;
@@ -174,12 +195,22 @@
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
-  # DENIC AV
+  # AV
   services.clamav = {
-    enable = true;
     scanner.enable = true;
     updater.enable = true;
     fangfrisch.enable = true;
+    fangfrisch.settings = {
+      sanesecurity.enabled = false;
+    };
+    daemon.settings = {
+      OnAccessMountPath = "/home/aprl/Downloads";
+      OnAccessPrevention = false;
+      OnAccessExtraScanning = true;
+      OnAccessExcludeUname =  "clamav";
+      VirusEvent = "/etc/clamav/virus-event.bash";
+      User = "clamav";
+    };
     daemon.enable = true;
   };
 

@@ -128,6 +128,7 @@
       xe                # xargs with a modern interface
       nil               # Nix language server
       rust-analyzer     # Rust language server
+      samba
       gh                # github cli
       #pci-utils         # various utils for pci stuff; common for distros
     ];

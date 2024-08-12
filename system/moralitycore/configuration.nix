@@ -55,15 +55,6 @@
     80
     443
   ];
-
-  services.mastodon = {
-    enable = true;
-    localDomain = "testodon.aprilthe.pink"; # Replace with your own domain
-    configureNginx = true;
-    smtp.fromAddress = "noreply@testodon.aprilthe.pink"; # Email address used by Mastodon to send emails, replace with your own
-    streamingProcesses = 3; # Number of processes used. It is recommended to set to the number of CPU cores minus one
-    extraConfig.SINGLE_USER_MODE = "true";
-  };
   
   system.stateVersion = "23.11";
 }

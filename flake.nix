@@ -124,6 +124,25 @@
           nixos-hardware.nixosModules.lenovo-thinkpad-t470s
         ];
       };
+      ajx2407 = nixpkgs.lib.nixosSystem {
+        specialArgs = { inputs = self.inputs; };
+        modules = systemBase.modules ++ [
+          #({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-test ]; })
+          nur.nixosModules.nur
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.aprl = import ./system/users/aprl.nix;
+
+            # Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
+          }
+          ./system/p_body/configuration.nix 
+          attic.nixosModules.atticd
+          #nixos-hardware.nixosModules.lenovo-thinkpad-t470s
+        ];
+      };
+      
       nonix = nixpkgs.lib.nixosSystem {
         specialArgs = { inputs = self.inputs; };
         modules = systemBase.modules ++ [
@@ -190,6 +209,29 @@
           attic.nixosModules.atticd
           nixos-hardware.nixosModules.lenovo-thinkpad-t470s
           ./system/cave_johnson/configuration.nix
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.aprl = import ./system/users/aprl.nix;
+
+            # Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
+          }
+        ];
+      };
+
+      ajx2407 = { name, nodes, pkgs, ... }: {
+        time.timeZone = "Europe/Berlin";
+        deployment = {
+          buildOnTarget = true;
+          targetHost = null;
+          allowLocalDeployment = true;
+        };
+        imports = systemBase.modules ++ [
+          nur.nixosModules.nur
+          attic.nixosModules.atticd
+          #nixos-hardware.nixosModules.lenovo-thinkpad-t470s
+          ./system/p_body/configuration.nix
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
