@@ -24,6 +24,21 @@
   programs.gnupg.agent.pinentryPackage = pkgs.pinentry-gnome3;
   services.udev.packages = [ pkgs.yubikey-personalization ];
 
+  hardware.ipu6 = {
+    enable = true;
+    platform = "ipu6ep";
+  };
+
+  networking.hosts = {
+    #"185.97.174.196" = ["smtp.mailbox.org"];
+    #"185.97.174.199" = ["imap.mailbox.org"];
+    #"80.241.60.197" = ["office.mailbox.org"];
+    #"185.97.174.194" = ["mailbox.org"];
+    #"80.241.60.221" = ["login.mailbox.org"];
+    #"80.241.60.198" = ["dav.mailbox.org"];
+    #"80.241.60.226" = ["manage.mailbox.org"];
+  };
+
   programs.ssh.startAgent = false;
 
   services.pcscd.enable = true;
@@ -39,6 +54,8 @@
     enable = true;
     enableSSHSupport = true;
   };
+
+  programs.nix-ld.enable = true;
 
   systemd.services.nessus = {
     enable = true;
@@ -123,7 +140,7 @@
   users.users.aprl = {
     isNormalUser = true;
     description = "Aprl System (April John)";
-    extraGroups = [ "wheel" "pipewire" "media" "networkmanager" ];
+    extraGroups = [ "wheel" "pipewire" "media" "networkmanager" "dialout" ];
     packages = with pkgs; [
       firefox
       librewolf
@@ -170,6 +187,13 @@
     clamav
     clamtk
     steam-run
+
+    poetry
+
+    kubectl
+    krew
+    kubelogin-oidc
+    kubernetes-helm
   ];
   services.flatpak.enable = true;
   hardware.opengl.enable = true;
