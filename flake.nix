@@ -9,7 +9,6 @@
 
     nix-gaming.url = "github:fufexan/nix-gaming";
     nur.url = "github:nix-community/NUR";
-    lysand-ap-layer.url = "github:lysand-org/lysand-ap-layer";
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -20,6 +19,14 @@
       url = "https://git.lix.systems/lix-project/nixos-module/archive/2.90.0.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nix-index-database.url = "github:Mic92/nix-index-database";
+    nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
+
+    disko.url = "github:nix-community/disko";
+    disko.inputs.nixpkgs.follows = "nixpkgs";
+
+    jeezyvim.url = "github:LGUG2Z/JeezyVim";
   };
 
   nixConfig = {
@@ -30,7 +37,7 @@
       "prod:UfOz2hPzocabclOzD2QWzsagOkX3pHSBZw8/tUEO9/g="
     ];
   };
-  outputs = { self, nixpkgs, nixpkgs-test, home-manager, systems, lix-module, nur, lysand-ap-layer, nixos-hardware, ... }:
+  outputs = { self, nixpkgs, nixpkgs-test, home-manager, systems, lix-module, nur, nixos-hardware, disko, nix-index-database, jeezyvim, ... }:
     let
       inherit (nixpkgs) lib;
       eachSystem = nixpkgs.lib.genAttrs (import systems);
@@ -94,6 +101,7 @@
         modules = systemBase.modules ++ [
           #({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-test ]; })
           nur.nixosModules.nur
+          nix-index-database.nixosModules.nix-index
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
@@ -105,11 +113,21 @@
           ./system/tower/configuration.nix 
         ];
       };
+      moralitycore = nixpkgs.lib.nixosSystem {
+        specialArgs = { inputs = self.inputs; };
+        modules = systemBase.modules ++ [
+          disko.nixosModules.disko
+          nur.nixosModules.nur
+          nix-index-database.nixosModules.nix-index
+          ./system/moralitycore/configuration.nix
+        ];
+      };
       cave = nixpkgs.lib.nixosSystem {
         specialArgs = { inputs = self.inputs; };
         modules = systemBase.modules ++ [
           #({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-test ]; })
           nur.nixosModules.nur
+          nix-index-database.nixosModules.nix-index
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
@@ -127,6 +145,7 @@
         modules = systemBase.modules ++ [
           #({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-test ]; })
           nur.nixosModules.nur
+          nix-index-database.nixosModules.nix-index
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
@@ -144,6 +163,7 @@
         specialArgs = { inputs = self.inputs; };
         modules = systemBase.modules ++ [
           nur.nixosModules.nur
+          nix-index-database.nixosModules.nix-index
           ./system/nonix/configuration.nix
         ];
       };
@@ -180,6 +200,7 @@
               services.yacy.enable = true;
             })
           ./system/tower/configuration.nix
+          nix-index-database.nixosModules.nix-index
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
@@ -203,6 +224,7 @@
           nur.nixosModules.nur
           nixos-hardware.nixosModules.lenovo-thinkpad-t470s
           ./system/cave_johnson/configuration.nix
+          nix-index-database.nixosModules.nix-index
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
@@ -225,6 +247,7 @@
           nur.nixosModules.nur
           #nixos-hardware.nixosModules.lenovo-thinkpad-t470s
           ./system/p_body/configuration.nix
+          nix-index-database.nixosModules.nix-index
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
@@ -248,6 +271,7 @@
         ];
         imports = systemBase.modules ++ [
           nur.nixosModules.nur
+          nix-index-database.nixosModules.nix-index
           ./system/nonix/configuration.nix
         ];
       };
@@ -263,8 +287,9 @@
           ];
         };
         imports = [
+          disko.nixosModules.disko
           nur.nixosModules.nur
-          lysand-ap-layer.nixosModules.default
+          nix-index-database.nixosModules.nix-index
           ./system/moralitycore/configuration.nix
         ];
       };
