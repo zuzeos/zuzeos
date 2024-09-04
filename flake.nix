@@ -122,6 +122,15 @@
           ./system/moralitycore/configuration.nix
         ];
       };
+      glados = nixpkgs.lib.nixosSystem {
+        specialArgs = { inputs = self.inputs; };
+        modules = systemBase.modules ++ [
+          disko.nixosModules.disko
+          nur.nixosModules.nur
+          nix-index-database.nixosModules.nix-index
+          ./system/glados/configuration.nix
+        ];
+      };
       cave = nixpkgs.lib.nixosSystem {
         specialArgs = { inputs = self.inputs; };
         modules = systemBase.modules ++ [
@@ -291,6 +300,23 @@
           nur.nixosModules.nur
           nix-index-database.nixosModules.nix-index
           ./system/moralitycore/configuration.nix
+        ];
+      };
+
+      glados = { name, nodes, pkgs, ... }: {
+        time.timeZone = "Europe/Berlin";
+        deployment = {
+          targetHost = "fedinet.org";
+          tags = [
+            "web"
+            "infra-mm"
+          ];
+        };
+        imports = [
+          disko.nixosModules.disko
+          nur.nixosModules.nur
+          nix-index-database.nixosModules.nix-index
+          ./system/glados/configuration.nix
         ];
       };
     };
