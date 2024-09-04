@@ -184,6 +184,7 @@ den0I53pA1L5bIb//uZ1LmACeiM+d/k4kJIvWJusONprzGWAPA==
       signal-desktop
       tree
       #ladybird
+      thunderbird
     ];
     shell = pkgs.zsh;
   };
@@ -217,6 +218,10 @@ den0I53pA1L5bIb//uZ1LmACeiM+d/k4kJIvWJusONprzGWAPA==
 
     config.nur.repos.aprilthepink.stellwerksim-launcher
     #config.nur.repos.aprilthepink.suyu-mainline
+
+    kubectl
+    kubernetes-helm
+
   ];
 
   programs.steam = {
