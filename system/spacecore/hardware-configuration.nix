@@ -12,12 +12,25 @@
 
   boot.zfs.devNodes = "/dev/disk/by-id";
 
+  #fileSystems."/" =
+  #  { device = "zroot/root/nixos";
+  #    fsType = "zfs";
+  #  };
+
+  #fileSystems."/boot" =
+  #  { device = "/dev/disk/by-uuid/383E-5B1C";
+  #    fsType = "vfat";
+  #    options = [ "fmask=0022" "dmask=0022" ];
+  #  };
+
   boot.loader.grub = {
-    # no need to set devices, disko will add all devices that have a EF02 partition to the list already
-    # devices = [ ];
+    # usually no need to set devices, disko will add all devices that have a EF02 partition to the list already
+    devices = [ "/dev/disk/by-uuid/383E-5B1C" ];
     efiSupport = true;
     efiInstallAsRemovable = true;
   };
+
+  networking.hostId = "2a7da1aa";
 
   services.openssh = {
     enable = true;
