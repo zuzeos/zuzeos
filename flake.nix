@@ -131,6 +131,15 @@
           ./system/glados/configuration.nix
         ];
       };
+      spacecore = nixpkgs.lib.nixosSystem {
+        specialArgs = { inputs = self.inputs; };
+        modules = systemBase.modules ++ [
+          disko.nixosModules.disko
+          nur.nixosModules.nur
+          nix-index-database.nixosModules.nix-index
+          ./system/spacecore/configuration.nix
+        ];
+      };
       cave = nixpkgs.lib.nixosSystem {
         specialArgs = { inputs = self.inputs; };
         modules = systemBase.modules ++ [
@@ -317,6 +326,24 @@
           nur.nixosModules.nur
           nix-index-database.nixosModules.nix-index
           ./system/glados/configuration.nix
+        ];
+      };
+
+      spacecore = { name, nodes, pkgs, ... }: {
+        time.timeZone = "Europe/Berlin";
+        deployment = {
+          buildOnTarget = true;
+          targetHost = "192.168.69.126"; # TODO
+          tags = [
+            "web"
+            "infra-local"
+          ];
+        };
+        imports = [
+          disko.nixosModules.disko
+          nur.nixosModules.nur
+          nix-index-database.nixosModules.nix-index
+          ./system/spacecore/configuration.nix
         ];
       };
     };

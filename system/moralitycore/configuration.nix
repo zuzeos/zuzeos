@@ -1,4 +1,4 @@
-{ lib, ... }: {
+{ lib, pkgs, config, ... }: {
   imports = [
     ./hardware-configuration.nix
     ../../baseconf.nix
@@ -25,6 +25,42 @@
 
   services.postgresql.enable = true;
 
+  services.prometheus.exporters.node = {
+    enable = true;
+    port = 9000;
+    # https://github.com/NixOS/nixpkgs/blob/nixos-24.05/nixos/modules/services/monitoring/prometheus/exporters.nix
+    enabledCollectors = [ "systemd" ];
+    # /nix/store/zgsw0yx18v10xa58psanfabmg95nl2bb-node_exporter-1.8.1/bin/node_exporter  --help
+    extraFlags = [ "--collector.ethtool" "--collector.softirqs" "--collector.tcpstat" "--collector.wifi" ];
+  };
+
+  services.prometheus = {
+    enable = true;
+    globalConfig.scrape_interval = "10s"; # "1m"
+    scrapeConfigs = [
+    {
+      job_name = "node";
+      static_configs = [{
+        targets = [ "localhost:${toString config.services.prometheus.exporters.node.port}" ];
+      }];
+    }
+    ];
+  };
+
+  services.grafana = {
+    enable = true;
+    settings = {
+      server = {
+        # Listening Address
+        http_addr = "127.0.0.1";
+        # and Port
+        http_port = 3000;
+        # Grafana needs to know on which domain and URL it's running
+        domain = "dash.fedinet.org";
+      };
+    };
+  };
+
   security.acme = {
     acceptTerms = true;
     defaults.email = "aprl@acab.dev";
@@ -32,7 +68,20 @@
 
   services.mattermost = {
     enable = true;
-    siteUrl = "https://mm.versia.pub";
+    siteUrl = "https://fedinet.org";
+    mutableConfig = true;
+    plugins = [
+      ./reactions.tar.gz
+    ];
+  };
+
+  systemd.services.pocketbase = {
+    script = "${pkgs.pocketbase}/bin/pocketbase serve --encryptionEnv=PB_ENCRYPTION_KEY --dir /var/pb_data";
+    serviceConfig = {
+      LimitNOFILE = 4096;
+      EnvironmentFile = ["/var/pbsecret"];
+    };
+    wantedBy = [ "multi-user.target" ];
   };
 
   services.nginx = {
@@ -41,11 +90,27 @@
     recommendedTlsSettings = true;    
     virtualHosts = {
       # Replace with the domain from your siteUrl
-      "mm.versia.pub" = {
+      "fedinet.org" = {
         forceSSL = true; # Enforce SSL for the site
         enableACME = true; # Enable SSL for the site
         locations."/" = {
           proxyPass = "http://127.0.0.1:8065"; # Route to Mattermost
+          proxyWebsockets = true;
+        };
+      };
+      "dash.fedinet.org" = {
+        forceSSL = true;
+        enableACME = true;
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:3000";
+          proxyWebsockets = true;
+        };
+      };
+      "waschkatzen.de" = {
+        forceSSL = true;
+        enableACME = true;
+        locations."/" = {
+          proxyPass = "http://127.0.0.1:8090";
           proxyWebsockets = true;
         };
       };
