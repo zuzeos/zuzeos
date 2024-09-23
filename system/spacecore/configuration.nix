@@ -68,6 +68,6 @@ in
     curl
    ];
 
-   
+   system.stateVersion = "24.11";
 
 }
