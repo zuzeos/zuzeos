@@ -25,7 +25,7 @@
 
   boot.loader.grub = {
     # usually no need to set devices, disko will add all devices that have a EF02 partition to the list already
-    devices = [ "/dev/disk/by-uuid/383E-5B1C" ];
+    # devices = [ "/dev/disk/by-uuid/383E-5B1C" ];
     efiSupport = true;
     efiInstallAsRemovable = true;
   };
