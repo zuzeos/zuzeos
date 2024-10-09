@@ -222,6 +222,8 @@ den0I53pA1L5bIb//uZ1LmACeiM+d/k4kJIvWJusONprzGWAPA==
     kubectl
     kubernetes-helm
 
+    zoom-us
+
   ];
 
   programs.steam = {
