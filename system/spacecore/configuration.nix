@@ -18,6 +18,7 @@ in
     ./hardware-configuration.nix
     ../../baseconf.nix
     ./disk-config.nix
+    ../../modules/gaming/satisfactory.nix
   ];
 
   boot.tmp.cleanOnBoot = true;
@@ -175,6 +176,12 @@ in
       MusicFolder = "/mnt/music";
       Address = "0.0.0.0";
     };
+  };
+
+  services.satisfactory = {
+    enable = true;
+    beta = "public";
+    maxPlayers = 8;
   };
 
    system.stateVersion = "24.11";
