@@ -143,7 +143,7 @@ in
       # Refrence: https://doc.powerdns.com/authoritative/settings.html
       # Dump all opitons (including default values): pdns_control current-config
 
-      local-address = 2a02:3102:c390:bc::1010, 192.168.69.126
+      local-address = ::1, 192.168.69.126
       version-string = sf-aprlI
       loglevel-show = yes
       #loglevel = 7
