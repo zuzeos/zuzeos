@@ -29,14 +29,18 @@
     platform = "ipu6ep";
   };
 
+  nixpkgs.config.permittedInsecurePackages = [
+    "olm-3.2.16"
+  ];
+
   networking.hosts = {
-    #"185.97.174.196" = ["smtp.mailbox.org"];
-    #"185.97.174.199" = ["imap.mailbox.org"];
-    #"80.241.60.197" = ["office.mailbox.org"];
-    #"185.97.174.194" = ["mailbox.org"];
-    #"80.241.60.221" = ["login.mailbox.org"];
-    #"80.241.60.198" = ["dav.mailbox.org"];
-    #"80.241.60.226" = ["manage.mailbox.org"];
+    "185.97.174.196" = ["smtp.mailbox.org"];
+    "185.97.174.199" = ["imap.mailbox.org"];
+    "80.241.60.197" = ["office.mailbox.org"];
+    "185.97.174.194" = ["mailbox.org"];
+    "80.241.60.221" = ["login.mailbox.org"];
+    "80.241.60.198" = ["dav.mailbox.org"];
+    "80.241.60.226" = ["manage.mailbox.org"];
   };
 
   programs.ssh.startAgent = false;
@@ -179,7 +183,15 @@
     mesa-demos
 
     skypeforlinux
-    zoom-us
+    (zoom-us.overrideAttrs (attrs: {
+      nativeBuildInputs = (attrs.nativeBuildInputs or []) ++ [ pkgs.bbe ];
+      postFixup = ''
+        cp $out/opt/zoom/zoom .
+        bbe -e 's/\0manjaro\0/\0nixos\0\0\0/' < zoom > $out/opt/zoom/zoom
+      '' + (attrs.postFixup or "") + ''
+        sed -i 's|Exec=|Exec=env XDG_CURRENT_DESKTOP="gnome" |' $out/share/applications/Zoom.desktop
+      '';
+    }))
 
     yubikey-personalization
 
@@ -194,6 +206,8 @@
     krew
     kubelogin-oidc
     kubernetes-helm
+
+    jetbrains.rust-rover
   ];
   services.flatpak.enable = true;
   hardware.opengl.enable = true;
