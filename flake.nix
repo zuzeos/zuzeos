@@ -96,6 +96,34 @@
         ];
         specialArgs = { inputs = self.inputs; };
       };
+      falkdn42 = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          ./system/falkdn42/configuration.nix
+          disko.nixosModules.disko
+        ];
+      };
+      heldn42 = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          ./system/heldn42/configuration.nix
+          disko.nixosModules.disko
+        ];
+      };
+      singdn42 = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          ./system/singdn42/configuration.nix
+          disko.nixosModules.disko
+        ];
+      };
+      ashdn42 = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          ./system/ashdn42/configuration.nix
+          disko.nixosModules.disko
+        ];
+      };
       tower = nixpkgs.lib.nixosSystem {
         specialArgs = { inputs = self.inputs; };
         modules = systemBase.modules ++ [
@@ -291,6 +319,78 @@
           nur.nixosModules.nur
           nix-index-database.nixosModules.nix-index
           ./system/nonix/configuration.nix
+        ];
+      };
+
+      ashdn42 = { name, nodes, pkgs, ... }: {
+        time.timeZone = "America/New_York";
+        deployment = {
+          buildOnTarget = true;
+          targetHost = "5.161.236.38";
+          targetPort = 22;
+        };
+        deployment.tags = [
+          "dn42de"
+        ];
+        imports = [
+          nur.nixosModules.nur
+          disko.nixosModules.disko
+          nix-index-database.nixosModules.nix-index
+          ./system/ashdn42/configuration.nix
+        ];
+      };
+
+      singdn42 = { name, nodes, pkgs, ... }: {
+        time.timeZone = "Asia/Singapore";
+        deployment = {
+          buildOnTarget = true;
+          targetHost = "5.223.43.218";
+          targetPort = 22;
+        };
+        deployment.tags = [
+          "dn42de"
+        ];
+        imports = [
+          nur.nixosModules.nur
+          disko.nixosModules.disko
+          nix-index-database.nixosModules.nix-index
+          ./system/singdn42/configuration.nix
+        ];
+      };
+
+      heldn42 = { name, nodes, pkgs, ... }: {
+        time.timeZone = "Europe/Berlin";
+        deployment = {
+          buildOnTarget = true;
+          targetHost = "37.27.9.168";
+          targetPort = 22;
+        };
+        deployment.tags = [
+          "dn42de"
+        ];
+        imports = [
+          nur.nixosModules.nur
+          disko.nixosModules.disko
+          nix-index-database.nixosModules.nix-index
+          ./system/heldn42/configuration.nix
+        ];
+      };
+
+      falkdn42 = { name, nodes, pkgs, ... }: {
+        time.timeZone = "Europe/Berlin";
+        deployment = {
+          buildOnTarget = true;
+          targetHost = "188.245.199.114";
+          targetPort = 22;
+        };
+        deployment.tags = [
+          "dn42de"
+        ];
+        imports = [
+          nur.nixosModules.nur
+          disko.nixosModules.disko
+          nix-index-database.nixosModules.nix-index
+          ./system/falkdn42/configuration.nix
         ];
       };
 
