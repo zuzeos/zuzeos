@@ -7,9 +7,10 @@
 {
   imports =
     [ # Include the results of the hardware scan.
+      ../../common
       ./hardware-configuration.nix
       ../../baseconf.nix
-      ../../gnome.nix
+      ../../profiles/graphical/gnome.nix
       #../../modules/home-assistant.nix
       ../../modules/distributed.nix
       ../../modules/garlic.nix
@@ -210,9 +211,11 @@
     jetbrains.rust-rover
   ];
   services.flatpak.enable = true;
-  hardware.opengl.enable = true;
-  hardware.opengl.extraPackages = [ pkgs.mesa.drivers ];
-  hardware.opengl.driSupport32Bit = true;
+  hardware.graphics = {
+    enable = true;
+    extraPackages = [ pkgs.mesa.drivers ];
+    enable32Bit = true;
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -258,6 +261,6 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "23.11"; # Did you read the comment?
+  system.stateVersion = lib.mkForce "23.11"; # Did you read the comment?
 
 }

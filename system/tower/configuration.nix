@@ -7,9 +7,10 @@
 {
   imports =
     [ # Include the results of the hardware scan.
+      ../../common
       ./hardware-configuration.nix
       ../../baseconf.nix
-      ../../gnome.nix
+      ../../profiles/graphical/gnome.nix
       #../../modules/home-assistant.nix
       ../../modules/distributed.nix
       ../../modules/garlic.nix
@@ -23,7 +24,6 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   boot.kernelPackages = pkgs.linuxKernel.packages.linux_xanmod_stable;
-  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable;
 
   networking.hostName = "tower"; # Define your hostname.
   # Pick only one of the below networking options.
@@ -55,10 +55,6 @@
   networking.firewall = {
     allowedUDPPorts = [ 51820 51821 ];
   };
-
-  nixpkgs.config.permittedInsecurePackages = [
-    "electron"
-  ];
 
   security.pki.certificates = [ 
     ''
@@ -238,12 +234,10 @@ den0I53pA1L5bIb//uZ1LmACeiM+d/k4kJIvWJusONprzGWAPA==
   hardware.steam-hardware.enable = true;
   services.flatpak.enable = true;
 
-  hardware.nvidia.modesetting.enable = true;
   services.xserver.videoDrivers = [
     "amdgpu-pro"
     "modesetting"
     "fbdev"
-    "nvidia" 
   ];
   hardware.graphics = {
     enable = true;

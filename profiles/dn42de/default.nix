@@ -2,6 +2,7 @@
 {
   imports = [
     ./bird-general.nix
+    ./disko-config.nix
   ];
   environment.systemPackages = with pkgs; [ 
     # Network debug tools

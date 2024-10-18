@@ -32,6 +32,7 @@ let
 in
 {
   imports = [
+    ../../common
     ./hardware-configuration.nix
     ../../baseconf.nix
     ../../disk-config.nix
@@ -243,7 +244,7 @@ in
     requires = [ "postgresql.service" ];
     after = [ "postgresql.service" ];
     environment = {
-      LEMMY_DATABASE_URL = lib.mkForce "postgresql://lemmy@127.0.0.1:${toString config.services.postgresql.port}/lemmy";
+      LEMMY_DATABASE_URL = lib.mkForce "postgresql://lemmy@127.0.0.1:${toString config.services.postgresql.settings.port}/lemmy";
     };
   };
 
@@ -300,5 +301,5 @@ in
     443
   ];
 
-  system.stateVersion = "23.11";
+  system.stateVersion = lib.mkForce "23.11";
 }
