@@ -32,6 +32,7 @@ let
 in
 {
   imports = [
+    ../../common
     ./hardware-configuration.nix
     ../../baseconf.nix
     ../../disk-config.nix
@@ -300,5 +301,5 @@ in
     443
   ];
 
-  system.stateVersion = "23.11";
+  system.stateVersion = lib.mkForce "23.11";
 }
