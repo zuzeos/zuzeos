@@ -22,16 +22,24 @@
       substituters = [
         /*"https://attic.fediverse.gay/prod"*/
         "https://cache.nixos.org"
+        "https://cache.kyouma.net"
       ];
       trusted-public-keys = [
         "prod:UfOz2hPzocabclOzD2QWzsagOkX3pHSBZw8/tUEO9/g="
+        "cache.kyouma.net:Frjwu4q1rnwE/MnSTmX9yx86GNA/z3p/oElGvucLiZg="
       ];
     };
     distributedBuilds = true;
   };
 
   # allow non FOSS pkgs
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config = {
+    allowUnfree = true;
+    permittedInsecurePackages = [
+      "olm-3.2.16"
+      "jitsi-meet-1.0.8043"
+    ];
+  };
 
   boot = {
     # clean tmp directory on boot

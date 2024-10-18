@@ -243,7 +243,7 @@ in
     requires = [ "postgresql.service" ];
     after = [ "postgresql.service" ];
     environment = {
-      LEMMY_DATABASE_URL = lib.mkForce "postgresql://lemmy@127.0.0.1:${toString config.services.postgresql.port}/lemmy";
+      LEMMY_DATABASE_URL = lib.mkForce "postgresql://lemmy@127.0.0.1:${toString config.services.postgresql.settings.port}/lemmy";
     };
   };
 

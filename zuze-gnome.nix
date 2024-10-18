@@ -11,6 +11,11 @@
     QT_QPA_PLATFORM = "$([[ $XDG_SESSION_TYPE = \"wayland\" ]] && echo \"wayland\")";
   };
 
+  services.displayManager.autoLogin = {
+    enable = true;
+    user = "zuze";
+  };
+
   services.xserver = {
     desktopManager.gnome = {
       enable = true;
@@ -31,7 +36,7 @@
       '';
 
       extraGSettingsOverridePackages = [
-        pkgs.gnome.gnome-settings-daemon
+        pkgs.gnome-settings-daemon
       ];
     };
 
@@ -39,10 +44,6 @@
       gdm = {
         enable = true;
         autoSuspend = false;
-      };
-      autoLogin = {
-        enable = true;
-        user = "zuze";
       };
     };
   };

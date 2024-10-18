@@ -49,9 +49,11 @@
       substituters = [
         /*"https://attic.fediverse.gay/prod"*/
         "https://cache.nixos.org"
+        "https://cache.kyouma.net"
       ];
       trusted-public-keys = [
         "prod:UfOz2hPzocabclOzD2QWzsagOkX3pHSBZw8/tUEO9/g="
+        "cache.kyouma.net:Frjwu4q1rnwE/MnSTmX9yx86GNA/z3p/oElGvucLiZg="
       ];
     };
     distributedBuilds = true;
