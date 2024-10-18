@@ -7,6 +7,7 @@
 {
   imports =
     [ # Include the results of the hardware scan.
+      ../../common
       ./hardware-configuration.nix
       ../../baseconf.nix
     ];
@@ -220,7 +221,7 @@
   # and migrated your data accordingly.
   #
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
-  system.stateVersion = "23.11"; # Did you read the comment?
+  system.stateVersion = lib.mkForce "23.11"; # Did you read the comment?
 
 }
 
