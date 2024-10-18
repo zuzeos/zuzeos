@@ -7,9 +7,10 @@
 {
   imports =
     [ # Include the results of the hardware scan.
+      ../../common
       ./hardware-configuration.nix
       ../../baseconf.nix
-      ../../gnome.nix
+      ../../profiles/graphical/gnome.nix
       #../../modules/home-assistant.nix
       ../../modules/distributed.nix
       ../../modules/garlic.nix
@@ -54,10 +55,6 @@
   networking.firewall = {
     allowedUDPPorts = [ 51820 51821 ];
   };
-
-  nixpkgs.config.permittedInsecurePackages = [
-    "electron"
-  ];
 
   security.pki.certificates = [ 
     ''

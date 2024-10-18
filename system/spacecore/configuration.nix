@@ -15,6 +15,7 @@ let
 in
 {
   imports = [
+    ../../common
     ./hardware-configuration.nix
     ../../baseconf.nix
     ./disk-config.nix
@@ -184,6 +185,6 @@ in
     maxPlayers = 8;
   };
 
-   system.stateVersion = "24.11";
+   system.stateVersion = lib.mkForce "24.11";
 
 }

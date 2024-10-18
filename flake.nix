@@ -56,16 +56,19 @@
     packages = {
       x86_64-linux.default = self.nixosConfigurations.gnomeIso.config.system.build.isoImage;
       x86_64-linux.vm = self.nixosConfigurations.gnomeIso.config.system.build.vm;
+      aarch64-linux.default = self.nixosConfigurations.gnomeIso.config.system.build.isoImage;
+      aarch64-linux.vm = self.nixosConfigurations.gnomeIso.config.system.build.vm;
     };
 
-    hydraJobs =
-      lib.mapAttrs (_: nixpkgs.lib.hydraJob) (let
+    hydraJobs = { 
+      inherit (self) packages;
+      nixosConfigurations = let
         getBuildEntryPoint = name: nixosSystem:
           if (lib.hasPrefix "iso" name) then
             nixosSystem.config.system.build.isoImage
           else
             nixosSystem.config.system.build.toplevel;
-      in
+      in (
         lib.mapAttrs getBuildEntryPoint self.nixosConfigurations
           # NOTE: left here to have the code as reference if we need something like in the future, eg. on a stable update
           # // lib.mapAttrs' (hostname: nixosSystem: let
@@ -81,14 +84,15 @@
           #     nixos = inputs.nixos-23-05;
           #   }))))
           # ) self.nixosConfigurations
-      );
+        );
+    };
     
     nixosConfigurations = {
       gnomeIso = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = systemBase.modules ++ [
           #"${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical-calamares.nix"
-          ./zuze-gnome.nix
+          ./system/_zuze-gnome/default.nix
         ];
         specialArgs = { inherit inputs; };
       };
