@@ -210,9 +210,11 @@
     jetbrains.rust-rover
   ];
   services.flatpak.enable = true;
-  hardware.opengl.enable = true;
-  hardware.opengl.extraPackages = [ pkgs.mesa.drivers ];
-  hardware.opengl.driSupport32Bit = true;
+  hardware.graphics = {
+    enable = true;
+    extraPackages = [ pkgs.mesa.drivers ];
+    enable32Bit = true;
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

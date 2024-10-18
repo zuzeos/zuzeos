@@ -30,47 +30,43 @@
   };
 
   nixConfig = {
-    #extra-substituters = [
+    extra-substituters = [
     #  "https://attic.fediverse.gay/prod"
-    #];
+      "https://cache.kyouma.net"
+    ];
     extra-trusted-public-keys = [
-      "prod:UfOz2hPzocabclOzD2QWzsagOkX3pHSBZw8/tUEO9/g="
+    #  "prod:UfOz2hPzocabclOzD2QWzsagOkX3pHSBZw8/tUEO9/g="
+      "cache.kyouma.net:Frjwu4q1rnwE/MnSTmX9yx86GNA/z3p/oElGvucLiZg="
     ];
   };
-  outputs = { self, nixpkgs, nixpkgs-test, home-manager, systems, lix-module, nur, nixos-hardware, disko, nix-index-database, jeezyvim, ... }:
-    let
-      inherit (nixpkgs) lib;
-      eachSystem = nixpkgs.lib.genAttrs (import systems);
-      systemBase = {
-        modules = [
-          # our base nix configs
-          ./baseconf.nix
-          lix-module.nixosModules.default
-        ];
-      };
-      overlay-test = final: prev: {
-        test = nixpkgs-test.legacyPackages.${prev.system};
-      };
-    in
-  {
+  outputs = { self, nixpkgs, nixpkgs-test, home-manager, systems, lix-module, nur, nixos-hardware, disko, nix-index-database, ... }@inputs: let
+    inherit (nixpkgs) lib;
+    eachSystem = lib.genAttrs (import systems);
+    systemBase = {
+      modules = [
+        # our base nix configs
+        ./baseconf.nix
+        lix-module.nixosModules.default
+      ];
+    };
+    overlay-test = final: prev: {
+      test = nixpkgs-test.legacyPackages.${prev.system};
+    };
+  in {
     packages = {
-      default = self.nixosConfigurations.gnomeIso.config.system.build.isoImage;
-      vm = self.nixosConfigurations.gnomeIso.config.system.build.vm;
+      x86_64-linux.default = self.nixosConfigurations.gnomeIso.config.system.build.isoImage;
+      x86_64-linux.vm = self.nixosConfigurations.gnomeIso.config.system.build.vm;
     };
 
-          hydraJobs =
-        lib.mapAttrs (_: nixpkgs.lib.hydraJob) (
-          let
-            getBuildEntryPoint = name: nixosSystem:
-              let
-                cfg = if (lib.hasPrefix "iso" name) then
-                  nixosSystem.config.system.build.isoImage
-                else
-                  nixosSystem.config.system.build.toplevel;
-              in
-              cfg;
-          in
-          lib.mapAttrs getBuildEntryPoint self.nixosConfigurations
+    hydraJobs =
+      lib.mapAttrs (_: nixpkgs.lib.hydraJob) (let
+        getBuildEntryPoint = name: nixosSystem:
+          if (lib.hasPrefix "iso" name) then
+            nixosSystem.config.system.build.isoImage
+          else
+            nixosSystem.config.system.build.toplevel;
+      in
+        lib.mapAttrs getBuildEntryPoint self.nixosConfigurations
           # NOTE: left here to have the code as reference if we need something like in the future, eg. on a stable update
           # // lib.mapAttrs' (hostname: nixosSystem: let
           #   hostname' = hostname + "-23-05";
@@ -85,7 +81,7 @@
           #     nixos = inputs.nixos-23-05;
           #   }))))
           # ) self.nixosConfigurations
-        );
+      );
     
     nixosConfigurations = {
       gnomeIso = nixpkgs.lib.nixosSystem {
@@ -94,7 +90,7 @@
           #"${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical-calamares.nix"
           ./zuze-gnome.nix
         ];
-        specialArgs = { inputs = self.inputs; };
+        specialArgs = { inherit inputs; };
       };
       falkdn42 = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
@@ -125,7 +121,7 @@
         ];
       };
       tower = nixpkgs.lib.nixosSystem {
-        specialArgs = { inputs = self.inputs; };
+        specialArgs = { inherit inputs; };
         modules = systemBase.modules ++ [
           #({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-test ]; })
           nur.nixosModules.nur
@@ -142,7 +138,7 @@
         ];
       };
       moralitycore = nixpkgs.lib.nixosSystem {
-        specialArgs = { inputs = self.inputs; };
+        specialArgs = { inherit inputs; };
         modules = systemBase.modules ++ [
           disko.nixosModules.disko
           nur.nixosModules.nur
@@ -151,7 +147,7 @@
         ];
       };
       glados = nixpkgs.lib.nixosSystem {
-        specialArgs = { inputs = self.inputs; };
+        specialArgs = { inherit inputs; };
         modules = systemBase.modules ++ [
           disko.nixosModules.disko
           nur.nixosModules.nur
@@ -160,7 +156,7 @@
         ];
       };
       spacecore = nixpkgs.lib.nixosSystem {
-        specialArgs = { inputs = self.inputs; };
+        specialArgs = { inherit inputs; };
         modules = systemBase.modules ++ [
           disko.nixosModules.disko
           nur.nixosModules.nur
@@ -169,7 +165,7 @@
         ];
       };
       cave = nixpkgs.lib.nixosSystem {
-        specialArgs = { inputs = self.inputs; };
+        specialArgs = { inherit inputs; };
         modules = systemBase.modules ++ [
           #({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-test ]; })
           nur.nixosModules.nur
@@ -187,7 +183,7 @@
         ];
       };
       ajx2407 = nixpkgs.lib.nixosSystem {
-        specialArgs = { inputs = self.inputs; };
+        specialArgs = { inherit inputs; };
         modules = systemBase.modules ++ [
           #({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-test ]; })
           nur.nixosModules.nur
@@ -206,7 +202,7 @@
       };
       
       nonix = nixpkgs.lib.nixosSystem {
-        specialArgs = { inputs = self.inputs; };
+        specialArgs = { inherit inputs; };
         modules = systemBase.modules ++ [
           nur.nixosModules.nur
           nix-index-database.nixosModules.nix-index
@@ -222,7 +218,7 @@
           overlays = [];
         };
         specialArgs = {
-          inputs = self.inputs;
+          inherit inputs;
         };
       };
 
