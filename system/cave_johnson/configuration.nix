@@ -1,27 +1,21 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
-  { config, pkgs, lib, ... }:
-
-{
+{ config, inputs, lib, pkgs, ... }: {
   imports =
     [ # Include the results of the hardware scan.
       ../../common
+      ../../profiles/graphical
+      ../../profiles/physical
+      ../../profiles/systemd-boot
       ./hardware-configuration.nix
-      ../../baseconf.nix
-      ../../profiles/graphical/gnome.nix
       #../../modules/home-assistant.nix
       ../../modules/distributed.nix
       ../../modules/garlic.nix
       ../../modules/onion.nix
       ../../modules/spotify.nix
       ../../modules/gaming.nix
+      inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t470s
     ];
 
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
   programs.gnupg.agent.pinentryPackage = pkgs.pinentry-gnome3;
   services.udev.packages = [ pkgs.yubikey-personalization ];
 

@@ -8,9 +8,10 @@
   imports =
     [ # Include the results of the hardware scan.
       ../../common
+      ../../profiles/graphical
+      ../../profiles/physical
+      ../../profiles/systemd-boot
       ./hardware-configuration.nix
-      ../../baseconf.nix
-      ../../profiles/graphical/gnome.nix
       #../../modules/home-assistant.nix
       ../../modules/distributed.nix
       ../../modules/garlic.nix
@@ -20,8 +21,6 @@
     ];
 
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
   programs.gnupg.agent.pinentryPackage = pkgs.pinentry-gnome3;
   services.udev.packages = [ pkgs.yubikey-personalization ];
 

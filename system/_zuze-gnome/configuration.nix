@@ -5,6 +5,8 @@
 
   isoImage.isoName = lib.mkForce "Zuse23.11.1-${config.isoImage.isoBaseName}-${pkgs.stdenv.hostPlatform.system}.iso";
 
+  networking.hostName = "zuzeos";
+
   services.displayManager.autoLogin.user = lib.mkForce "zuze";
   services.getty.autologinUser = lib.mkForce "zuze";
 

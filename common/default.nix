@@ -1,8 +1,12 @@
-{ pkgs, ... }: {
+{ inputs, pkgs, ... }: {
 
   imports = [
-    ./users
     ./codename.nix
+    ./networking.nix
+    ./users
+    inputs.lix-module.nixosModules.default
+    inputs.nur.nixosModules.nur
+    inputs.nix-index-database.nixosModules.nix-index
   ];
 
   nix = {
@@ -57,7 +61,31 @@
     '';
   };
 
-    environment.systemPackages = with pkgs; [
+  environment.sessionVariables = {
+    EDITOR = "${pkgs.nano}/bin/nano";
+  };
+
+  environment.systemPackages = with pkgs; let
+    # Distro specific rice
+    zuzeRicePkgs = [
+      hyfetch           # superior queer fetch script
+      zsh-you-should-use
+      any-nix-shell
+      zsh-history
+      zsh-vi-mode
+      oh-my-zsh
+      oh-my-fish
+    ];
+    # Programming languages
+    progPkgs = [
+      #pypy3
+      python3              # Python 3
+      lua5_4_compat              # Lua 5.4
+      lua54Packages.luarocks-nix # Lua package manager
+      kotlin                     # Kotlin dev env
+      openjdk17-bootstrap        # Java 17
+    ];
+  in progPkgs ++ zuzeRicePkgs ++ [
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
 
@@ -118,6 +146,8 @@
     fish.enable = true;
   };
 
+  security.rtkit.enable = true;
+
   services.earlyoom = {
     enable = true;
     freeMemThreshold = 5; # <5% free
@@ -125,5 +155,7 @@
 
   services.journald.extraConfig = "SystemMaxUse=500M";
 
+  system.nixos.tags = [ "ZuzeOS-alpha" ];
+  system.nixos.distroName = "ZuzeOS";
   system.stateVersion = "24.05";
 }
