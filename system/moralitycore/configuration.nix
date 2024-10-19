@@ -33,12 +33,11 @@ in
 {
   imports = [
     ../../common
+    ../../profiles/headless
+    ../../profiles/default-disko-config
     ./hardware-configuration.nix
-    ../../baseconf.nix
-    ../../disk-config.nix
   ];
 
-  boot.tmp.cleanOnBoot = true;
   zramSwap.enable = true;
   networking.hostName = "moralitycore";
   networking.domain = "";

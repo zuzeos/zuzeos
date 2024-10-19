@@ -8,8 +8,8 @@
   imports =
     [ # Include the results of the hardware scan.
       ../../common
+      ../../profiles/headless
       ./hardware-configuration.nix
-      ../../baseconf.nix
     ];
 
   # Use the GRUB 2 boot loader.

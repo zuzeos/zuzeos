@@ -1,28 +1,30 @@
-# Edit this configuration file to define what should be installed on
-# your system. Help is available in the configuration.nix(5) man page, on
-# https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
+{ config, lib, pkgs, inputs, ... }: let
+  nur-no-pkgs = import inputs.nur {
+     nurpkgs = import inputs.nixpkgs { system = "x86_64-linux"; };
+  };
+in {
+  imports = [
+    # Include the results of the hardware scan.
+    nur-no-pkgs.repos.spitzeqc.modules.yacy
+    ../../common
+    ../../profiles/graphical
+    ../../profiles/physical
+    ../../profiles/systemd-boot
+    ./hardware-configuration.nix
+    # ../../modules/home-assistant.nix
+    ../../modules/distributed.nix
+    ../../modules/garlic.nix
+    ../../modules/onion.nix
+    ../../modules/spotify.nix
+    ../../modules/gaming.nix
+  ];
 
-{ config, lib, pkgs, inputs, ... }:
+  services.yacy = {
+    enable = true;
+    package = pkgs.nur.repos.spitzeqc.yacy;
+  };
 
-{
-  imports =
-    [ # Include the results of the hardware scan.
-      ../../common
-      ./hardware-configuration.nix
-      ../../baseconf.nix
-      ../../profiles/graphical/gnome.nix
-      #../../modules/home-assistant.nix
-      ../../modules/distributed.nix
-      ../../modules/garlic.nix
-      ../../modules/onion.nix
-      ../../modules/spotify.nix
-      ../../modules/gaming.nix
-    ];
-
-  # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
+  nixpkgs.overlays = [ inputs.nur.overlay ];
   boot.kernelPackages = pkgs.linuxKernel.packages.linux_xanmod_stable;
 
   networking.hostName = "tower"; # Define your hostname.

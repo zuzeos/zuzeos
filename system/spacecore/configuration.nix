@@ -16,17 +16,16 @@ in
 {
   imports = [
     ../../common
+    ../../profiles/physical
+    ../../profiles/headless
     ./hardware-configuration.nix
-    ../../baseconf.nix
     ./disk-config.nix
     ../../modules/gaming/satisfactory.nix
   ];
 
-  boot.tmp.cleanOnBoot = true;
   zramSwap.enable = true;
   networking.hostName = "spacecore";
   networking.domain = "";
-  services.openssh.enable = true;
   users.users.root.openssh.authorizedKeys.keys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJPKL1+FX6pt3EasE9ZIb9Qg+LvFVagAVi2Uy9X2E90n aprl@acab.dev"
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMxsX+lEWkHZt9NOvn9yYFP0Z++186LY4b97C4mwj/f2"
@@ -42,6 +41,7 @@ in
     defaults.email = "aprl@acab.dev";
   };
 
+  programs.zsh.enable = true;
   users.users.aprl = {
     isNormalUser = true;
     extraGroups = [ "wheel" "pipewire" "media" ]; # Enable ‘sudo’ for the user.

@@ -2,10 +2,8 @@
   imports = [
     ../../common
     ../../profiles/headless
-    ../../profiles/systemd-boot
+    ../../profiles/default-disko-config
     ./hardware-configuration.nix
-    ../../baseconf.nix
-    ../../disk-config.nix
   ];
 
   zramSwap.enable = true;
