@@ -1,4 +1,7 @@
 { pkgs, ... }: {
+
+  programs.gnupg.agent.pinentryPackage = pkgs.pinentry-gnome3;
+
   services = {
     udev.packages = with pkgs; [ gnome-settings-daemon ];
     xserver = {

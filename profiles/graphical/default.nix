@@ -5,6 +5,22 @@
     ./spotify.nix
     ./gaming
   ];
+
+  users.users.aprl = {
+    extraGroups = [ "wheel" "pipewire" "media" "networkmanager" ]; # Enable ‘sudo’ for the user.
+    packages = with pkgs; [
+      firefox
+      librewolf
+      ungoogled-chromium
+      webcord
+      signal-desktop
+      tree
+      #ladybird
+      thunderbird
+    ];
+    shell = pkgs.zsh;
+  };
+
   home-manager.users.aprl = {
     xdg.desktopEntries = {
       i2p-browser = {
@@ -26,6 +42,10 @@
       htop              # system monitor
       vscode            # graphical text editor
       libreoffice-fresh # fresh and spicy office tools
+      prismlauncher
+      nheko
+      waydroid
+      lutris
     ];
     # media apps
     mediaPkgs = [
@@ -34,6 +54,7 @@
       firefox    # internet explorer
       system-config-printer # printer stuff
       communi
+      inkscape
     ];
     # FOSS based chat apps
     libreChatPkgs = [
@@ -45,8 +66,24 @@
     unfreeChatPkgs = [
       telegram-desktop # most popular instant-messenger in the IT world
       discord          # IRC-like proprietary chat service
+      skypeforlinux
+      (zoom-us.overrideAttrs (attrs: {
+        nativeBuildInputs = (attrs.nativeBuildInputs or []) ++ [ pkgs.bbe ];
+        postFixup = ''
+          cp $out/opt/zoom/zoom .
+          bbe -e 's/\0manjaro\0/\0nixos\0\0\0/' < zoom > $out/opt/zoom/zoom
+        '' + (attrs.postFixup or "") + ''
+          sed -i 's|Exec=|Exec=env XDG_CURRENT_DESKTOP="gnome" |' $out/share/applications/Zoom.desktop
+        '';
+      }))
     ];
-  in guiPkgs ++ mediaPkgs ++ libreChatPkgs ++ unfreeChatPkgs;
+  in guiPkgs ++ mediaPkgs ++ libreChatPkgs ++ unfreeChatPkgs ++ [
+    qemu
+    bottles
+    rustup
+    mesa-demos
+    yubikey-personalization
+  ];
 
   fonts.packages = with pkgs; [
     dejavu_fonts open-sans
@@ -72,16 +109,33 @@
     };
   };
 
+  i18n.defaultLocale = "en_US.UTF-8";
+
+  i18n.extraLocaleSettings = {
+    LC_ADDRESS = "de_DE.UTF-8";
+    LC_IDENTIFICATION = "de_DE.UTF-8";
+    LC_MEASUREMENT = "de_DE.UTF-8";
+    LC_MONETARY = "de_DE.UTF-8";
+    LC_NAME = "de_DE.UTF-8";
+    LC_NUMERIC = "de_DE.UTF-8";
+    LC_PAPER = "de_DE.UTF-8";
+    LC_TELEPHONE = "de_DE.UTF-8";
+    LC_TIME = "de_DE.UTF-8";
+  };
+
+
   programs = {
     zsh.enable = true;
     direnv.enable = true;
-    mtr.enable = true;
     gnupg.agent = {
       enable = true;
       enableSSHSupport = true;
     };
   };
+  
+  virtualisation.waydroid.enable = true;
 
+  services.flatpak.enable = true;
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -112,4 +166,10 @@
     ];
   };
   hardware.pulseaudio.enable = false;
+
+  hardware.graphics = {
+    enable = true;
+    extraPackages = [ pkgs.mesa.drivers ];
+    enable32Bit = true;
+  };
 }

@@ -13,7 +13,6 @@
       "infra-mm"
     ];
   };
-  zramSwap.enable = true;
   networking.hostName = "glados";
   networking.domain = "";
 
