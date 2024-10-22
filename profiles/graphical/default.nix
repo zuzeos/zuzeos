@@ -1,6 +1,9 @@
 { pkgs, ... }: {
   imports = [
     ./gnome.nix
+    ./onion.nix
+    ./spotify.nix
+    ./gaming
   ];
   home-manager.users.aprl = {
     xdg.desktopEntries = {

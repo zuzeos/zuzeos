@@ -1,7 +1,6 @@
-{ pkgs, lib, inputs, ... }:
-{
+{ pkgs, ... }: {
   imports = [
-    gaming/gamemoderun.nix
+    ./gamemoderun.nix
   ];
   environment.systemPackages = [
     pkgs.mangohud

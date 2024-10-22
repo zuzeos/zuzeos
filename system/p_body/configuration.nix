@@ -5,20 +5,16 @@
   { config, pkgs, lib, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ../../common
-      ../../profiles/graphical
-      ../../profiles/physical
-      ../../profiles/systemd-boot
-      ./hardware-configuration.nix
-      #../../modules/home-assistant.nix
-      ../../modules/distributed.nix
-      ../../modules/garlic.nix
-      ../../modules/onion.nix
-      ../../modules/spotify.nix
-      ../../modules/gaming.nix
-    ];
+  imports = [
+    ../../common
+    ../../profiles/distributed
+    ../../profiles/graphical
+    ../../profiles/physical
+    ../../profiles/systemd-boot
+    ../../services/garlic
+    #../../services/home-assistant.nix
+    ./hardware-configuration.nix
+  ];
 
   # Bootloader.
   programs.gnupg.agent.pinentryPackage = pkgs.pinentry-gnome3;

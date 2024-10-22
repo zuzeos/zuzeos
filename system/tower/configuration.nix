@@ -1,22 +1,18 @@
-{ config, lib, pkgs, inputs, ... }: let
+{ config, pkgs, inputs, ... }: let
   nur-no-pkgs = import inputs.nur {
      nurpkgs = import inputs.nixpkgs { system = "x86_64-linux"; };
   };
 in {
   imports = [
-    # Include the results of the hardware scan.
     nur-no-pkgs.repos.spitzeqc.modules.yacy
     ../../common
+    ../../profiles/distributed
     ../../profiles/graphical
     ../../profiles/physical
     ../../profiles/systemd-boot
+    ../../services/garlic
+    # ../../services/home-assistant
     ./hardware-configuration.nix
-    # ../../modules/home-assistant.nix
-    ../../modules/distributed.nix
-    ../../modules/garlic.nix
-    ../../modules/onion.nix
-    ../../modules/spotify.nix
-    ../../modules/gaming.nix
   ];
 
   services.yacy = {

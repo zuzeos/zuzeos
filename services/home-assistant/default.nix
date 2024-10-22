@@ -1,5 +1,4 @@
-{ pkgs, lib, inputs, ... }:
-{
+{ ... }: {
   services.home-assistant = {
     enable = true;
     extraComponents = [

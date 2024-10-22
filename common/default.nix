@@ -1,4 +1,4 @@
-{ inputs, pkgs, ... }: {
+{ inputs, lib, pkgs, ... }: {
 
   imports = [
     ./codename.nix
@@ -9,6 +9,7 @@
     inputs.nix-index-database.nixosModules.nix-index
   ];
 
+  time.timeZone = lib.mkDefault "Europe/Berlin";
   nix = {
     settings = {
       auto-optimise-store = true;
