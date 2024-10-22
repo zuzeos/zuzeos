@@ -8,6 +8,13 @@
     ./hardware-configuration.nix
   ];
 
+  zuze.deployment = {
+    targetHost = "188.245.199.114";
+    tags = [
+      "dn42de"
+    ];
+  };
+
   networking.hostName = "falkdn42";
   networking.domain = "aprilthe.pink";
 

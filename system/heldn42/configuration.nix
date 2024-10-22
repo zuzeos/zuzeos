@@ -7,6 +7,12 @@
     ./hardware-configuration.nix
   ];
 
+  zuze.deployment = {
+    targetHost = "37.27.9.168";
+    tags = [
+      "dn42de"
+    ];
+  };
   networking.hostName = "heldn42";
 
   virtualisation.docker.enable = true;

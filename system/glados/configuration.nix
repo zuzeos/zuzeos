@@ -6,6 +6,13 @@
     ./hardware-configuration.nix
   ];
 
+  zuze.deployment = {
+    targetHost = "fedinet.org";
+    tags = [
+      "web"
+      "infra-mm"
+    ];
+  };
   zramSwap.enable = true;
   networking.hostName = "glados";
   networking.domain = "";

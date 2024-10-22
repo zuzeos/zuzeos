@@ -1,10 +1,4 @@
-# Edit this configuration file to define what should be installed on
-# your system. Help is available in the configuration.nix(5) man page, on
-# https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
-
-{ config, lib, pkgs, inputs, ... }:
-
-{
+{ config, lib, pkgs, inputs, ... }: {
   imports =
     [ # Include the results of the hardware scan.
       ../../common
@@ -12,6 +6,13 @@
       ./hardware-configuration.nix
     ];
 
+  zuze.deployment = {
+    targetHost = "sakamoto.pl";
+    targetPort = 13370;
+    tags = [
+      "infra-attic"
+    ];
+  };
   # Use the GRUB 2 boot loader.
   boot.loader.grub.enable = true;
   boot.loader.grub.efiSupport = true;

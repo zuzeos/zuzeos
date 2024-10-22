@@ -1,19 +1,15 @@
 { config, inputs, lib, pkgs, ... }: {
-  imports =
-    [ # Include the results of the hardware scan.
-      ../../common
-      ../../profiles/graphical
-      ../../profiles/physical
-      ../../profiles/systemd-boot
-      ./hardware-configuration.nix
-      #../../modules/home-assistant.nix
-      ../../modules/distributed.nix
-      ../../modules/garlic.nix
-      ../../modules/onion.nix
-      ../../modules/spotify.nix
-      ../../modules/gaming.nix
-      inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t470s
-    ];
+  imports = [
+    inputs.nixos-hardware.nixosModules.lenovo-thinkpad-t470s
+    ../../common
+    ../../profiles/distributed
+    ../../profiles/graphical
+    ../../profiles/physical
+    ../../profiles/systemd-boot
+    ../../services/garlic
+    #../../services/home-assistant
+    ./hardware-configuration.nix
+  ];
 
   # Bootloader.
   programs.gnupg.agent.pinentryPackage = pkgs.pinentry-gnome3;

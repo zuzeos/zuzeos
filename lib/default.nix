@@ -7,7 +7,7 @@
       allowLocalDeployment = builtins.any (hostName: hostName == name) [ "tower" "cave" "p_body" ];
       buildOnTarget = true;
       targetHost = nixpkgs.lib.findFirst (el: el != null) host.config.networking.fqdn [ host.config.zuze.deployment.targetHost ];
-      targetPort = 22;
+      targetPort = host.config.zuze.deployment.targetPort;
       targetUser = null;
       tags = host.config.zuze.deployment.tags;
     };
@@ -24,6 +24,7 @@
     specialArgs = { inherit inputs; };
     modules = [
       ../system/${hostname}/configuration.nix
+      ../modules
       ({ ... }: {
         networking.hostName = nixpkgs.lib.mkDefault hostname;
         nixpkgs.overlays = [ ];

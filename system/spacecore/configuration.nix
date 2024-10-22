@@ -20,9 +20,15 @@ in
     ../../profiles/headless
     ./hardware-configuration.nix
     ./disk-config.nix
-    ../../modules/gaming/satisfactory.nix
   ];
 
+  zuze.deployment = {
+    targetHost = "192.168.69.126";
+    tags = [
+      "web"
+      "infra-local"
+    ];
+  };
   zramSwap.enable = true;
   networking.hostName = "spacecore";
   networking.domain = "";

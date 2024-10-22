@@ -38,6 +38,15 @@ in
     ./hardware-configuration.nix
   ];
 
+  zuze.deployment = {
+    targetHost = "morality.fediverse.gay";
+    tags = [
+      "web"
+      "infra-ap"
+      "infra-ls"
+    ];
+  };
+
   zramSwap.enable = true;
   networking.hostName = "moralitycore";
   networking.domain = "";
