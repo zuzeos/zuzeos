@@ -8,7 +8,7 @@
       buildOnTarget = true;
       targetHost = nixpkgs.lib.findFirst (el: el != null) host.config.networking.fqdn [ host.config.zuze.deployment.targetHost ];
       targetPort = host.config.zuze.deployment.targetPort;
-      targetUser = null;
+      #targetUser = null;
       tags = host.config.zuze.deployment.tags;
     };
     imports = host._module.args.modules;

@@ -7,6 +7,8 @@
 
   networking.hostName = "zuzeos";
 
+  networking.domain = "";
+
   services.displayManager.autoLogin.user = lib.mkForce "zuze";
   services.getty.autologinUser = lib.mkForce "zuze";
 

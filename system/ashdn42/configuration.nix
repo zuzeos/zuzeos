@@ -1,4 +1,4 @@
-{ ... }: {
+{ pkgs, ... }: {
   imports = [
     ../../common
     ../../profiles/dn42de
@@ -12,6 +12,7 @@
     tags = [ "dn42de" ];
   };
   networking.hostName = "ashdn42";
+  networking.domain = "";
 
   time.timeZone = "America/New_York";
   networking = {

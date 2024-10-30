@@ -26,6 +26,8 @@
   };
 
   networking.hostName = "ajx2407"; # Define your hostname.
+
+  networking.domain = "";
   networking.hosts = {
     "185.97.174.196" = ["smtp.mailbox.org"];
     "185.97.174.199" = ["imap.mailbox.org"];

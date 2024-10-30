@@ -24,6 +24,7 @@ in {
   boot.kernelPackages = pkgs.linuxKernel.packages.linux_xanmod_stable;
 
   networking.hostName = "tower"; # Define your hostname.
+  networking.domain = "";
 
   networking.nat = {
     enable = true;

@@ -12,6 +12,7 @@
   ];
 
   networking.hostName = "cave"; # Define your hostname.
+  networking.domain = "";
 
   services.udev.packages = [ pkgs.yubikey-personalization ];
 
