@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, lib, ... }: {
   imports = [
     ../../common
     ../../profiles/dn42de
@@ -18,6 +18,10 @@
 
   networking.hostName = "falkdn42";
   networking.domain = "aprilthe.pink";
+
+  boot.loader.grub.enable = true;
+
+  boot.loader.systemd-boot.enable = lib.mkForce false;
 
     networking = {
     firewall = {
