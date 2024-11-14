@@ -6,6 +6,7 @@
     ./users
     inputs.lix-module.nixosModules.default
     inputs.nur.nixosModules.nur
+    inputs.simple-nixos-mailserver.nixosModule
     inputs.nix-index-database.nixosModules.nix-index
   ];
 

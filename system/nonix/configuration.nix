@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }: {
+{ config, lib, pkgs, ... }: {
   imports = [
     ../../common
     ../../profiles/headless
@@ -32,6 +32,48 @@
       maxJobs = 8;
     }
   ];
+  services.vaultwarden = {
+    enable = true;
+    environmentFile = "/var/lib/vaultwarden.env";
+    config = {
+      DOMAIN = "https://vault.internal.versia.pub";
+      SIGNUPS_ALLOWED = true;
+      ROCKET_ADDRESS = "127.0.0.1";
+      ROCKET_PORT = 8222;
+      ROCKET_LOG = "critical";
+      SMTP_HOST = "mail.sakamoto.pl";
+      SMTP_PORT = 465;
+      SMTP_SECURITY = "force_tls";
+      SMTP_FROM = "noreply-bakka@sakamoto.pl";
+      SMTP_USERNAME = "noreply-bakka@sakamoto.pl";
+      SMTP_FROM_NAME = "Vault Server";
+    };
+  };
+
+  services.pretix = {
+    enable = true;
+    settings = {
+      pretix.url = "https://stuff.bak.pink";
+      pretix.registration = false;
+      pretix.instance_name = "BAK Queer Postoffice";
+      mail = {
+        from = "noreply-bakka@sakamoto.pl";
+        password = "3SMdf3xeJ6JqUqjRxP2LhGQepdE63j";
+        user = "noreply-bakka@sakamoto.pl";
+        host = "mail.sakamoto.pl";
+        ssl = true;
+        port = 465;
+      };
+    };
+    nginx.enable = true;
+    nginx.domain = "stuff.bak.pink";
+    plugins = with config.services.pretix.package.plugins; [
+      passbook
+      pages
+      stretchgoals
+    ];
+  };
+
 
   services.pgadmin = {
     enable = true;

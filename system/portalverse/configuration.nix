@@ -1,8 +1,10 @@
-{ pkgs, lib, ... }: {
+{ config, pkgs, lib, ... }: {
   imports = [
     ../../common
     ../../profiles/headless
     ../../profiles/systemd-boot
+    ../../services/nginx
+    ../../services/webmail
     ../../profiles/default-disko-config
     ./hardware-configuration.nix
   ];
@@ -62,6 +64,40 @@
     listenAddress = "0.0.0.0";
     port = 9187;
   };
+  services.keycloak = {
+    enable = true;
+    database = {
+      type = "postgresql";
+      createLocally = true;
+
+      username = "keycloak";
+      passwordFile = "/etc/nixos/secrets/keycloak_psql_pass";
+    };
+    settings = {
+      hostname = "id.internal.versia.pub";
+      proxy-headers = "xforwarded";
+      http-port = 2345;
+      http-enabled = true;
+    };
+  };
+
+  services.nginx.virtualHosts = {
+      "id.internal.versia.pub" = {
+        forceSSL = true;
+        enableACME = true;
+        locations = {
+          "/" = {
+            proxyPass = "http://localhost:${toString config.services.keycloak.settings.http-port}/";
+          };
+        };
+      };
+  };
+
+  programs.zsh.enable = true;
+  users.users.aprl = {
+    extraGroups = [ "wheel" "pipewire" "media" ]; # Enable ‘sudo’ for the user.
+    shell = pkgs.zsh;
+  };
 
   systemd.network.networks."98-eth-default" = {
     matchConfig.Type = "ether";
@@ -76,6 +112,27 @@
     routes = [
       { Gateway = "fe80::1"; }
     ];
+  };
+
+  mailserver = {
+    enable = true;
+    fqdn = "mail.versia.pub";
+    domains = [ "versia.pub" ];
+    certificateScheme = "acme-nginx";
+
+    loginAccounts = {
+      "aprl@versia.pub" = {
+        hashedPasswordFile = "/etc/nixos/secrets/aprl_mailhash";
+        aliases = [
+          "april.john@versia.pub"
+          "afj@versia.pub"
+          "april@versia.pub"
+          "john@versia.pub"
+          "ja@versia.pub"
+        ];
+      };
+    };
+
   };
   
   system.stateVersion = lib.mkForce "23.11";

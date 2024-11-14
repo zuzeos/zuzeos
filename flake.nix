@@ -20,6 +20,7 @@
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
     jeezyvim.url = "github:LGUG2Z/JeezyVim";
+    simple-nixos-mailserver.url = "gitlab:simple-nixos-mailserver/nixos-mailserver/master";
   };
 
   nixConfig = {
