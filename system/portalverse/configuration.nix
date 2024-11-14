@@ -131,6 +131,14 @@
           "ja@versia.pub"
         ];
       };
+      "cpluspatch@versia.pub" = {
+        hashedPasswordFile = "/etc/nixos/secrets/jesse_mailhash";
+        aliases = [
+          "jesse.wierzbinski@versia.pub"
+          "jw@versia.pub"
+          "gaspard.wierzbinski@versia.pub"
+        ];
+      };
     };
 
   };
