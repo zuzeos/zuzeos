@@ -114,6 +114,15 @@
     ];
   };
 
+  networking = {
+    interfaces.enp6s18 = {
+      ipv6.addresses = [{
+        address = "2a0f:be01:0:100::308";
+        prefixLength = 128;
+      }];
+    };
+  };
+
   mailserver = {
     enable = true;
     fqdn = "mail.versia.pub";
