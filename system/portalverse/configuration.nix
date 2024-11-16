@@ -149,6 +149,9 @@
           "gaspard.wierzbinski@versia.pub"
         ];
       };
+      "noreply@versia.pub" = {
+        hashedPasswordFile = "/etc/nixos/secrets/noreply";
+      };
     };
 
   };

@@ -1,0 +1,90 @@
+From b083f038ad34e48b48e74df3ab5bb6fbb06afd81 Mon Sep 17 00:00:00 2001
+From: anon <nein@example.com>
+Date: Wed, 26 Oct 2022 20:53:31 +0200
+Subject: [PATCH] * sso2
+
+---
+ server/channels/app/oauth.go                     | 12 ++++++------
+ .../channels/app/oauthproviders/gitlab/gitlab.go | 16 +++++++++-------
+ 2 files changed, 15 insertions(+), 13 deletions(-)
+
+diff --git a/server/channels/app/oauth.go b/server/channels/app/oauth.go
+index 7362698dfc..52ef4ec0a9 100644
+--- a/server/channels/app/oauth.go
++++ b/server/channels/app/oauth.go
+@@ -780,14 +780,14 @@ func (a *App) GetAuthorizationCode(c request.CTX, w http.ResponseWriter, r *http
+ 	props["token"] = stateToken.Token
+ 	state := b64.StdEncoding.EncodeToString([]byte(model.MapToJSON(props)))
+ 
+-	siteURL := a.GetSiteURL()
+-	if strings.TrimSpace(siteURL) == "" {
+-		siteURL = GetProtocol(r) + "://" + r.Host
+-	}
++	//siteURL := a.GetSiteURL()
++	//if strings.TrimSpace(siteURL) == "" {
++	//siteURL := "https://" + r.Host
++	//}
+ 
+-	redirectURI := siteURL + "/signup/" + service + "/complete"
++	//redirectURI := siteURL + "/signup/" + service + "/complete"
+ 
+-	authURL := endpoint + "?response_type=code&client_id=" + clientId + "&redirect_uri=" + url.QueryEscape(redirectURI) + "&state=" + url.QueryEscape(state)
++	authURL := endpoint + "?response_type=code&client_id=" + clientId + "&state=" + url.QueryEscape(state)
+ 
+ 	if scope != "" {
+ 		authURL += "&scope=" + utils.URLEncode(scope)
+diff --git a/server/channels/app/oauthproviders/gitlab/gitlab.go b/server/channels/app/oauthproviders/gitlab/gitlab.go
+index 67c65ea286..4e52606b35 100644
+--- a/server/channels/app/oauthproviders/gitlab/gitlab.go
++++ b/server/channels/app/oauthproviders/gitlab/gitlab.go
+@@ -5,6 +5,7 @@ package oauthgitlab
+ 
+ import (
+ 	"encoding/json"
++	"encoding/binary"
+ 	"errors"
+ 	"io"
+ 	"strconv"
+@@ -20,9 +21,9 @@ type GitLabProvider struct {
+ }
+ 
+ type GitLabUser struct {
+-	Id       int64  `json:"id"`
+-	Username string `json:"username"`
+-	Login    string `json:"login"`
++	Id       string `json:"sub"`
++	Username string `json:"nick"`
++	Login    string `json:"preferred_username"`
+ 	Email    string `json:"email"`
+ 	Name     string `json:"name"`
+ }
+@@ -40,6 +41,7 @@ func userFromGitLabUser(logger mlog.LoggerIFace, glu *GitLabUser) *model.User {
+ 	}
+ 	user.Username = model.CleanUsername(logger, username)
+ 	splitName := strings.Split(glu.Name, " ")
++
+ 	if len(splitName) == 2 {
+ 		user.FirstName = splitName[0]
+ 		user.LastName = splitName[1]
+@@ -69,9 +71,9 @@ func gitLabUserFromJSON(data io.Reader) (*GitLabUser, error) {
+ }
+ 
+ func (glu *GitLabUser) IsValid() error {
+-	if glu.Id == 0 {
+-		return errors.New("user id can't be 0")
+-	}
++//	if glu.Id == 0 {
++//		return errors.New("user id can't be 0")
++//	}
+ 
+ 	if glu.Email == "" {
+ 		return errors.New("user e-mail should not be empty")
+@@ -81,7 +83,7 @@ func (glu *GitLabUser) IsValid() error {
+ }
+ 
+ func (glu *GitLabUser) getAuthData() string {
+-	return strconv.FormatInt(glu.Id, 10)
++	return strconv.FormatInt(int64(binary.BigEndian.Uint64([]byte(glu.Id[0:8]))), 10)
+ }
+ 
+ func (gp *GitLabProvider) GetUserFromJSON(c request.CTX, data io.Reader, tokenUser *model.User) (*model.User, error) {

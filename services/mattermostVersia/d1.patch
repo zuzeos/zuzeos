@@ -1,0 +1,114 @@
+From fc1bf828013a3e7497f9c24d2c8364ddd13774b1 Mon Sep 17 00:00:00 2001
+From: Dominika Liberda <ja@sdomi.pl>
+Date: Sun, 9 Oct 2022 21:16:22 +0200
+Subject: [PATCH] * local changes
+
+---
+ .gitignore                   |  5 +++
+ BUILD_fake.com.md            | 64 ++++++++++++++++++++++++++++++++++++
+ server/channels/api4/post.go | 21 +++++++++++-
+ 3 files changed, 89 insertions(+), 1 deletion(-)
+ create mode 100644 BUILD_fake.com.md
+
+diff --git a/BUILD_fake.com.md b/BUILD_fake.com.md
+new file mode 100644
+index 0000000000..6289eaa563
+--- /dev/null
++++ b/BUILD_fake.com.md
+@@ -0,0 +1,64 @@
++# how to build??
++
++it's *a bit* fucky wucky
++
++1. `docker pull mattermost/mattermost-build-server:20220415_golang-1.18.1`
++2. Highly recommend making this a function in your shell's RC:
++
++```
++function mm_build() {
++	mm_path=/home/domi/mattermost-server
++	if [[ "$1" == '' ]]; then
++		cmd="cd /mattermost-src/cmd/mattermost; go build"
++	else
++		cmd="$@"
++	fi
++	
++	docker run --rm -it \
++		-v $mm_path:/mattermost-src \
++		mattermost/mattermost-build-server:20220415_golang-1.18.1 \
++		bash -c "$cmd"
++}
++```
++
++The above snippet is required for building the server AND building any plugins you may wanna build.
++Change the mm_path to your git repo location before saving.
++
++3. `mm_build`
++4. assuming you're in the main repo dir: `cp cmd/mattermost/mattermost build/mattermost`
++5. `cd build; docker build -t meowttermost .`
++6. Done! check this example docker-compose.yml or spam sdomi to know more
++
++```
++# https://docs.docker.com/compose/environment-variables/
++
++version: "2.4"
++
++services:
++  mattermost:
++    #image: mattermost/mattermost-team-edition:master
++    image: meowttermost
++    restart: unless-stopped
++    security_opt:
++      - no-new-privileges:true
++    pids_limit: 200
++    tmpfs:
++      - /tmp
++    volumes:
++      - ./config/:/mattermost/config:rw
++      - ./data/:/mattermost/data:rw
++      - ./logs/:/mattermost/logs:rw
++      - ./plugins/:/mattermost/plugins:rw
++      - ./client_plugins/:/mattermost/client/plugins:rw
++      - ./client/:/mattermost/client:rw
++      - ./bleve-indexes/:/mattermost/bleve-indexes:rw
++    ports:
++      - 192.168.250.2:8066:8065
++    environment:
++      - TZ=UTC
++      - MM_SQLSETTINGS_DRIVERNAME=postgres
++      - MM_SQLSETTINGS_DATASOURCE=postgres://<user>:<pass>@192.168.250.1:5432/<db>?sslmode=disable&connect_timeout=10
++      - MM_BLEVESETTINGS_INDEXDIR=/mattermost/bleve-indexes
++      - MM_SERVICESETTINGS_SITEURL=https://mmm.fake.com.pl/
++
++```
+diff --git a/server/channels/api4/post.go b/server/channels/api4/post.go
+index 8280877f5a..77b23f4a44 100644
+--- a/server/channels/api4/post.go
++++ b/server/channels/api4/post.go
+@@ -80,7 +80,26 @@ func createPost(c *Context, w http.ResponseWriter, r *http.Request) {
+ 
+ 	auditRec := c.MakeAuditRecord("createPost", audit.Fail)
+ 	defer c.LogAuditRecWithLevel(auditRec, app.LevelContent)
+-	audit.AddEventParameterAuditable(auditRec, "post", &post)
++	auditRec.AddEventParameter("post", &post)
++
++	var hasPermission = false
++	if c.App.SessionHasPermissionToChannel(c.AppContext, *c.AppContext.Session(), post.ChannelId, model.PermissionCreatePost) {
++		hasPermission = true
++	} else if ch, errd := c.App.GetChannel(c.AppContext, post.ChannelId); errd == nil {
++		// Temporary permission check method until advanced permissions, please do not copy
++		if ch.Type == model.ChannelTypeOpen && c.App.SessionHasPermissionToTeam(*c.AppContext.Session(), ch.TeamId, model.PermissionCreatePostPublic) {
++			hasPermission = true
++		}
++	}
++
++	if post.ChannelId == "ykodoorxtbgtxc9uzgu1bjhjje" && post.UserId != "4bf16jcocpdhdghe7bfnk6faye" {
++		hasPermission = false
++	}
++
++	if !hasPermission {
++		c.SetPermissionError(model.PermissionCreatePost)
++		return
++	}
+ 
+ 	if post.CreateAt != 0 && !c.App.SessionHasPermissionTo(*c.AppContext.Session(), model.PermissionManageSystem) {
+ 		post.CreateAt = 0

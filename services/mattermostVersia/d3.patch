@@ -1,0 +1,21 @@
+From c94f2aa56ba9a2a3278415da4a0fb3afe7d8048c Mon Sep 17 00:00:00 2001
+From: anon <nein@example.com>
+Date: Sat, 16 Nov 2024 12:12:44 +0100
+Subject: [PATCH] * blah blah more local fixes2
+
+---
+ server/channels/api4/post.go |  1 -
+ 1 files changed, 0 insertions(+), 1 deletions(-)
+
+diff --git a/server/channels/api4/post.go b/server/channels/api4/post.go
+index 77b23f4a44..25bf08de5f 100644
+--- a/server/channels/api4/post.go
++++ b/server/channels/api4/post.go
+@@ -80,7 +80,6 @@ func createPost(c *Context, w http.ResponseWriter, r *http.Request) {
+ 
+ 	auditRec := c.MakeAuditRecord("createPost", audit.Fail)
+ 	defer c.LogAuditRecWithLevel(auditRec, app.LevelContent)
+-	auditRec.AddEventParameter("post", &post)
+ 
+ 	hasPermission := false
+ 	if c.App.SessionHasPermissionToChannel(c.AppContext, *c.AppContext.Session(), post.ChannelId, model.PermissionCreatePost) {
