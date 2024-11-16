@@ -5,6 +5,7 @@
     ../../profiles/systemd-boot
     ../../services/nginx
     ../../services/webmail
+    ../../services/mattermostVersia
     ../../profiles/default-disko-config
     ./hardware-configuration.nix
   ];
