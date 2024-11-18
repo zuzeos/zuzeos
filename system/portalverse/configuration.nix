@@ -92,6 +92,15 @@
           };
         };
       };
+      "portalverse.versia.social" = {
+        forceSSL = true;
+        enableACME = true;
+        locations = {
+          "/" = {
+            proxyPass = "http://localhost:9000/";
+          };
+        };
+      };
   };
 
   programs.zsh.enable = true;

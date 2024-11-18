@@ -108,6 +108,14 @@
     jetbrains.rust-rover
   ];
 
+  xdg.portal = {
+    enable = true;
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-kde
+      xdg-desktop-portal-gtk
+      xdg-desktop-portal
+    ];
+  };
 
   system.stateVersion = lib.mkForce "23.11"; # Did you read the comment?
 }
