@@ -7,6 +7,7 @@
     ../../services/webmail
     ../../services/mattermostVersia
     ../../profiles/default-disko-config
+    ../../pkgs/keycloakThemes
     ./hardware-configuration.nix
   ];
 
@@ -80,6 +81,9 @@
       http-port = 2345;
       http-enabled = true;
     };
+    themes = with pkgs ; {
+    	keywind = custom_keycloak_themes.keywind;
+    };
   };
 
   services.nginx.virtualHosts = {
@@ -98,6 +102,33 @@
         locations = {
           "/" = {
             proxyPass = "http://localhost:9000/";
+            proxyWebsockets = true;
+          };
+        };
+      };
+      "beta.versia.social" = {
+        forceSSL = true;
+        enableACME = true;
+        locations = {
+          "/" = {
+            proxyPass = "http://172.18.0.5:9900/";
+            proxyWebsockets = true;
+          };
+        };
+      };
+      "ap.beta.versia.social" = {
+        forceSSL = true;
+        enableACME = true;
+        locations = {
+          "/" = {
+            proxyPass = "http://localhost:8080/";
+
+            extraConfig = ''
+
+                  ## Send actual client IP upstream
+                  proxy_set_header X-Real-IP $remote_addr;
+                  proxy_set_header Host $host;
+            '';
           };
         };
       };
