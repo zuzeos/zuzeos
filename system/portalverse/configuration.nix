@@ -41,7 +41,7 @@
     enable = true;
     ensureDatabases = [ "reptest" ];
     enableTCPIP = true;
-    extraPlugins = ps: with ps; [ postgis pg_repack repmgr pg_uuidv7 ];
+    extensions = ps: with ps; [ postgis pg_repack repmgr pg_uuidv7 ];
     package = pkgs.postgresql_16;
     authentication = pkgs.lib.mkOverride 10 ''
       #type database  DBuser  auth-method

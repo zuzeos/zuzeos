@@ -51,7 +51,7 @@
   '';
 
   environment.systemPackages = [
-    config.nur.repos.aprilthepink.stellwerksim-launcher
+    pkgs.nur.repos.aprilthepink.stellwerksim-launcher
   ];
 
   programs.steam = {

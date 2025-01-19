@@ -20,7 +20,7 @@ in {
     package = pkgs.nur.repos.spitzeqc.yacy;
   };
 
-  nixpkgs.overlays = [ inputs.nur.overlay ];
+  nixpkgs.overlays = [ inputs.nur.overlays.default ];
   boot.kernelPackages = pkgs.linuxKernel.packages.linux_xanmod_stable;
 
   networking.hostName = "tower"; # Define your hostname.
@@ -122,7 +122,7 @@ in {
     #inputs.nix-gaming.packages.${pkgs.system}.rocket-league
     #test.sharkey
 
-    config.nur.repos.aprilthepink.stellwerksim-launcher
+    nur.repos.aprilthepink.stellwerksim-launcher
     #config.nur.repos.aprilthepink.suyu-mainline
     kubectl
     kubernetes-helm

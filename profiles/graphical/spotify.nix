@@ -14,7 +14,7 @@
   };
   environment.systemPackages = with pkgs; [ 
     gnomeExtensions.appindicator
-    gnomeExtensions.avatar
+    gnomeExtensions.gravatar
     spotify
   ];
 }
