@@ -5,7 +5,7 @@
     ./networking.nix
     ./users
     inputs.lix-module.nixosModules.default
-    inputs.nur.nixosModules.nur
+    inputs.nur.modules.nixos.default
     inputs.simple-nixos-mailserver.nixosModule
     inputs.nix-index-database.nixosModules.nix-index
   ];
@@ -44,6 +44,8 @@
       "olm-3.2.16"
       "jitsi-meet-1.0.8043"
       "electron"
+      "dotnet-sdk-6.0.428"
+      "aspnetcore-runtime-6.0.36"
     ];
   };
 
