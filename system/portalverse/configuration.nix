@@ -106,10 +106,25 @@
           };
         };
       };
+      "metr.versia.social" = {
+        forceSSL = true;
+        enableACME = true;
+        locations = {
+          "/" = {
+            proxyPass = "https://metrics.internal.versia.pub/";
+            proxyWebsockets = true;
+
+            recommendedProxySettings = false;
+          };
+        };
+      };
       "beta.versia.social" = {
         forceSSL = true;
         enableACME = true;
         locations = {
+          "/apbridge/" = {
+            proxyPass = "http://localhost:8080/apbridge/";
+          };
           "/" = {
             proxyPass = "http://172.18.0.5:9900/";
             proxyWebsockets = true;
@@ -122,13 +137,6 @@
         locations = {
           "/" = {
             proxyPass = "http://localhost:8080/";
-
-            extraConfig = ''
-
-                  ## Send actual client IP upstream
-                  proxy_set_header X-Real-IP $remote_addr;
-                  proxy_set_header Host $host;
-            '';
           };
         };
       };

@@ -9,5 +9,6 @@
     recommendedOptimisation = true;
     recommendedProxySettings = true;
     recommendedTlsSettings = true;
+    clientMaxBodySize = "2g";
   };
 }
