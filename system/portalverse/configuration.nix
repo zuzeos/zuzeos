@@ -41,7 +41,7 @@
     enable = true;
     ensureDatabases = [ "reptest" ];
     enableTCPIP = true;
-    extraPlugins = ps: with ps; [ postgis pg_repack repmgr pg_uuidv7 ];
+    extensions = ps: with ps; [ postgis pg_repack repmgr pg_uuidv7 ];
     package = pkgs.postgresql_16;
     authentication = pkgs.lib.mkOverride 10 ''
       #type database  DBuser  auth-method
@@ -137,6 +137,14 @@
         locations = {
           "/" = {
             proxyPass = "http://localhost:8080/";
+
+            extraConfig = ''
+		          proxy_set_header Host $host;
+		          proxy_set_header X-Real-IP $remote_addr;
+		          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		          proxy_set_header X-Forwarded-Proto $scheme;
+            '';
+            recommendedProxySettings = false;
           };
         };
       };

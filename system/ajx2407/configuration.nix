@@ -104,11 +104,11 @@
 
   systemd.services.nessus = {
     enable = true;
-    path = [ config.nur.repos.aprilthepink.tennable-client-own pkgs.coreutils ];
+    path = [ pkgs.nur.repos.aprilthepink.tennable-client-own pkgs.coreutils ];
     wantedBy = [ "multi-user.target" ];
     after = [ "network.target" ];
     serviceConfig = {
-      ExecStart = ''${pkgs.bash}/bin/bash -c '${pkgs.coreutils}/bin/echo "/opt/nessus_agent/sbin/nessus-service -q" | ${config.nur.repos.aprilthepink.tennable-client-own}/bin/nessus-agent-shell' '';
+      ExecStart = ''${pkgs.bash}/bin/bash -c '${pkgs.coreutils}/bin/echo "/opt/nessus_agent/sbin/nessus-service -q" | ${pkgs.nur.repos.aprilthepink.tennable-client-own}/bin/nessus-agent-shell' '';
       #Type = "notify";
       Type = "simple";
       #User = "root";
@@ -128,7 +128,7 @@
   '';
 
   environment.systemPackages = with pkgs; [
-    config.nur.repos.aprilthepink.tennable-client-own
+    nur.repos.aprilthepink.tennable-client-own
 
     #denic
     clamav

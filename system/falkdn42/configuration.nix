@@ -4,7 +4,7 @@
     ../../profiles/dn42de
     ../../profiles/headless
     ../../profiles/systemd-boot
-    ../../services/netbox
+    ../../services/nginx
     ./hardware-configuration.nix
     ./dn42
   ];
@@ -18,6 +18,18 @@
 
   networking.hostName = "falkdn42";
   networking.domain = "aprilthe.pink";
+  services.jitsi-meet = {
+    prosody.lockdown = true;
+    enable = true;
+    hostName = "meet.aprilthe.pink";
+  };
+
+  services.jitsi-videobridge.openFirewall = true;
+
+  systemd.services.prosody.environment = {
+    XMPP_CROSS_DOMAIN = "true";
+  };
+
 
   boot.loader.grub.enable = true;
 
@@ -25,6 +37,7 @@
 
     networking = {
     firewall = {
+      allowedTCPPorts = [ 80 443 ];
       checkReversePath = false;
       extraCommands = ''
         ${pkgs.iptables}/bin/iptables -A INPUT -s 192.168.65.2/24 -j ACCEPT

@@ -88,7 +88,7 @@
   fonts.packages = with pkgs; [
     dejavu_fonts open-sans
     roboto-serif roboto-mono
-    nerdfonts ipafont
+    ipafont
     libertinus andika
     helvetica-neue-lt-std
     liberation-sans-narrow
@@ -96,10 +96,9 @@
     sarabun-font oxygenfonts
     open-sans work-sans
     fira fira-mono fira-code
-    fira-code-nerdfont
     rictydiminished-with-firacode
     fira-go
-  ];
+  ] ++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
   fonts.fontconfig = {
     enable = true;
     defaultFonts = {
@@ -165,7 +164,7 @@
       cnijfilter2
     ];
   };
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
 
   hardware.graphics = {
     enable = true;
