@@ -26,6 +26,10 @@ in {
   networking.hostName = "tower"; # Define your hostname.
   networking.domain = "";
 
+  services.sonarr = {
+    enable = true;
+  };
+
   networking.nat = {
     enable = true;
     externalInterface = "enp34s0";
