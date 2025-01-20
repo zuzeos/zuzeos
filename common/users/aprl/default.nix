@@ -5,7 +5,7 @@
   users.users.aprl = {
     isNormalUser = true;
     description = "Aprl System (April John)";
-    extraGroups = [ "wheel" ];
+    extraGroups = [ "wheel" "docker" ];
     initialHashedPassword = "$y$j9T$yn9Iqo4bKMoy4WYRUXTRA/$ICI2Z6yAh4.8gyApfzEl.gwwJOAXWrjSl3PVzKqk12.";
   };
 
