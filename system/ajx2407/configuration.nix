@@ -127,6 +127,8 @@
     export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
   '';
 
+  virtualisation.docker.enable = true;
+
   environment.systemPackages = with pkgs; [
     nur.repos.aprilthepink.tennable-client-own
 
