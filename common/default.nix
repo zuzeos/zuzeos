@@ -126,6 +126,7 @@
     rust-analyzer     # Rust language server
     samba
     gh                # github cli
+    dig
   ];
 
   programs.neovim = {
