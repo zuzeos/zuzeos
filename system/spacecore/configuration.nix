@@ -5,7 +5,7 @@
       (builtins.tryEval kPkgs).success
       && kPkgs ? kernel
       && kPkgs.kernel.pname == "linux"
-      && !kPkgs.zfs.meta.broken
+      && !kPkgs.zfs_unstable.meta.broken
     ))
     (builtins.sort (a: b: (lib.versionOlder a.kernel.version b.kernel.version)))
     lib.last
