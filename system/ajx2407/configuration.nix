@@ -145,6 +145,7 @@
     kubernetes-helm
 
     jetbrains.rust-rover
+    deltachat-desktop
   ];
 
   xdg.portal = {

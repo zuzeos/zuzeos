@@ -5,7 +5,6 @@
     ../../profiles/headless
     ../../services/mattermost
     ../../services/nginx
-    ../../services/pocketbase
     ./hardware-configuration.nix
   ];
 

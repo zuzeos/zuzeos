@@ -106,6 +106,24 @@
           };
         };
       };
+      "cutiecuddleclub.de" = {
+        forceSSL = true;
+        enableACME = true;
+        locations = {
+          "/" = {
+            root = "/usr/cccnev-pub";
+          };
+        };
+      };
+      "www.cutiecuddleclub.de" = {
+        forceSSL = true;
+        enableACME = true;
+        locations = {
+          "/" = {
+            root = "/usr/cccnev-pub";
+          };
+        };
+      };
       "metr.versia.social" = {
         forceSSL = true;
         enableACME = true;

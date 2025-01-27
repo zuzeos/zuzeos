@@ -16,7 +16,7 @@
       auto-optimise-store = true;
       max-jobs = "auto";
       sandbox = true;
-      experimental-features = [ "nix-command" "flakes" ];
+      experimental-features = [ "nix-command" "flakes" "pipe-operator" ];
       builders-use-substitutes = true;
       allowed-uris = [
         "github:"
