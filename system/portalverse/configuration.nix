@@ -74,7 +74,7 @@
     };
   };
 
-  environment.systemPackages = [ monero-cli ];
+  environment.systemPackages = with pkgs; [ monero-cli screen ];
 
   services.prometheus.exporters.postgres = {
     enable = true;
