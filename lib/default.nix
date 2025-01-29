@@ -28,14 +28,14 @@
       ({ ... }: {
         networking.hostName = nixpkgs.lib.mkDefault hostname;
         nixpkgs.overlays = [ ];
-        nixpkgs.hostPlatform.system = system;
+        nixpkgs.hostPlatform.system = system';
       })
     ];
-    specialArgs = rec {
+    specialArgs = {
       pkgs-stable = import nixpkgs-stable {
         # Refer to the `system` parameter from
         # the outer scope recursively
-        inherit system;
+        system = system';
         # To use Chrome, we need to allow the
         # installation of non-free software.
         config.allowUnfree = true;

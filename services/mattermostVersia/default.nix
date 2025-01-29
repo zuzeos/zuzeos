@@ -1,4 +1,15 @@
-{ pkgs, pkgs-stable, ... }: {
+{ pkgs, ... }: let
+
+      pkgs-stable = import nixpkgs-stable {
+        # Refer to the `system` parameter from
+        # the outer scope recursively
+        inherit system;
+        # To use Chrome, we need to allow the
+        # installation of non-free software.
+        config.allowUnfree = true;
+      };
+
+in {
   services.mattermost = {
     enable = true;
     package = pkgs-stable.mattermost.overrideAttrs ({ patches ? [], ...}: {
