@@ -6,6 +6,7 @@
     ../../services/nginx
     ../../services/webmail
     ../../services/mattermostVersia
+    ../../services/monero
     ../../profiles/default-disko-config
     ../../pkgs/keycloakThemes
     ./hardware-configuration.nix
