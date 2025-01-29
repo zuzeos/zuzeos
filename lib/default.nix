@@ -16,22 +16,22 @@
   };
 
   genNixosCfg = {
-    hostname,
-    system ? "x86_64-linux"
+    hostname',
+    system' ? "x86_64-linux"
   }: 
-  nixpkgs.lib.nixosSystem {
-    system = system;
+  nixpkgs.lib.nixosSystem rec {
+    system = system';
     specialArgs = { inherit inputs; };
     modules = [
-      ../system/${hostname}/configuration.nix
+      ../system/${hostname'}/configuration.nix
       ../modules
       ({ ... }: {
-        networking.hostName = nixpkgs.lib.mkDefault hostname;
+        networking.hostName = nixpkgs.lib.mkDefault hostname';
         nixpkgs.overlays = [ ];
         nixpkgs.hostPlatform.system = system;
       })
     ];
-    specialArgs = {
+    specialArgs = rec {
       pkgs-stable = import nixpkgs-stable {
         # Refer to the `system` parameter from
         # the outer scope recursively
