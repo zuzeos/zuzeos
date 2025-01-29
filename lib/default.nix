@@ -50,7 +50,7 @@
 
 in {
   mapHosts = hostCfg: nixpkgs.lib.recursiveUpdate (
-    nixpkgs.lib.genAttrs (mapDir "system") (host: { hostname = host; })) hostCfg;
+    nixpkgs.lib.genAttrs (mapDir "system") (host: { hostname' = host; })) hostCfg;
 
   mapColmenaCfg = extraColmenaCfg: nixpkgs.lib.recursiveUpdate (
     builtins.mapAttrs (genColmenaCfg) self.nixosConfigurations) extraColmenaCfg;
