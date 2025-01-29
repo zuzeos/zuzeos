@@ -4,6 +4,7 @@
 
     rpc.port = 18089;
     rpc.address = "0.0.0.0";
+    rpc.restricted = true;
 
     limits = {
       upload = 1048576;
