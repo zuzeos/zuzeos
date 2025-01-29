@@ -35,6 +35,16 @@
     22
     80
     443
+    18080
+    18089
+  ];
+
+  networking.firewall.allowedUDPPorts = [
+    22
+    80
+    443
+    18080
+    18089
   ];
 
   services.postgresql = {
