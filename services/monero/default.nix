@@ -5,6 +5,11 @@
     rpc.port = 18089;
     rpc.address = "0.0.0.0";
 
+    limits = {
+      upload = 1048576;
+      download = 1048576;
+    };
+
     extraConfig = ''
       log-level=0
       public-node=true # Advertises the RPC-restricted port over p2p peer lists
@@ -25,8 +30,9 @@
       # bandwidth settings
       out-peers=32 # This will enable much faster sync and tx awareness; the default 8 is suboptimal nowadays
       in-peers=32 # The default is unlimited; we prefer to put a cap on this
-      limit-rate-up=1048576 # 1048576 kB/s == 1GB/s; a raise from default 2048 kB/s; contribute more to p2p network
-      limit-rate-down=1048576 # 1048576 kB/s == 1GB/s; a raise from default 8192 kB/s; allow for faster initial sync
+      # \/ set by nixpkgs
+      # limit-rate-up=1048576 # 1048576 kB/s == 1GB/s; a raise from default 2048 kB/s; contribute more to p2p network
+      # limit-rate-down=1048576 # 1048576 kB/s == 1GB/s; a raise from default 8192 kB/s; allow for faster initial sync
 
       sync-pruned-blocks=1
     '';
