@@ -16,17 +16,17 @@
   };
 
   genNixosCfg = {
-    hostname',
+    hostname,
     system' ? "x86_64-linux"
   }: 
   nixpkgs.lib.nixosSystem rec {
     system = system';
     specialArgs = { inherit inputs; };
     modules = [
-      ../system/${hostname'}/configuration.nix
+      ../system/${hostname}/configuration.nix
       ../modules
       ({ ... }: {
-        networking.hostName = nixpkgs.lib.mkDefault hostname';
+        networking.hostName = nixpkgs.lib.mkDefault hostname;
         nixpkgs.overlays = [ ];
         nixpkgs.hostPlatform.system = system;
       })
@@ -50,7 +50,7 @@
 
 in {
   mapHosts = hostCfg: nixpkgs.lib.recursiveUpdate (
-    nixpkgs.lib.genAttrs (mapDir "system") (host: { hostname' = host; })) hostCfg;
+    nixpkgs.lib.genAttrs (mapDir "system") (host: { hostname = host; })) hostCfg;
 
   mapColmenaCfg = extraColmenaCfg: nixpkgs.lib.recursiveUpdate (
     builtins.mapAttrs (genColmenaCfg) self.nixosConfigurations) extraColmenaCfg;
