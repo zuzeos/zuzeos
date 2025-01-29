@@ -15,7 +15,17 @@
     nixpkgs.system = host.config.nixpkgs.system;
   };
 
-  genNixosCfg = {
+  genNixosCfg = let
+  overlay-stable = final: prev: {
+        stable = nixpkgs-stable.legacyPackages.${prev.system};
+        # use this variant if unfree packages are needed:
+        # unstable = import nixpkgs-unstable {
+        #   inherit system;
+        #   config.allowUnfree = true;
+        # };
+
+      };
+  in {
     hostname,
     system' ? "x86_64-linux"
   }: 
@@ -23,6 +33,7 @@
     system = system';
     specialArgs = { inherit inputs; };
     modules = [
+      ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-stable ]; })
       ../system/${hostname}/configuration.nix
       ../modules
       ({ ... }: {
@@ -31,16 +42,6 @@
         nixpkgs.hostPlatform.system = system';
       })
     ];
-    specialArgs = {
-      pkgs-stable = import nixpkgs-stable {
-        # Refer to the `system` parameter from
-        # the outer scope recursively
-        system = system';
-        # To use Chrome, we need to allow the
-        # installation of non-free software.
-        config.allowUnfree = true;
-      };
-    };
   };
   getBuildEntryPoint = name: nixosSystem:
     if (nixpkgs.lib.hasPrefix "iso" name) then

@@ -1,7 +1,7 @@
-{ pkgs, pkgs-stable, ... }: {
+{ pkgs, ... }: {
   services.mattermost = {
     enable = true;
-    package = pkgs-stable.mattermost.overrideAttrs ({ patches ? [], ...}: {
+    package = pkgs.stable.mattermost.overrideAttrs ({ patches ? [], ...}: {
       patches = patches ++ [
         ./d1.patch
         ./d2.patch
