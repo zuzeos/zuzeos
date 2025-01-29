@@ -36,6 +36,7 @@
       # limit-rate-down=1048576 # 1048576 kB/s == 1GB/s; a raise from default 8192 kB/s; allow for faster initial sync
 
       sync-pruned-blocks=1
+      confirm-external-bind=1
     '';
   };
 

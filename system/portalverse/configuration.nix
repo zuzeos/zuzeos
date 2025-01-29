@@ -27,6 +27,8 @@
   #  nginx.enable = true;
   #};
 
+  
+
   security.acme = {
     acceptTerms = true;
     defaults.email = "aprl@acab.dev";
@@ -71,6 +73,8 @@
 
     };
   };
+
+  environment.systemPackages = [ monero-cli ];
 
   services.prometheus.exporters.postgres = {
     enable = true;
