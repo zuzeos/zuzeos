@@ -4,6 +4,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     nixpkgs-test.url = "github:CutestNekoAqua/nixpkgs/sharkey";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.11";
     systems.url = "github:nix-systems/default-linux";
     nix-gaming.url = "github:fufexan/nix-gaming";
     nur.url = "github:nix-community/NUR";
@@ -34,7 +35,7 @@
     ];
   };
 
-  outputs = { self, nixpkgs, nixpkgs-test, systems, nixos-hardware, ... }@inputs: let
+  outputs = { self, nixpkgs, nixpkgs-test, systems, nixos-hardware, nixpkgs-stable, ... }@inputs: let
     flib = import ./lib inputs;
   in {
     hosts = flib.mapHosts {};

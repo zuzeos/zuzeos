@@ -1,4 +1,4 @@
-{ self, nixpkgs, ... }@inputs: let
+{ self, nixpkgs, nixpkgs-stable, ... }@inputs: let
   mapDir = dir: builtins.attrNames (nixpkgs.lib.filterAttrs (name: type: type == "directory") (
     builtins.readDir ../${dir}));
 
@@ -31,6 +31,16 @@
         nixpkgs.hostPlatform.system = system;
       })
     ];
+    specialArgs = {
+      pkgs-stable = import nixpkgs-stable {
+        # Refer to the `system` parameter from
+        # the outer scope recursively
+        inherit system;
+        # To use Chrome, we need to allow the
+        # installation of non-free software.
+        config.allowUnfree = true;
+      };
+    };
   };
   getBuildEntryPoint = name: nixosSystem:
     if (nixpkgs.lib.hasPrefix "iso" name) then
