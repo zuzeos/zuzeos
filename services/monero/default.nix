@@ -27,6 +27,8 @@
       in-peers=32 # The default is unlimited; we prefer to put a cap on this
       limit-rate-up=1048576 # 1048576 kB/s == 1GB/s; a raise from default 2048 kB/s; contribute more to p2p network
       limit-rate-down=1048576 # 1048576 kB/s == 1GB/s; a raise from default 8192 kB/s; allow for faster initial sync
+
+      sync-pruned-blocks=1
     '';
   };
 
