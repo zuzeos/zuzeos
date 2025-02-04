@@ -7,6 +7,7 @@
     ../../services/webmail
     ../../services/mattermostVersia
     ../../services/monero
+    ../../services/versiaForge
     ../../profiles/default-disko-config
     ../../pkgs/keycloakThemes
     ./hardware-configuration.nix
@@ -159,7 +160,7 @@
             proxyPass = "http://localhost:8080/apbridge/";
           };
           "/" = {
-            proxyPass = "http://172.18.0.5:9900/";
+            proxyPass = "http://172.18.0.6:9900/";
             proxyWebsockets = true;
           };
         };
@@ -187,6 +188,16 @@
   users.users.aprl = {
     extraGroups = [ "wheel" "pipewire" "media" ]; # Enable ‘sudo’ for the user.
     shell = pkgs.zsh;
+  };
+
+  users.users.jessew = {
+    extraGroups = [ "wheel" "docker" "pipewire" "media" ]; # Enable ‘sudo’ for the user.
+    isNormalUser = true;
+    shell = pkgs.zsh;
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEoDpeLv3ZiLr4T0RTFtpKtE66qEzMxuzk/BHA97YUEX"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPUOEM0NZpyxzTOOQTKDH+4NdpOh2egzjoB2RDH3gw2U"
+    ];
   };
 
   systemd.network.networks."98-eth-default" = {
@@ -242,7 +253,6 @@
         hashedPasswordFile = "/etc/nixos/secrets/noreply";
       };
     };
-
   };
   
   system.stateVersion = lib.mkForce "23.11";
