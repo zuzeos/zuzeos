@@ -45,4 +45,24 @@ in
     };
     mailerPasswordFile = "/etc/nixos/secrets/noreply-pass";
   };
+
+  services.gitea-actions-runner = {
+    package = pkgs.forgejo-actions-runner;
+    instances.default = {
+      enable = true;
+      name = "monolith";
+      url = "https://forge.versia.pub";
+      # Obtaining the path to the runner token file may differ
+      # tokenFile should be in format TOKEN=<secret>, since it's EnvironmentFile for systemd
+      tokenFile = "/opt/forge_runner_token";
+      labels = [
+        "ubuntu-latest:docker://node:23-bookworm"
+        "ubuntu-22.04:docker://node:23-bullseye"
+        "ubuntu-20.04:docker://node:23-bullseye"
+        "ubuntu-18.04:docker://node:23-buster"     
+        ## optionally provide native execution on the host:
+        # "native:host"
+      ];
+    };
+  };
 }
