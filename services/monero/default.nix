@@ -13,7 +13,7 @@
 
     extraConfig = ''
       log-level=0
-      public-node=true # Advertises the RPC-restricted port over p2p peer lists
+      public-node=1 # Advertises the RPC-restricted port over p2p peer lists
       p2p-bind-ip=0.0.0.0 # Bind to all interfaces (the default)
       p2p-bind-port=18080 # Bind to default port
 
@@ -21,10 +21,10 @@
       # tx-proxy=i2p,127.0.0.1:8060
 
       # node settings
-      prune-blockchain=true
+      prune-blockchain=1
       db-sync-mode=safe # Slow but reliable db writes
-      enforce-dns-checkpointing=true
-      enable-dns-blocklist=true # Block known-malicious nodes
+      enforce-dns-checkpointing=1
+      enable-dns-blocklist=1 # Block known-malicious nodes
       no-igd=true # Disable UPnP port mapping
       no-zmq=true # ZMQ configuration
 
