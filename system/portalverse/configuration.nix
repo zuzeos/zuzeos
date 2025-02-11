@@ -6,7 +6,6 @@
     ../../services/nginx
     ../../services/webmail
     ../../services/mattermostVersia
-    ../../services/monero
     ../../services/versiaForge
     ../../profiles/default-disko-config
     ../../pkgs/keycloakThemes
@@ -21,6 +20,8 @@
   };
   networking.hostName = "portalverse";
   networking.domain = "versia.social";
+
+  networking.networkmanager.enable = lib.mkForce false;
 
   #services.lysand.ap = {
   #  enable = true;
@@ -41,6 +42,7 @@
     443
     18080
     18089
+    5432
   ];
 
   networking.firewall.allowedUDPPorts = [
@@ -49,6 +51,7 @@
     443
     18080
     18089
+    5432
   ];
 
   services.postgresql = {
