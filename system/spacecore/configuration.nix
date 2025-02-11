@@ -36,7 +36,7 @@ in
 
   programs.zsh.enable = true;
   users.users.aprl = {
-    extraGroups = [ "wheel" "pipewire" "media" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "pipewire" "media" "libvirtd" ]; # Enable ‘sudo’ for the user.
     shell = pkgs.zsh;
   };
 
@@ -56,6 +56,15 @@ in
     ];
   };
 
+  users.users.pawjobs = { # lucy
+    isNormalUser = true;
+    extraGroups = [ "pipewire" "media" "libvirtd" ];
+    shell = pkgs.bash;
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH33CTPbjUqOXXUNd3/M0Zv8nFQyCD0hGFbagjt5/8JI lunary@celesteflare"
+    ];
+  };
+
   networking.firewall.allowedTCPPorts = [
     22
     80
@@ -65,6 +74,8 @@ in
   boot.supportedFilesystems = [ "zfs" ];
   boot.initrd.checkJournalingFS = false;
   services.zfs.autoSnapshot.enable = true;
+
+  virtualisation.libvirtd.enable = true;
 
   services.jellyfin = {
     enable = true;

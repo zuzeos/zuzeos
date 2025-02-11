@@ -257,6 +257,8 @@
       };
     };
   };
+
+  networking.firewall.enable = lib.mkForce true;
   
   system.stateVersion = lib.mkForce "23.11";
 }
