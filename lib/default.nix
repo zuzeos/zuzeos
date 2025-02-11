@@ -4,7 +4,7 @@
 
   genColmenaCfg = name: host: {
     deployment = {
-      allowLocalDeployment = builtins.any (hostName: hostName == name) [ "tower" "cave" "p_body" "ajx2407" ];
+      allowLocalDeployment = builtins.any (hostName: hostName == name) [ "tower" "cave" "p_body" "ajx2407" "portalverse" ];
       buildOnTarget = true;
       targetHost = nixpkgs.lib.findFirst (el: el != null) host.config.networking.fqdn [ host.config.zuze.deployment.targetHost ];
       targetPort = host.config.zuze.deployment.targetPort;
