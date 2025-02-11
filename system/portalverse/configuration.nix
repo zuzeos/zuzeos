@@ -162,7 +162,7 @@
           "/apbridge/" = {
             proxyPass = "http://localhost:8080/apbridge/";
           };
-          "/" = {
+          "/" = { 
             proxyPass = "http://172.18.0.4:9900/";
             proxyWebsockets = true;
           };
