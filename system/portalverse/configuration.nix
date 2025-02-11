@@ -78,7 +78,7 @@
     };
   };
 
-  environment.systemPackages = with pkgs; [ monero-cli screen ];
+  environment.systemPackages = with pkgs; [ monero-cli screen postgresql_16 ];
 
   services.prometheus.exporters.postgres = {
     enable = true;
@@ -163,7 +163,7 @@
             proxyPass = "http://localhost:8080/apbridge/";
           };
           "/" = {
-            proxyPass = "http://172.18.0.6:9900/";
+            proxyPass = "http://172.18.0.4:9900/";
             proxyWebsockets = true;
           };
         };
@@ -259,6 +259,8 @@
   };
 
   networking.firewall.enable = lib.mkForce true;
+
+  programs.sysdig.enable = true;
   
   system.stateVersion = lib.mkForce "23.11";
 }
