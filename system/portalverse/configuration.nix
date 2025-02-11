@@ -5,6 +5,7 @@
     ../../profiles/systemd-boot
     ../../services/nginx
     ../../services/webmail
+    ../../services/frrPortalverse
     ../../services/mattermostVersia
     ../../services/versiaForge
     ../../profiles/default-disko-config
