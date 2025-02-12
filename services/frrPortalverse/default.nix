@@ -12,6 +12,9 @@
         version 2
         network 45.150.123.22/32
         network 2a0f:be01:0:102::600/128
+        network 10.100.126.16/32
+        network fe80::ada0/128
+        network fe80::ade0/128
         # Example: network 192.168.1.0/24
         # (Advertise all interfaces in this subnet)
         passive-interface lo
@@ -39,5 +42,15 @@
     tcpdump
     wireguard-tools
   ];
+
   networking.firewall.trustedInterfaces = [];
+
+  networking.firewall.allowedTCPPorts = [
+    25508
+    25509
+  ];
+  networking.firewall.allowedUDPPorts = [
+    25508
+    25509
+  ];
 }
