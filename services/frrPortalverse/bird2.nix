@@ -8,9 +8,12 @@ in
     bird-lg = {
       frontend = {
         enable = true;
-        servers = [ "falkdn42" ];
-        domain = "aprilthe.pink";
+        servers = [ "portalverse" ];
+        proxyPort = 8992;
+        domain = "lg.portalverse.versia.social";
       };
+      proxy.enable = true;
+      proxy.listenAddress = "45.150.123.22:8992";
     };
 
     bird2 = {

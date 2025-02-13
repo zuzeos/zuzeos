@@ -135,6 +135,16 @@
           };
         };
       };
+      "lg.portalverse.versia.social" = {
+        forceSSL = true;
+        enableACME = true;
+        locations = {
+          "/" = {
+            proxyPass = "http://${toString config.services.bird-lg.frontend.listenAddress}/";
+            proxyWebsockets = true;
+          };
+        };
+      };
       "www.cutiecuddleclub.de" = {
         forceSSL = true;
         enableACME = true;
