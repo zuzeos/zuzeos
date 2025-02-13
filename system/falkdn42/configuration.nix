@@ -35,7 +35,7 @@
 
   boot.loader.systemd-boot.enable = lib.mkForce false;
 
-    networking = {
+  networking = {
     firewall = {
       allowedTCPPorts = [ 80 443 ];
       checkReversePath = false;

@@ -1,7 +1,41 @@
-{ pkgs, ... }: {
+{ pkgs, ... }: let
+  script = pkgs.writeShellScriptBin "update-roa" ''
+    mkdir -p /etc/bird/
+    ${pkgs.curl}/bin/curl -sfSLR {-o,-z}/etc/bird/roa_dn42_v6.conf https://dn42.burble.com/roa/dn42_roa_bird2_6.conf
+    ${pkgs.curl}/bin/curl -sfSLR {-o,-z}/etc/bird/roa_dn42.conf https://dn42.burble.com/roa/dn42_roa_bird2_4.conf
+    ${pkgs.bird2}/bin/birdc c 
+    ${pkgs.bird2}/bin/birdc reload in all
+  '';
+in
+{
   imports = [
     ./wg.nix
+    ./bird2.nix
   ];
+
+  systemd.timers.dn42-roa = {
+    description = "Trigger a ROA table update";
+
+    timerConfig = {
+      OnBootSec = "5m";
+      OnUnitInactiveSec = "1h";
+      Unit = "dn42-roa.service";
+    };
+
+    wantedBy = [ "timers.target" ];
+    before = [ "bird.service" ];
+  };
+
+  systemd.services = {
+    dn42-roa = {
+      after = [ "network.target" ];
+      description = "DN42 ROA Updated";
+      serviceConfig = {
+        # Type = "one-shot";
+        ExecStart = "${script}/bin/update-roa";
+      };
+    };
+  };
   services.frr = {
     ripd.enable = true;
     config = ''
@@ -53,4 +87,13 @@
     25508
     25509
   ];
+
+  networking.interfaces.lo = {
+    ipv4.addresses = [
+      { address = "172.23.45.226"; prefixLength = 32; }
+    ];
+    ipv6.addresses = [
+      { address = "fd42:acab:f00d:1001::1"; prefixLength = 128; }
+    ];
+  };
 }
