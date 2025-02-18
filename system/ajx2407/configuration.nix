@@ -136,6 +136,7 @@
     clamav
     clamtk
     steam-run
+    steam
 
     poetry
 
