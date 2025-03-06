@@ -147,6 +147,8 @@
 
     jetbrains.rust-rover
     deltachat-desktop
+
+    nur.repos.aprilthepink.stellwerksim-launcher
   ];
 
   xdg.portal = {

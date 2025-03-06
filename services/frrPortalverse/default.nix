@@ -1,4 +1,4 @@
-{ pkgs, ... }: let
+{ pkgs, lib, ... }: let
   script = pkgs.writeShellScriptBin "update-roa" ''
     mkdir -p /etc/bird/
     ${pkgs.curl}/bin/curl -sfSLR {-o,-z}/etc/bird/roa_dn42_v6.conf https://dn42.burble.com/roa/dn42_roa_bird2_6.conf
@@ -63,11 +63,10 @@ in
     };
   };
   boot.kernel.sysctl = {
-    "net.ipv4.conf.all.rp_filter" = 0;
-    "net.ipv4.conf.all.forwarding" = 1;
-    "net.ipv4.conf.default.rp_filter" = 0;
-    "net.ipv4.ip_forward" = 1;
-    "net.ipv6.conf.all.forwarding" = 1;
+    "net.ipv4.conf.all.forwarding" = lib.mkDefault 1;
+    "net.ipv4.conf.default.rp_filter" = lib.mkDefault 0;
+    "net.ipv4.ip_forward" = lib.mkDefault 1;
+    "net.ipv6.conf.all.forwarding" = lib.mkDefault 1;
   };
   environment.systemPackages = with pkgs; [ 
     # Network debug tools
@@ -95,5 +94,14 @@ in
     ipv6.addresses = [
       { address = "fd42:acab:f00d:1001::1"; prefixLength = 128; }
     ];
+  };
+
+  services.babeld.enable = true;
+  services.babeld.interfaceDefaults = {
+    type = "tunnel";
+    "split-horizon" = true;
+  };
+  services.babeld.interfaces = {
+    wghomenet = {};
   };
 }
