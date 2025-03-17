@@ -5,7 +5,7 @@
         owner = "girlbossceo";
         repo = "conduwuit";
         rev = "v0.5.0-rc3";
-        hash = "sha256-wJknX+jHxa7ROX9ECB87LUC8vQSbZym6qYLqHpGXv4Q=";
+        hash = "sha256-Etzh7m1aZBwKfcS6sa+2zBzdOaZSR+yFn2pwwGTilb4=";
     };
     settings = {
       global = {
