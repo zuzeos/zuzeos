@@ -1,4 +1,4 @@
-{ pkgs, ... }: {
+{ pkgs, lib, ... }: {
   services.matrix-conduit = {
     enable = true;
     package = pkgs.conduit-ov.default;
@@ -20,5 +20,8 @@
         allow_public_room_directory_over_federation = true;
       };
     };
+  };
+  systemd.services.conduit.serviceConfig = {
+    ExecStart = lib.mkForce "${pkgs.conduit-ov.default}/bin/conduwuit";
   };
 }
