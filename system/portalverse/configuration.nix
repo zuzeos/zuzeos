@@ -45,6 +45,8 @@
     18080
     18089
     5432
+    8448
+    6167
   ];
 
   networking.firewall.allowedUDPPorts = [
@@ -52,8 +54,10 @@
     80
     443
     18080
+    8448
     18089
     5432
+    6167
   ];
 
   services.postgresql = {
@@ -87,6 +91,16 @@
     listenAddress = "0.0.0.0";
     port = 9187;
   };
+
+  users.users.lucy = { # lucy
+    isNormalUser = true;
+    extraGroups = [ "pipewire" "media" "libvirtd" ];
+    shell = pkgs.bash;
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH33CTPbjUqOXXUNd3/M0Zv8nFQyCD0hGFbagjt5/8JI lunary@celesteflare"
+    ];
+  };
+
   services.keycloak = {
     enable = true;
     database = {

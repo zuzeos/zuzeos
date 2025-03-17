@@ -40,7 +40,7 @@ in
     bird-lg = {
       proxy = {
         enable = true; #todo
-        listenAddress = "0.0.0.0:8000";
+        listenAddress = "0.0.0.0:8001";
         allowedIPs = [ "127.0.0.1" "::1" "172.23.105.176/28" "fd48:a412:cc60::/48" ];
         birdSocket = "/var/run/bird/bird.ctl";
       };

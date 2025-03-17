@@ -56,7 +56,7 @@ in
     ];
   };
 
-  users.users.pawjobs = { # lucy
+  users.users.lucy = { # lucy
     isNormalUser = true;
     extraGroups = [ "pipewire" "media" "libvirtd" ];
     shell = pkgs.bash;
