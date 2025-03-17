@@ -8,6 +8,7 @@
     ../../services/frrPortalverse
     ../../services/mattermostVersia
     ../../services/versiaForge
+    ../../services/conduwuit
     ../../profiles/default-disko-config
     ../../pkgs/keycloakThemes
     ./hardware-configuration.nix

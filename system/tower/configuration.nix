@@ -126,6 +126,7 @@ in {
     #config.nur.repos.aprilthepink.suyu-mainline
     kubectl
     kubernetes-helm
+    jetbrains.rust-rover
   ];
 
   programs.steam = {
