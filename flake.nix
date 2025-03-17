@@ -22,6 +22,10 @@
     disko.inputs.nixpkgs.follows = "nixpkgs";
     jeezyvim.url = "github:LGUG2Z/JeezyVim";
     simple-nixos-mailserver.url = "gitlab:simple-nixos-mailserver/nixos-mailserver/master";
+    conduit = {
+      url = "gitlab:girlbossceo/conduwuit";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   nixConfig = {
@@ -35,7 +39,7 @@
     ];
   };
 
-  outputs = { self, nixpkgs, nixpkgs-test, systems, nixos-hardware, nixpkgs-stable, ... }@inputs: let
+  outputs = { self, nixpkgs, nixpkgs-test, systems, nixos-hardware, nixpkgs-stable, conduit, ... }@inputs: let
     flib = import ./lib inputs;
   in {
     hosts = flib.mapHosts {};

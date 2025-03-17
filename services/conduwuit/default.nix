@@ -1,12 +1,7 @@
 { pkgs, ... }: {
   services.matrix-conduit = {
     enable = true;
-    package = pkgs.fetchFromGitHub {
-        owner = "girlbossceo";
-        repo = "conduwuit";
-        rev = "v0.5.0-rc3";
-        hash = "sha256-Etzh7m1aZBwKfcS6sa+2zBzdOaZSR+yFn2pwwGTilb4=";
-    };
+    package = pkgs.conduit-ov.default;
     settings = {
       global = {
         trusted_servers = [
