@@ -94,7 +94,7 @@
 
   users.users.lucy = { # lucy
     isNormalUser = true;
-    extraGroups = [ "pipewire" "media" "libvirtd" ];
+    extraGroups = [ "pipewire" "media" "libvirtd" "wheel" ];
     shell = pkgs.bash;
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH33CTPbjUqOXXUNd3/M0Zv8nFQyCD0hGFbagjt5/8JI lunary@celesteflare"
