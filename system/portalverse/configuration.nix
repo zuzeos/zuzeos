@@ -3,6 +3,7 @@
     ../../common
     ../../profiles/headless
     ../../profiles/systemd-boot
+    ../../profiles/wordpress
     ../../services/nginx
     ../../services/webmail
     ../../services/frrPortalverse

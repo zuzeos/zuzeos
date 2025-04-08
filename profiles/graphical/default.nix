@@ -21,6 +21,17 @@
     shell = pkgs.zsh;
   };
 
+  services.pipewire = {
+    raopOpenFirewall = true;
+    extraConfig.pipewire = {
+      "10-airplay"."context.modules" = [
+        {
+          name = "libpipewire-module-raop-discover";
+        }
+      ];
+    };
+  }; 
+
   home-manager.users.aprl = {
     xdg.desktopEntries = {
       i2p-browser = {
