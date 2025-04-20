@@ -127,11 +127,11 @@
         '';
       };
     };
-    "attic.fediverse.gay" = {
+    "cloud.aprilthe.pink" = {
       enableACME = true;
       forceSSL = true;
       locations."/" = {
-        proxyPass = "http://127.0.0.1:8080";
+        proxyPass = "http://127.0.0.1:11000";
         proxyWebsockets = true;
       };
     };
