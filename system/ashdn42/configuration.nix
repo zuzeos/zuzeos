@@ -14,6 +14,9 @@
   networking.hostName = "ashdn42";
   networking.domain = "";
 
+  services.k3s.enable = true;
+  services.k3s.role = "server";
+
   time.timeZone = "America/New_York";
   networking = {
     firewall = {

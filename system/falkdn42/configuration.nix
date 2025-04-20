@@ -5,6 +5,7 @@
     ../../profiles/headless
     ../../profiles/systemd-boot
     ../../services/nginx
+    ../../services/mobilizon
     ./hardware-configuration.nix
     ./dn42
   ];
@@ -15,6 +16,8 @@
       "dn42de"
     ];
   };
+
+  
 
   networking.hostName = "falkdn42";
   networking.domain = "aprilthe.pink";
