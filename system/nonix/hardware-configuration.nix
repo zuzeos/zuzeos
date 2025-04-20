@@ -28,6 +28,17 @@
     [ { device = "/dev/disk/by-uuid/3f53cf8c-ec25-4b85-a3d0-25d2262856ad"; }
     ];
 
+  fileSystems."/mnt/hdd" = {
+   device = "/dev/disk/by-uuid/1c7a75ec-cd93-44ed-9c64-644e333c6074";
+   fsType = "ext4";
+   options = [
+     "users" # Allows any user to mount and unmount
+     "nofail" # Prevent system from failing if this drive doesn't mount
+     "exec" # Permit execution of binaries and other executable files
+     "noatime" # dont update access time on read
+   ];
+  };
+
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
   # still possible to use this option, but it's recommended to use it in conjunction

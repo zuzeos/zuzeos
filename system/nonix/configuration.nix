@@ -74,7 +74,6 @@
     ];
   };
 
-
   services.pgadmin = {
     enable = true;
     initialPasswordFile = "/var/leckesiemi";
