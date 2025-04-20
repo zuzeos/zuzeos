@@ -25,19 +25,6 @@
   networking.hostName = "sakanixno";
   networking.firewall.enable = false;
 
-networking = {
-  interfaces.ens4 = {
-    ipv4.addresses = [{
-      address = "185.236.240.128";
-      prefixLength = 24;
-    }];
-  };
-  defaultGateway = { # todo fix w/ domi help
-    address = "185.236.240.102";
-    interface = "ens4";
-  };
-};
-
   nix.buildMachines = [
     { hostName = "localhost";
       system = "x86_64-linux";
