@@ -4,6 +4,7 @@
     ../../profiles/headless
     ../../profiles/systemd-boot
     ./hardware-configuration.nix
+    ./disk-config.nix
   ];
 
   zuze.deployment = {
