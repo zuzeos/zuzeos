@@ -17,6 +17,8 @@
       tree
       #ladybird
       thunderbird
+      fluffychat
+      quasselClient
     ];
     shell = pkgs.zsh;
   };
