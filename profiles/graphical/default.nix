@@ -23,6 +23,10 @@
     shell = pkgs.zsh;
   };
 
+  nixpkgs.config.permittedInsecurePackages = [
+    "fluffychat-linux-1.25.1"
+  ];
+
   services.pipewire = {
     raopOpenFirewall = true;
     extraConfig.pipewire = {
