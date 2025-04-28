@@ -13,7 +13,7 @@ in
       };
     };
 
-    bird2 = {
+    bird = {
       enable = true;
       checkConfig = false;
       config = builtins.readFile ./bird.conf + lib.concatStrings (builtins.map
@@ -42,5 +42,5 @@ in
     };
   };
 
-  users.users.aprl.extraGroups = [ "bird2" ];
+  users.users.aprl.extraGroups = [ "bird" ];
 }

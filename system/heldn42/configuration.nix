@@ -18,7 +18,6 @@
 
   virtualisation.docker.enable = true;
 
-
   boot.loader.grub.enable = true;
 
   boot.loader.systemd-boot.enable = lib.mkForce false;
