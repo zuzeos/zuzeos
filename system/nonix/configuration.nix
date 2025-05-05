@@ -89,32 +89,8 @@
     package = pkgs.papermcServers.papermc-1_20_1;
   };
 
-  services.hydra = {
-    enable = true;
-    useSubstitutes = true;
-    port = 1337;
-    smtpHost = "mail.sakamoto.pl";
-    notificationSender = "hydra@sakamoto.pl";
-    minimumDiskFreeEvaluator = 5;
-    minimumDiskFree = 5;
-    listenHost = "*";
-    hydraURL = "https://hydra.nonix.sakamoto.pl";
-  };
-
   services.postgresql.enable = true;
   services.nginx.virtualHosts = {
-    "hydra.fediverse.gay" = {
-      enableACME = true;
-      forceSSL = true;
-      locations."/" = {
-        proxyPass = "http://127.0.0.1:1337";
-        proxyWebsockets = true;
-        extraConfig = ''
-          sub_filter "http://127.0.0.1:1337/" "https://hydra.fediverse.gay/";
-          sub_filter_once off;
-        '';
-      };
-    };
     "cloud.aprilthe.pink" = {
       enableACME = true;
       forceSSL = true;
