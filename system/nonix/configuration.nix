@@ -89,18 +89,6 @@
     package = pkgs.papermcServers.papermc-1_20_1;
   };
 
-  services.jitsi-meet = {
-    enable = true;
-    hostName = "nonix.sakamoto.pl";
-    interfaceConfig = {
-      SHOW_JITSI_WATERMARK = false;
-    };
-    config = {
-      prejoinPageEnabled = true;
-      disableModeratorIndicator = true;
-    };
-  };
-
   services.hydra = {
     enable = true;
     useSubstitutes = true;
@@ -136,6 +124,18 @@
       ];
       locations."/" = {
         proxyPass = "http://127.0.0.1:11000";
+        proxyWebsockets = true;
+      };
+    };
+    "memberdb.estrogen.jetzt" = {
+      enableACME = true;
+      forceSSL = true;
+      listen = [
+        { addr = "0.0.0.0"; port = 443; ssl = true; }
+        { addr = "[::]"; port = 443; ssl = true; }
+      ];
+      locations."/" = {
+        proxyPass = "http://127.0.0.1:8045";
         proxyWebsockets = true;
       };
     };
