@@ -61,6 +61,7 @@
       prismlauncher
       nheko
       waydroid
+      via
       lutris
     ];
     # media apps
