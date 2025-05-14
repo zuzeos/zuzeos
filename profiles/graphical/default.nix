@@ -150,6 +150,8 @@
   
   virtualisation.waydroid.enable = true;
 
+  hardware.keyboard.qmk.enable = true;
+
   services.flatpak.enable = true;
   services.pipewire = {
     enable = true;
