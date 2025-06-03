@@ -114,5 +114,9 @@ in
     };
   };
 
+  networking.interfaces."eno1".useDHCP = false;
+  networking.bridges."br0".interfaces = [ "eno1" ];
+  networking.interfaces."br0".useDHCP = true;
+
   system.stateVersion = lib.mkForce "24.11";
 }
