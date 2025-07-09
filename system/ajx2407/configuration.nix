@@ -12,6 +12,8 @@
     ../../profiles/physical
     ../../profiles/systemd-boot
     ../../services/garlic
+    ../../pkgs/wazuh
+    ../../modules/wazuh
     #../../services/home-assistant.nix
     ./hardware-configuration.nix
   ];
@@ -24,6 +26,25 @@
     enable = true;
     platform = "ipu6ep";
   };
+
+  services.wazuh-agent = {
+    enable = true;
+    package = pkgs.wazuh-agent;
+    managerIP = "2f34th7lo5it.cloud.wazuh.com";
+    managerPort = 1514;
+    extraConfig = ''
+    <ossec_config>
+      <client>
+        <enrollment>
+          <agent_name>ajx2407</agent_name>    <!-- Bitte hier deinen Hostnamen eingeben -->
+          <groups>LinuxClients,Clients</groups>          <!-- Komma separierte Liste -->
+          <manager_address>2f34th7lo5it.cloud.wazuh.com</manager_address>
+        </enrollment>
+      </client>
+    </ossec_config>
+    '';
+  };
+
 
   #38c3
   networking.networkmanager.ensureProfiles.profiles = {
@@ -83,7 +104,7 @@
 
   # AV
   services.clamav = {
-    scanner.enable = true;
+    scanner.enable = false;
     updater.enable = true;
     fangfrisch.enable = true;
     fangfrisch.settings = {
@@ -101,23 +122,6 @@
   };
 
   programs.nix-ld.enable = true;
-
-  systemd.services.nessus = {
-    enable = true;
-    path = [ pkgs.nur.repos.aprilthepink.tennable-client-own pkgs.coreutils ];
-    wantedBy = [ "multi-user.target" ];
-    after = [ "network.target" ];
-    serviceConfig = {
-      ExecStart = ''${pkgs.bash}/bin/bash -c '${pkgs.coreutils}/bin/echo "/opt/nessus_agent/sbin/nessus-service -q" | ${pkgs.nur.repos.aprilthepink.tennable-client-own}/bin/nessus-agent-shell' '';
-      #Type = "notify";
-      Type = "simple";
-      #User = "root";
-      CPUWeight = 10;
-      CPUQuota = "20%";
-      IOWeight = 10;
-    };
-  };
-
 
   # Configure console keymap
   console.keyMap = "de";
@@ -149,6 +153,8 @@
     deltachat-desktop
 
     nur.repos.aprilthepink.stellwerksim-launcher
+
+    calibre
   ];
 
   xdg.portal = {
@@ -159,6 +165,32 @@
       xdg-desktop-portal
     ];
   };
+
+  services.udev.extraRules = ''
+    #V2 Legacy
+SUBSYSTEM=="usb",ATTR{idVendor}=="0483",ATTR{idProduct}=="5750",MODE="0666"
+KERNEL=="hidraw*",ATTRS{idVendor}=="0483",ATTRS{idProduct}=="5750",MODE="0666"
+
+#V2
+SUBSYSTEM=="usb",ATTR{idVendor}=="0483",ATTR{idProduct}=="[aA]0[eE]7",MODE="0666"
+KERNEL=="hidraw*",ATTRS{idVendor}=="0483",ATTRS{idProduct}=="[aA]0[eE]7",MODE="0666"
+
+#V3
+SUBSYSTEM=="usb",ATTR{idVendor}=="0483",ATTR{idProduct}=="[aA]0[eE]8",MODE="0666"
+KERNEL=="hidraw*",ATTRS{idVendor}=="0483",ATTRS{idProduct}=="[aA]0[eE]8",MODE="0666"
+
+#V4  16D0 0B1A
+SUBSYSTEM=="usb",ATTR{idVendor}=="16[dD]0",ATTR{idProduct}=="0[bB]1[aA]",MODE="0666"
+KERNEL=="hidraw*",ATTRS{idVendor}=="16[dD]0",ATTRS{idProduct}=="0[bB]1[aA]",MODE="0666"
+
+#5 early iterations 16D0 0B1C
+SUBSYSTEM=="usb",ATTR{idVendor}=="16[dD]0",ATTR{idProduct}=="0[bB]1[cC]",MODE="0666"
+KERNEL=="hidraw*",ATTRS{idVendor}=="16[dD]0",ATTRS{idProduct}=="0[bB]1[cC]",MODE="0666"
+
+#5 384D 0B1C
+SUBSYSTEM=="usb",ATTR{idVendor}=="384[dD]",ATTR{idProduct}=="0[bB]1[cC]",MODE="0666"
+KERNEL=="hidraw*",ATTRS{idVendor}=="384[dD]",ATTRS{idProduct}=="0[bB]1[cC]",MODE="0666"
+  '';
 
   system.stateVersion = lib.mkForce "23.11"; # Did you read the comment?
 }
