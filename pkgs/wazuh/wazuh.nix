@@ -178,7 +178,7 @@
 in
   stdenv.mkDerivation rec {
     pname = "wazuh-agent";
-    version = "4.9.1";
+    version = "4.12.0";
 
     meta = {
       description = "Wazuh agent for NixOS";
