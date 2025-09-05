@@ -83,7 +83,6 @@
     unfreeChatPkgs = [
       telegram-desktop # most popular instant-messenger in the IT world
       discord          # IRC-like proprietary chat service
-      skypeforlinux
       (zoom-us.overrideAttrs (attrs: {
         nativeBuildInputs = (attrs.nativeBuildInputs or []) ++ [ pkgs.bbe ];
         postFixup = ''
