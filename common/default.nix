@@ -10,14 +10,14 @@
   ];
 
   time.timeZone = lib.mkDefault "Europe/Berlin";
-  nixpkgs.overlays = [ (final: prev: {
-    inherit (final.lixPackageSets.stable)
-      nixpkgs-review
-      nix-direnv
-      nix-eval-jobs
-      nix-fast-build
-      colmena;
-  }) ];
+  #nixpkgs.overlays = [ (final: prev: {
+  #  inherit (final.lixPackageSets.stable)
+  #    nixpkgs-review
+  #    nix-direnv
+  #    nix-eval-jobs
+  #    nix-fast-build
+  #    colmena;
+  #}) ];
   nix = {
     package = pkgs.lixPackageSets.stable.lix;
     settings = {
@@ -83,7 +83,6 @@
       hyfetch           # superior queer fetch script
       zsh-you-should-use
       any-nix-shell
-      zsh-history
       zsh-vi-mode
       oh-my-zsh
       oh-my-fish
