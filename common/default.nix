@@ -4,14 +4,22 @@
     ./codename.nix
     ./networking.nix
     ./users
-    inputs.lix-module.nixosModules.default
     inputs.nur.modules.nixos.default
     inputs.simple-nixos-mailserver.nixosModule
     inputs.nix-index-database.nixosModules.nix-index
   ];
 
   time.timeZone = lib.mkDefault "Europe/Berlin";
+  nixpkgs.overlays = [ (final: prev: {
+    inherit (final.lixPackageSets.stable)
+      nixpkgs-review
+      nix-direnv
+      nix-eval-jobs
+      nix-fast-build
+      colmena;
+  }) ];
   nix = {
+    package = pkgs.lixPackageSets.stable.lix;
     settings = {
       auto-optimise-store = true;
       max-jobs = "auto";
