@@ -1,7 +1,6 @@
 { pkgs, lib, config, ... }: {
-  services.matrix-conduit = {
+  services.matrix-continuwuity = {
     enable = true;
-    package = pkgs.conduit-ov.default;
     settings = {
       global = {
         trusted_servers = [
@@ -21,14 +20,11 @@
       };
     };
   };
-  systemd.services.conduit.serviceConfig = {
-    ExecStart = lib.mkForce "${pkgs.conduit-ov.default}/bin/conduwuit";
-  };
   services.nginx.virtualHosts."im.estrogen.jetzt" = {
     forceSSL = true;
     enableACME = true;
     locations."/_matrix/" = {
-      proxyPass = "http://[::1]:${toString config.services.matrix-conduit.settings.global.port}";
+      proxyPass = "http://[::1]:${toString config.services.matrix-continuwuity.settings.global.port}";
       proxyWebsockets = true;
     };
   };
@@ -40,7 +36,7 @@
       root = "/usr/mtx-well-known";
     };
     locations."/_matrix/" = {
-      proxyPass = "http://[::1]:${toString config.services.matrix-conduit.settings.global.port}";
+      proxyPass = "http://[::1]:${toString config.services.matrix-continuwuity.settings.global.port}";
       proxyWebsockets = true;
     };
   };

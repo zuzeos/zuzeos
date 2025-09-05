@@ -155,6 +155,7 @@
     nur.repos.aprilthepink.stellwerksim-launcher
 
     calibre
+    pacman
   ];
 
   xdg.portal = {

@@ -1,4 +1,4 @@
-{ self, nixpkgs, nixpkgs-stable, conduit, ... }@inputs: let
+{ self, nixpkgs, nixpkgs-stable, ... }@inputs: let
   mapDir = dir: builtins.attrNames (nixpkgs.lib.filterAttrs (name: type: type == "directory") (
     builtins.readDir ../${dir}));
 
@@ -25,15 +25,6 @@
         # };
 
       };
-  overlay-conduit = final: prev: {
-        conduit-ov = conduit.packages.${prev.system};
-        # use this variant if unfree packages are needed:
-        # unstable = import nixpkgs-unstable {
-        #   inherit system;
-        #   config.allowUnfree = true;
-        # };
-
-      };
   in {
     hostname,
     system' ? "x86_64-linux"
@@ -42,7 +33,7 @@
     system = system';
     specialArgs = { inherit inputs; };
     modules = [
-      ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-stable overlay-conduit]; })
+      ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-stable ]; })
       ../system/${hostname}/configuration.nix
       ../modules
       ({ ... }: {

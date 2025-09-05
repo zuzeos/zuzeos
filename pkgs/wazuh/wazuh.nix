@@ -12,13 +12,15 @@
   openssl,
   patch,
   perl,
+  cryptodev,
+  zlib,
   policycoreutils,
   python312,
   zstd,
   ...
 }: let
   ossec = "/var/ossec";
-  dependencyVersion = "30";
+  dependencyVersion = "40";
   fetcher = {
     name,
     sha256,
@@ -31,12 +33,12 @@
     (fetcher
       {
         name = "cJSON";
-        sha256 = "678d796318da57d5f38075e74bbb3b77375dc3f8bb49da341ad1b43c417e8cc1";
+        sha256 = "sha256-Z415YxjaV9XzgHXnS7s7dzddw/i7Sdo0GtG0PEF+jME=";
       })
     (fetcher
       {
         name = "curl";
-        sha256 = "sha256-QBUdS8paLByEDtIkNx/g2VFSMXalvDxNA2Lz2m+WZUA=";
+        sha256 = "sha256-qTtbg5JV2SSHo/mtffraHcc6sBaALH9mncCaiRxlRvo=";
       })
     (fetcher
       {
@@ -105,6 +107,11 @@
       })
     (fetcher
       {
+        name = "libbpf-bootstrap";
+        sha256 = "sha256-hh74B1ePDobIfuXC2YdHaFPmQGm/xLsTon4jPtNXSDI=";
+      })
+    (fetcher
+      {
         name = "libplist";
         sha256 = "sha256-iCeNS9/BvWo6GlWk89kzaD0nMroJz3p0n+jsjuxAbjw=";
       })
@@ -153,11 +160,11 @@
         name = "lua";
         sha256 = "sha256-Yu634kskbFBwi81Nkts8nejRltlMnDO4v/QA8l8QWh8=";
       })
-    (fetcher
-      {
-        name = "cpython";
-        sha256 = "sha256-wDZPE1+nKM5bG75ht35mV0PvQ7yYTy7hbW5+QumacHY=";
-      })
+    #(fetcher
+    #  {
+     #   name = "cpython";
+     #   sha256 = "sha256-wDZss1+nKM5bG75ht35mV0PvQ7yYTy7hbW5+QumacHY=";
+     # })
     (fetcher
       {
         name = "jemalloc";
@@ -189,7 +196,7 @@ in
       owner = "wazuh";
       repo = "wazuh";
       rev = "v${version}";
-      sha256 = "sha256-OiNwKX/bGjh9e7EQ/8ylY2SSaifqu9vfpne9mvHvEmM=";
+      sha256 = "sha256-yWth09J1SSEi6xGCA8oAkVcBBEnXyOAWOnTNuXWEnNk=";
     };
 
     enableParallelBuilding = true;
@@ -209,9 +216,12 @@ in
       policycoreutils
       python312
       zstd
+      cryptodev
+      zlib
     ];
 
     makeFlags = [
+      "--ignore-errors"
       "-C src"
       "TARGET=agent"
       "INSTALLDIR=$out"
