@@ -16,7 +16,7 @@
   ];
 
   zuze.deployment = {
-    targetHost = "portalverse.versia.social";
+    targetHost = "45.150.123.22";
     tags = [
       "versia"
     ];
@@ -255,6 +255,7 @@
   };
 
   mailserver = {
+    stateVersion = 3;
     enable = true;
     fqdn = "mail.versia.pub";
     domains = [ "versia.pub" ];
