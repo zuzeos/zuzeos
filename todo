@@ -1,0 +1,4 @@
+trace: evaluation warning: `mesa.drivers` is deprecated, use `mesa` instead
+trace: evaluation warning: The option `services.xserver.desktopManager.gnome.enable' defined in `/nix/store/78kn1hd4srqjfknsb7w9wvp66fxsv6q8-source/profiles/graphical/gnome.nix' has been renamed to `services.desktopManager.gnome.enable'.
+trace: evaluation warning: The option `services.xserver.displayManager.gdm.wayland' defined in `/nix/store/78kn1hd4srqjfknsb7w9wvp66fxsv6q8-source/profiles/graphical/gnome.nix' has been renamed to `services.displayManager.gdm.wayland'.
+trace: evaluation warning: The option `services.xserver.displayManager.gdm.enable' defined in `/nix/store/78kn1hd4srqjfknsb7w9wvp66fxsv6q8-source/profiles/graphical/gnome.nix' has been renamed to `services.displayManager.gdm.enable'.

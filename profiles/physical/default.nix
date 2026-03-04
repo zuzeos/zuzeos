@@ -1,4 +1,7 @@
 { pkgs, ... }:{
+  imports = [
+    ../../common/suspend-then-hybernate.nix
+  ];
   environment.systemPackages = with pkgs; [
     pciutils
     usbutils

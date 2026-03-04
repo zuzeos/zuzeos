@@ -37,6 +37,8 @@
     };
   }; 
 
+  services.pulseaudio.zeroconf.discovery.enable = true;
+
   home-manager.users.aprl = {
     xdg.desktopEntries = {
       i2p-browser = {

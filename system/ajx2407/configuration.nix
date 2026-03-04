@@ -14,6 +14,7 @@
     ../../services/garlic
     ../../pkgs/wazuh
     ../../modules/wazuh
+    
     #../../services/home-assistant.nix
     ./hardware-configuration.nix
   ];
@@ -45,6 +46,11 @@
     '';
   };
 
+  networking.networkmanager.plugins = [ pkgs.networkmanager-openconnect ];
+
+  systemd.sleep.extraConfig = ''
+    SuspendState=mem
+  '';
 
   #38c3
   networking.networkmanager.ensureProfiles.profiles = {
@@ -96,7 +102,7 @@
     "80.241.60.226" = ["manage.mailbox.org"];
   };
 
-  services.udev.packages = [ pkgs.yubikey-personalization ];
+  services.udev.packages = [ pkgs.yubikey-personalization pkgs.rtl-sdr ];
 
   programs.ssh.startAgent = false;
 
@@ -133,6 +139,8 @@
 
   virtualisation.docker.enable = true;
 
+  boot.kernelParams = [ "modprobe.blacklist=dvb_usb_rtl28xxu" ]; # blacklist this module
+
   environment.systemPackages = with pkgs; [
     nur.repos.aprilthepink.tennable-client-own
 
@@ -148,6 +156,7 @@
     krew
     kubelogin-oidc
     kubernetes-helm
+    networkmanager-openconnect
 
     jetbrains.rust-rover
     deltachat-desktop
@@ -156,7 +165,13 @@
 
     calibre
     pacman
+
+    sdrpp
+    gqrx
+    rtl-sdr
   ];
+
+
 
   xdg.portal = {
     enable = true;
