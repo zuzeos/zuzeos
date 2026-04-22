@@ -186,7 +186,7 @@
   # Override hyfetch with Jester Linux distro detection + ASCII art.
   nixpkgs.overlays = [
     (final: prev: {
-      hyfetch = prev.callPackage ../pkgs/hyfetch { };
+      hyfetch = prev.callPackage ../pkgs/hyfetch { hyfetch = prev.hyfetch; };
     })
   ];
 }

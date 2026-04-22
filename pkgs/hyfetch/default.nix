@@ -1,6 +1,6 @@
-{ pkgs, lib }:
+{ hyfetch, lib }:
 
-pkgs.hyfetch.overrideAttrs (old: {
+hyfetch.overrideAttrs (old: {
   # hyfetch bundles a fork of neofetch as "neofetch" in the source tree,
   # installed as $out/bin/neowofetch.  We patch it with a Python script to:
   #   1. Add a Jester Linux detection block (keyed on /etc/JESTERLINUX) before the NixOS block.
