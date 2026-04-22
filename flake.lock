@@ -393,8 +393,8 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1776878074,
-        "narHash": "sha256-hvVmPX75AIrHU7WqLcCGCOu7uahLvBML3lCa8H+xNzo=",
+        "lastModified": 1776878703,
+        "narHash": "sha256-6ytC5xk1cXrGvKP+r5kcPdfGR1wj4P9WZREcr2xkmxk=",
         "path": "/home/aprl/Dokumente/nix-unattended-upgrade",
         "type": "path"
       },
