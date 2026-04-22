@@ -1,10 +1,25 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+
+let
+  plymouthTheme = pkgs.callPackage ../../pkgs/plymouth-theme { };
+in
+{
   imports = [
     ./gnome.nix
     ./onion.nix
     ./spotify.nix
     ./gaming
   ];
+
+  # Plymouth boot/shutdown splash with the nix-update theme (two-step module)
+  boot.plymouth = {
+    enable = true;
+    theme = "nix-update";
+    themePackages = [ plymouthTheme ];
+  };
+
+  boot.initrd.systemd.enable = true;
+  boot.loader.timeout = 0;
 
   users.users.aprl = {
     extraGroups = [ "wheel" "pipewire" "media" "networkmanager" ]; # Enable ‘sudo’ for the user.

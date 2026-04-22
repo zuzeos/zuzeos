@@ -6,15 +6,15 @@
     udev.packages = with pkgs; [ gnome-settings-daemon ];
     xserver = {
       enable = true;
-      displayManager = {
-        gdm = {
-          enable = true;
-          wayland = true;
-        };
-      };
-      desktopManager.gnome.enable = true;
       excludePackages = with pkgs; [ xterm ];
     };
+    displayManager = {
+      gdm = {
+        enable = true;
+        wayland = true;
+      };
+    };
+    desktopManager.gnome.enable = true;
   };
   system.nixos.tags = [
     "gnome"

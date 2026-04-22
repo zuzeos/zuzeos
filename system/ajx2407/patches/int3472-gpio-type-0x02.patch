@@ -1,0 +1,50 @@
+From: aprl <aprl@ajx2407>
+Date: Fri, 10 Apr 2026
+Subject: [PATCH] platform/x86: int3472: Handle GPIO type 0x02 as reset
+
+Dell Latitude 7450 (Meteor Lake) with OmniVision OV02E10 sensor reports
+GPIO type 0x02 for the sensor reset line via the INT3472 ACPI _DSM. This
+value is not defined in the upstream INT3472 spec but is used by Dell/Intel
+firmware on MTL platforms with Lattice USB-IO FPGA camera bridges.
+
+Treat 0x02 identically to 0x00 (INT3472_GPIO_TYPE_RESET): map it to the
+sensor as a reset GPIO, active-low. Without this the driver warns "GPIO type
+0x02 unknown; the sensor may not work", the sensor stays in reset and probe
+fails with -EREMOTEIO (-121).
+
+Signed-off-by: aprl <aprl@ajx2407>
+---
+ drivers/platform/x86/intel/int3472/discrete.c | 2 ++
+ include/linux/platform_data/x86/int3472.h     | 1 +
+ 2 files changed, 3 insertions(+)
+
+diff --git a/drivers/platform/x86/intel/int3472/discrete.c b/drivers/platform/x86/intel/int3472/discrete.c
+--- a/drivers/platform/x86/intel/int3472/discrete.c
++++ b/drivers/platform/x86/intel/int3472/discrete.c
+@@ -200,6 +200,7 @@
+ 
+ 	switch (*type) {
+ 	case INT3472_GPIO_TYPE_RESET:
++	case INT3472_GPIO_TYPE_RESET_ALT:
+ 		*con_id = "reset";
+ 		*gpio_flags = GPIO_ACTIVE_LOW;
+ 		break;
+@@ -322,6 +323,7 @@
+ 
+ 	switch (type) {
+ 	case INT3472_GPIO_TYPE_RESET:
++	case INT3472_GPIO_TYPE_RESET_ALT:
+ 	case INT3472_GPIO_TYPE_POWERDOWN:
+ 	case INT3472_GPIO_TYPE_HOTPLUG_DETECT:
+ 		ret = skl_int3472_map_gpio_to_sensor(int3472, agpio, con_id, gpio_flags);
+diff --git a/include/linux/platform_data/x86/int3472.h b/include/linux/platform_data/x86/int3472.h
+--- a/include/linux/platform_data/x86/int3472.h
++++ b/include/linux/platform_data/x86/int3472.h
+@@ -23,6 +23,7 @@
+ /* PMIC GPIO Types */
+ #define INT3472_GPIO_TYPE_RESET					0x00
+ #define INT3472_GPIO_TYPE_POWERDOWN				0x01
++#define INT3472_GPIO_TYPE_RESET_ALT				0x02
+ #define INT3472_GPIO_TYPE_POWER_ENABLE				0x0b
+ #define INT3472_GPIO_TYPE_CLK_ENABLE				0x0c
+ #define INT3472_GPIO_TYPE_PRIVACY_LED				0x0d

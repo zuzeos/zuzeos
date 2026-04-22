@@ -21,11 +21,22 @@
 
   boot.kernelPackages = pkgs.linuxKernel.packages.linux_xanmod_stable;
 
+  boot.kernelPatches = [
+    {
+      name = "int3472-gpio-type-0x02-reset";
+      patch = ./patches/int3472-gpio-type-0x02.patch;
+    }
+  ];
+
   users.users.aprl.extraGroups = [ "dialout" ];
+
+  networking.firewall.enable = lib.mkForce true;
+  networking.nftables.enable = true;
+  virtualisation.waydroid.enable = true;
 
   hardware.ipu6 = {
     enable = true;
-    platform = "ipu6ep";
+    platform = "ipu6epmtl";
   };
 
   services.wazuh-agent = {
@@ -47,10 +58,6 @@
   };
 
   networking.networkmanager.plugins = [ pkgs.networkmanager-openconnect ];
-
-  systemd.sleep.extraConfig = ''
-    SuspendState=mem
-  '';
 
   #38c3
   networking.networkmanager.ensureProfiles.profiles = {

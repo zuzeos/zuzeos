@@ -1,0 +1,194 @@
+# NixOS Unattended Update — Plymouth shutdown theme
+#
+# Displays a centered progress bar and status message during system
+# update activation at shutdown/reboot.
+#
+# Communication protocol from the daemon (plymouth.rs):
+#   plymouth --update="update:<percent>"   -> progress bar update
+#   plymouth display-message --text="..."  -> status message text
+#
+# This theme uses a 1x1 white pixel (box.png) scaled to draw
+# filled rectangles, which is the standard Plymouth technique.
+
+# ---------------------------------------------------------------------------
+# Utility: convert a numeric string to an integer
+# Plymouth script has no built-in for this.
+# ---------------------------------------------------------------------------
+fun StringLength(str) {
+    local.i = 0;
+    while (String(str).CharAt(local.i) != "")
+        local.i++;
+    return local.i;
+}
+
+fun StringToInteger(str) {
+    local.result = 0;
+    local.len = StringLength(str);
+    for (local.i = 0; local.i < local.len; local.i++) {
+        local.c = String(str).CharAt(local.i);
+        for (local.d = 0; local.d <= 9; local.d++) {
+            if (local.c == local.d + "") {
+                local.result = local.result * 10 + local.d;
+                break;
+            }
+        }
+    }
+    return local.result;
+}
+
+# ---------------------------------------------------------------------------
+# Screen setup
+# ---------------------------------------------------------------------------
+screen.w = Window.GetWidth();
+screen.h = Window.GetHeight();
+screen.half_w = screen.w / 2;
+screen.half_h = screen.h / 2;
+
+# Background: dark blue-gray
+Window.SetBackgroundTopColor(0.13, 0.15, 0.20);
+Window.SetBackgroundBottomColor(0.10, 0.12, 0.16);
+
+# ---------------------------------------------------------------------------
+# 1x1 white pixel used for all rectangle drawing
+# ---------------------------------------------------------------------------
+box = Image("box.png");
+
+# ---------------------------------------------------------------------------
+# Progress bar geometry
+# ---------------------------------------------------------------------------
+bar.w     = Math.Int(screen.w * 0.4);
+bar.h     = 6;
+bar.x     = screen.half_w - bar.w / 2;
+bar.y     = Math.Int(screen.h * 0.62);
+bar.r     = 4;   # corner radius (visual only in description; Plymouth has no rounding)
+
+# ---------------------------------------------------------------------------
+# Progress bar — background track (dark translucent)
+# ---------------------------------------------------------------------------
+bar_bg_img = box.Scale(bar.w, bar.h);
+bar_bg = Sprite(bar_bg_img);
+bar_bg.SetPosition(bar.x, bar.y, 1);
+bar_bg.SetOpacity(0.25);
+
+# ---------------------------------------------------------------------------
+# Progress bar — foreground fill (accent blue)
+# We tint the white pixel by layering:  white * opacity gives gray,
+# but we actually want color.  Plymouth applies no color tint to images,
+# so we create multiple colored 1x1 PNGs — or we overlay with a
+# colored text sprite as a hack.
+#
+# Simplest correct approach: render the fill bar and overlay it.
+# Since we only have a white box, we draw a white bar at reduced
+# opacity for the background, and a white bar at full opacity for
+# the fill — giving a clean light-on-dark look.
+# ---------------------------------------------------------------------------
+bar_fg = Sprite();
+bar_fg.SetPosition(bar.x, bar.y, 2);
+bar_fg.SetOpacity(0.85);
+
+# ---------------------------------------------------------------------------
+# Title text (above the bar)
+# ---------------------------------------------------------------------------
+title.text = "Installing system update";
+title.img  = Image.Text(title.text, 0.85, 0.87, 0.90, 1, "Sans 14");
+title.x    = screen.half_w - title.img.GetWidth() / 2;
+title.y    = bar.y - 40;
+
+title_sprite = Sprite(title.img);
+title_sprite.SetPosition(title.x, title.y, 2);
+
+# ---------------------------------------------------------------------------
+# Percentage text (right of bar)
+# ---------------------------------------------------------------------------
+percent_sprite = Sprite();
+percent_sprite.SetPosition(bar.x + bar.w + 12, bar.y - 4, 2);
+
+# ---------------------------------------------------------------------------
+# Status message text (below the bar)
+# ---------------------------------------------------------------------------
+message_sprite = Sprite();
+
+# ---------------------------------------------------------------------------
+# Global progress state
+# ---------------------------------------------------------------------------
+global.progress = 0;
+
+# ---------------------------------------------------------------------------
+# Update the visual state of the bar and labels
+# ---------------------------------------------------------------------------
+fun update_bar() {
+    # Fill bar width
+    local.fill_w = Math.Int(bar.w * global.progress / 100);
+    if (local.fill_w < 1 && global.progress > 0)
+        local.fill_w = 1;
+
+    if (local.fill_w > 0) {
+        local.fill_img = box.Scale(local.fill_w, bar.h);
+        bar_fg.SetImage(local.fill_img);
+    }
+
+    # Percentage label
+    local.pct_str = global.progress + "%";
+    local.pct_img = Image.Text(local.pct_str, 0.70, 0.75, 0.82, 1, "Sans 11");
+    percent_sprite.SetImage(local.pct_img);
+}
+
+# ---------------------------------------------------------------------------
+# Callbacks
+# ---------------------------------------------------------------------------
+
+# Structured status updates:  plymouth --update="update:<N>"
+# This is the primary channel for progress percentage.
+fun update_status_callback(status) {
+    if (status.SubString(0, 7) == "update:") {
+        local.pct_str = status.SubString(7, StringLength(status) - 7);
+        global.progress = StringToInteger(local.pct_str);
+        if (global.progress < 0) global.progress = 0;
+        if (global.progress > 100) global.progress = 100;
+        update_bar();
+    }
+}
+
+# Human-readable messages:  plymouth display-message --text="..."
+fun message_callback(text) {
+    if (text == "") {
+        message_sprite.SetOpacity(0);
+        return;
+    }
+
+    local.msg_img = Image.Text(text, 0.65, 0.68, 0.72, 1, "Sans 11");
+    message_sprite.SetImage(local.msg_img);
+    message_sprite.SetPosition(
+        screen.half_w - local.msg_img.GetWidth() / 2,
+        bar.y + bar.h + 16,
+        2
+    );
+    message_sprite.SetOpacity(1);
+}
+
+# Refresh callback (required for Plymouth to repaint)
+fun refresh_callback() {
+    # Nothing to animate between updates, but Plymouth requires this
+    # to be registered for the screen to update reliably.
+}
+
+# Called when Plymouth switches back to normal (non-password) mode
+fun display_normal_callback() {
+    update_bar();
+}
+
+# Called when Plymouth quits
+fun quit_callback() {
+    # Nothing to clean up
+}
+
+Plymouth.SetUpdateStatusFunction(update_status_callback);
+Plymouth.SetMessageFunction(message_callback);
+Plymouth.SetRefreshFunction(refresh_callback);
+Plymouth.SetDisplayNormalFunction(display_normal_callback);
+Plymouth.SetQuitFunction(quit_callback);
+
+# ---------------------------------------------------------------------------
+# Initial render
+# ---------------------------------------------------------------------------
+update_bar();

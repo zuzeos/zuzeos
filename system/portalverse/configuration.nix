@@ -3,7 +3,6 @@
     ../../common
     ../../profiles/headless
     ../../profiles/systemd-boot
-    ../../profiles/wordpress
     ../../services/nginx
     ../../services/webmail
     ../../services/frrPortalverse
@@ -259,7 +258,7 @@
     enable = true;
     fqdn = "mail.versia.pub";
     domains = [ "versia.pub" ];
-    certificateScheme = "acme-nginx";
+    x509.useACMEHost = config.mailserver.fqdn;
 
     loginAccounts = {
       "aprl@versia.pub" = {
