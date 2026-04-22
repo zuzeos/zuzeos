@@ -1,12 +1,14 @@
 { inputs, lib, pkgs, ... }: {
 
   imports = [
+
     ./codename.nix
     ./networking.nix
     ./users
     inputs.nur.modules.nixos.default
     inputs.simple-nixos-mailserver.nixosModule
     inputs.nix-index-database.nixosModules.nix-index
+    inputs.nix-unattended-upgrade.nixosModules.default
   ];
 
   time.timeZone = lib.mkDefault "Europe/Berlin";
@@ -79,7 +81,7 @@
 
   environment.systemPackages = with pkgs; let
     # Distro specific rice
-    zuzeRicePkgs = [
+    jesterRicePkgs = [
       hyfetch           # superior queer fetch script
       zsh-you-should-use
       any-nix-shell
@@ -96,7 +98,7 @@
       kotlin                     # Kotlin dev env
       openjdk17-bootstrap        # Java 17
     ];
-  in progPkgs ++ zuzeRicePkgs ++ [
+  in progPkgs ++ jesterRicePkgs ++ [
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
 
@@ -167,7 +169,25 @@
 
   services.journald.extraConfig = "SystemMaxUse=500M";
 
-  system.nixos.tags = [ "ZuzeOS-alpha" ];
-  system.nixos.distroName = "ZuzeOS";
+  services.nix-unattended-upgrade = {
+    enable = true;
+    flakeSource = "local";
+    flakePath = "/etc/nixos";
+    extraAllowedPaths = [ "/home/aprl/zuzeos" ];
+  };
+
+  system.nixos.tags = [ "jester-linux-alpha" ];
+  system.nixos.distroName = "Jester Linux";
+  system.nixos.distroId = "jesterlinux";
   system.stateVersion = "24.05";
+
+  # Sentinel file so hyfetch/neowofetch detects Jester Linux (same pattern as /etc/NIXOS).
+  environment.etc."JESTERLINUX".text = "";
+
+  # Override hyfetch with Jester Linux distro detection + ASCII art.
+  nixpkgs.overlays = [
+    (final: prev: {
+      hyfetch = prev.callPackage ../pkgs/hyfetch { };
+    })
+  ];
 }

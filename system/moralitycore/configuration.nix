@@ -8,7 +8,7 @@
     ./hardware-configuration.nix
   ];
 
-  zuze.deployment = {
+  jester.deployment = {
     targetHost = "morality.fediverse.gay";
     tags = [
       "web"

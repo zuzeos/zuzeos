@@ -3,17 +3,17 @@
     "${inputs.nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical-calamares-gnome.nix"
   ];
 
-  isoImage.isoName = lib.mkForce "Zuse23.11.1-${config.isoImage.isoBaseName}-${pkgs.stdenv.hostPlatform.system}.iso";
+  isoImage.isoName = lib.mkForce "JesterLinux-1.0-${config.isoImage.isoBaseName}-${pkgs.stdenv.hostPlatform.system}.iso";
 
-  networking.hostName = "zuzeos";
+  networking.hostName = "jesterlinux";
 
   networking.domain = "";
 
-  services.displayManager.autoLogin.user = lib.mkForce "zuze";
-  services.getty.autologinUser = lib.mkForce "zuze";
+  services.displayManager.autoLogin.user = lib.mkForce "jester";
+  services.getty.autologinUser = lib.mkForce "jester";
 
-  nix.settings.trusted-users = [ "zuze" ];
+  nix.settings.trusted-users = [ "jester" ];
 
-  users.users.nixos.name = lib.mkForce "zuze";
+  users.users.nixos.name = lib.mkForce "jester";
   nixpkgs.config.allowUnfree = true;
 }

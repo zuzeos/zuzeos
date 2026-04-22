@@ -10,7 +10,7 @@
     ./dn42
   ];
 
-  zuze.deployment = {
+  jester.deployment = {
     targetHost = "188.245.199.114";
     tags = [
       "dn42de"

@@ -6,7 +6,7 @@
     ./hardware-configuration.nix
   ];
 
-  zuze.deployment = {
+  jester.deployment = {
     targetHost = "sakamoto.pl";
     targetPort = 13370;
     tags = [

@@ -7,7 +7,7 @@
     ./hardware-configuration.nix
   ];
 
-  zuze.deployment = {
+  jester.deployment = {
     targetHost = "5.223.43.218";
     tags = [
       "dn42de"

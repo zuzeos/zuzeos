@@ -21,7 +21,7 @@ in
     ./disk-config.nix
   ];
 
-  zuze.deployment = {
+  jester.deployment = {
     targetHost = "192.168.69.126";
     tags = [
       "web"

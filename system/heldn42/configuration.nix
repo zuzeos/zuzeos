@@ -7,7 +7,7 @@
     ./disk-config.nix
   ];
 
-  zuze.deployment = {
+  jester.deployment = {
     targetHost = "37.27.9.168";
     tags = [
       "dn42de"

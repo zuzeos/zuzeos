@@ -6,7 +6,7 @@
     ./hardware-configuration.nix
   ];
 
-  zuze.deployment = {
+  jester.deployment = {
     targetHost = "fedinet.org";
     tags = [
       "web"

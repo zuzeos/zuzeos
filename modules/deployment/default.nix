@@ -1,7 +1,7 @@
 { lib, ... }: let 
   inherit (lib) mkOption types;
 in {
-  options.zuze.deployment = {
+  options.jester.deployment = {
     tags = mkOption {
       type = with types; listOf str;
       default = [ ];

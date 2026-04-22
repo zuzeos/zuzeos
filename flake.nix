@@ -1,5 +1,5 @@
 {
-  description = "Zuze OS";
+  description = "Jester Linux";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
@@ -18,6 +18,7 @@
     disko.inputs.nixpkgs.follows = "nixpkgs";
     jeezyvim.url = "github:LGUG2Z/JeezyVim";
     simple-nixos-mailserver.url = "gitlab:simple-nixos-mailserver/nixos-mailserver/master";
+    nix-unattended-upgrade.url = "path:/home/aprl/Dokumente/nix-unattended-upgrade";
   };
 
   nixConfig = {

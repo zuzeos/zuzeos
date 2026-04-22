@@ -14,7 +14,7 @@
     ./hardware-configuration.nix
   ];
 
-  zuze.deployment = {
+  jester.deployment = {
     targetHost = "45.150.123.22";
     tags = [
       "versia"
