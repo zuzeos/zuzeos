@@ -173,7 +173,6 @@
     enable = true;
     flakeSource = "local";
     flakePath = "/etc/nixos";
-    extraAllowedPaths = [ "/home/aprl/zuzeos" ];
   };
 
   system.nixos.tags = [ "jester-linux-alpha" ];
